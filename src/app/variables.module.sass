@@ -1,0 +1,43 @@
+// Colors
+$black: #000
+$dark-grey: #2D2D2D
+$off-white: #EFEFEF
+$white: #FFF
+
+$line-color: $dark-grey
+
+// Sizing
+$unit: 0.75rem
+
+$side-padding: 7.5rem
+$min-side-padding: 1rem
+
+// Breakpoints
+$breakpoint-mobile: 600px
+$breakpoint-tablet: 900px
+
+// Fonts
+@mixin body
+  font-size: 0.75rem
+  font-weight: 400
+  line-height: 123%
+  text-transform: uppercase
+
+@mixin body-bold
+  @include body
+  font-weight: 600
+
+// Layout
+
+@mixin flex-center
+  display: flex
+  align-items: center
+  justify-content: center
+
+:export
+  black: $black
+  darkGrey: $dark-grey
+  offWhite: $off-white
+  white: $white
+  sidePadding: $side-padding
+  minSidePadding: $min-side-padding

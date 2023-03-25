@@ -1,0 +1,28 @@
+@use './variables.module'
+
+#nav
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  height: auto
+  display: flex
+  justify-content: space-between
+  align-items: center
+  padding: variables.$unit 0
+  border-bottom: 1px solid variables.$line-color
+
+  .logoContainer
+    width: variables.$side-padding
+    @include variables.flex-center
+
+
+  .linkContainer
+    @include variables.flex-center
+    flex: 1
+    height: max-content
+    padding: 0 variables.$min-side-padding
+
+    span
+      @include variables.body
+      color: variables.$off-white
