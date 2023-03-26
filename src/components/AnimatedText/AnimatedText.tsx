@@ -7,6 +7,7 @@ interface TextProps {
   duration?: number;
   fixedDuration?: number;
   className?: string;
+  staggerDelay?: number;
 }
 
 export default function AnimatedText(props: TextProps) {
@@ -16,7 +17,7 @@ export default function AnimatedText(props: TextProps) {
       {
         props.children.split('').map((char, index) =>
           <AnimatedCharacter
-            delay={props.delay}
+            delay={props.staggerDelay ? (props.delay ?? 0) + props.staggerDelay * index : props.delay}
             duration={props.duration}
             fixedDuration={props.fixedDuration}
             className={props.className}

@@ -21,7 +21,29 @@
     width: 25%
     padding: 0 variables.$min-side-padding
     height: variables.$unit * 5
+    position: relative
+
+    &:after
+      position: absolute
+      content: ""
+      bottom: variables.$unit
+      height: variables.$unit / 2
+      width: variables.$unit / 2
+      border-radius: 50%
+      right: 50%
+      transform: translate(50%,-50%) scale(0)
+      transition: transform 300ms variables.$bezier 0s
+      background: variables.$off-white
 
     span
       @include variables.body
       color: variables.$off-white
+
+    &.linkActive
+
+      span
+        @include variables.body-bold
+        color: variables.$white
+
+      &:after
+        transform: translate(50%,-50%) scale(1)

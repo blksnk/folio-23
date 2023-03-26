@@ -14,6 +14,10 @@ type LinkProps = {
 const links: LinkProps[] = [
   {
     to: "/",
+    title: "home",
+  },
+  {
+    to: "/work",
     title: "work",
   },
   {
@@ -24,15 +28,12 @@ const links: LinkProps[] = [
     to: "/about",
     title: "about",
   },
-  {
-    to: "/contact",
-    title: "contact",
-  },
 ]
 
 const NavBar = () => {
   const activePath = usePathname()
   console.log(activePath)
+  const linkKlass = (link: LinkProps) => `${styles.linkContainer} ${activePath === link.to ? styles.linkActive : ""}`
   return (
     <nav id={styles.nav}>
       <Link href="/" className={styles.sideContainer}>
@@ -46,13 +47,12 @@ const NavBar = () => {
       </Link>
       {links.map((link, index) => {
         return (
-          <Link className={styles.linkContainer} href={link.to} key={index}>
+          <Link className={linkKlass(link)} href={link.to} key={index}>
             <span>{link.title}</span>
           </Link>
         )
       })}
       <div className={styles.sideContainer}>
-
       </div>
     </nav>
   )

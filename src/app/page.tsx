@@ -4,8 +4,9 @@ import { AnimatedCharacter } from "@/components/AnimatedText/AnimatedCharacter";
 import AnimatedText from "@/components/AnimatedText/AnimatedText";
 import fonts from "./fonts.module.sass"
 import fontRepo from "@/app/fonts";
-import ProjectsListGrid from "@/app/ProjectsListGrid";
-import { Suspense } from "react";
+import styles from './page.module.sass'
+
+const description = 'Jean-nicolas veigel is a french multi-disciplinary designer.\nHe creates for and with individuals, artists, start-ups\n& well established companies around the world.'
 
 export default function Home() {
   const titleCharKlass = (small?: boolean) => `${small ? fonts.titleSmall : fonts.titleChar} ${fontRepo.title.bitmap.className}`
@@ -28,10 +29,8 @@ export default function Home() {
           <AnimatedCharacter delay={titleDelay} fixedDuration={titleDuration} className={title}>n</AnimatedCharacter>
         </GridItemCenter>
         <GridItemCenter>
-          <AnimatedText fixedDuration={infoDuration} delay={infoDelay}>{"Jean-Nicolas\nVeigel"}</AnimatedText>
         </GridItemCenter>
         <GridItemCenter>
-          <AnimatedText fixedDuration={infoDuration} delay={infoDelay} >{"Multidisciplinary\nDesigner"}</AnimatedText>
         </GridItemCenter>
         <GridItemCenter>
         <AnimatedCharacter delay={titleDelay} fixedDuration={titleDuration} className={title}>m</AnimatedCharacter>
@@ -62,7 +61,17 @@ export default function Home() {
           <AnimatedCharacter delay={titleDelay} fixedDuration={titleDuration} className={title}>t</AnimatedCharacter>
         </GridItemCenter>
       </GridLayout>
-      <ProjectsListGrid/>
+      <GridLayout className={styles.infoRow}>
+        <GridItemCenter>
+          <AnimatedText fixedDuration={infoDuration} delay={infoDelay}>2018-present</AnimatedText>
+        </GridItemCenter>
+      <GridItemCenter className={styles.description}>
+        <AnimatedText fixedDuration={infoDuration} delay={infoDelay} staggerDelay={30}>{description}</AnimatedText>
+      </GridItemCenter>
+        <GridItemCenter>
+          <AnimatedText fixedDuration={infoDuration} delay={infoDelay}>available mid-2023</AnimatedText>
+        </GridItemCenter>
+      </GridLayout>
     </PageLayout>
   )
 }
