@@ -1,12 +1,17 @@
+"use client"
+
 import styles from "./NavBar.module.sass"
 import Image from 'next/image'
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-type Link = {
+
+type LinkProps = {
   to: string;
   title: string;
 }
 
-const links: Link[] = [
+const links: LinkProps[] = [
   {
     to: "/",
     title: "work",
@@ -19,27 +24,36 @@ const links: Link[] = [
     to: "/about",
     title: "about",
   },
+  {
+    to: "/contact",
+    title: "contact",
+  },
 ]
 
 const NavBar = () => {
+  const activePath = usePathname()
+  console.log(activePath)
   return (
     <nav id={styles.nav}>
-      <a href="/" className={styles.linkContainer}>
+      <Link href="/" className={styles.sideContainer}>
         <Image
-          src="./genmetsuLogo.svg"
+          src="/genmetsuLogo.svg"
           alt="Genmetsu Logo"
           width={32}
           height={36}
           priority
         />
-      </a>
+      </Link>
       {links.map((link, index) => {
         return (
-          <a className={styles.linkContainer} href={link.to} key={index}>
+          <Link className={styles.linkContainer} href={link.to} key={index}>
             <span>{link.title}</span>
-          </a>
+          </Link>
         )
       })}
+      <div className={styles.sideContainer}>
+
+      </div>
     </nav>
   )
 }

@@ -1,0 +1,32 @@
+{
+  "cover": {
+    "__TYPE__": "ImageContent",
+    "origin": {
+      "id": "main",
+      "url": "https://images.unsplash.com/photo-1587653915936-5623ea0b949a",
+      "width": 4000,
+      "height": 4000
+    },
+    "url": "https://images.unsplash.com/photo-1587653915936-5623ea0b949a",
+    "width": 4000,
+    "height": 4000,
+    "edit": {
+      "zoom": 1,
+      "crop": {
+        "x": 0,
+        "y": 0
+      },
+      "background": "transparent"
+    },
+    "thumbnails": {}
+  },
+  "title": {
+    "__TYPE__": "FieldContent",
+    "value": "allow",
+    "type": "Text"
+  },
+  "slices": {
+    "__TYPE__": "SliceContentType",
+    "value": []
+  }
+}

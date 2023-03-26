@@ -12,9 +12,14 @@ $unit: 0.75rem
 $side-padding: 7.5rem
 $min-side-padding: 1rem
 
+$lines-padding: 9.5rem
+
 // Breakpoints
 $breakpoint-mobile: 600px
 $breakpoint-tablet: 900px
+
+// Timings
+$bezier: cubic-bezier(0.38,0,0.21,0.98)
 
 // Fonts
 @mixin body
@@ -22,18 +27,33 @@ $breakpoint-tablet: 900px
   font-weight: 400
   line-height: 123%
   text-transform: uppercase
+  text-align: center
 
 @mixin body-bold
   @include body
   font-weight: 600
 
-// Layout
+@mixin title
+  font-weight: 600
+  font-size: 6rem
+  color: $white
+  text-align: center
+  font-family: "__neueBit_9e67b5"
 
+// Layout
 @mixin flex-center
   display: flex
   align-items: center
   justify-content: center
 
+@mixin full-fixed
+  position: fixed
+  top: 0
+  left: 0
+  height: 100%
+  width: 100%
+
+// JS Exports
 :export
   black: $black
   darkGrey: $dark-grey
@@ -41,3 +61,5 @@ $breakpoint-tablet: 900px
   white: $white
   sidePadding: $side-padding
   minSidePadding: $min-side-padding
+  linesPadding: $lines-padding
+  bezier: $bezier

@@ -1,9 +1,11 @@
 import './root.sass'
-import Lines from "@/app/Lines";
-import NavBar from "@/app/NavBar";
-
-import fontRepo from "@/app/fonts";
+import Lines from "@/components/Lines";
+import NavBar from "@/components/NavBar";
 import { Blobs } from "@/components/Blobs.component";
+import fontRepo from "@/app/fonts";
+import { Providers } from "@/app/providers";
+import CenterTextVector from "@/components/CenterTextVector";
+
 
 export const metadata = {
   title: 'Genmetsu',
@@ -16,12 +18,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={fontRepo.body.className}>
+    <html lang="en" className={fontRepo.body.className} style={{backgroundColor: "#000"}}>
       <body>
-        <Blobs count={12} offsetAmount={80}/>
-        <Lines/>
-        <NavBar/>
-        {children}
+        <Providers>
+          <CenterTextVector/>
+          <Lines animate/>
+          <Blobs count={4} offsetAmount={80} showText/>
+          <NavBar/>
+          {children}
+        </Providers>
       </body>
     </html>
   )

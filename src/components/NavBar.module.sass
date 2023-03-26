@@ -1,27 +1,26 @@
-@use './variables.module'
+@use '../app/variables.module'
 
 #nav
   position: fixed
   top: 0
   left: 0
   width: 100%
-  height: auto
+  height: variables.$unit * 5
   display: flex
   justify-content: space-between
   align-items: center
-  padding: variables.$unit 0
-  border-bottom: 1px solid variables.$line-color
+  z-index: 10
 
-  .logoContainer
-    width: variables.$side-padding
+  .sideContainer
+    width: 12.5%
     @include variables.flex-center
-
+    height: variables.$unit * 5
 
   .linkContainer
     @include variables.flex-center
-    flex: 1
-    height: max-content
+    width: 25%
     padding: 0 variables.$min-side-padding
+    height: variables.$unit * 5
 
     span
       @include variables.body

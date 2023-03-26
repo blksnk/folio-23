@@ -52,7 +52,7 @@ const neueBit = localFont({
       style: 'normal',
     },
   ],
-  display: 'swap'
+  display: 'swap',
 })
 
 const neueMontreal = localFont({

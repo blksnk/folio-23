@@ -1,0 +1,12 @@
+{
+  "_cts": {
+    "project": {}
+  },
+  "slices": {
+    "CenterImage": {
+      "default": {
+        "primary": {}
+      }
+    }
+  }
+}

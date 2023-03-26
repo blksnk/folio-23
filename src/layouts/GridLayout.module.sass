@@ -1,0 +1,17 @@
+@use "../app/variables.module"
+
+.grid
+  display: grid
+  grid-template-columns: repeat(5, 1fr)
+  justify-items: center
+  justify-content: center
+  align-items: center
+  width: 100%
+  grid-auto-flow: row
+
+.gridItemCenterContainer
+  width: 100%
+  @include variables.flex-center
+
+  span
+    word-break: break-all

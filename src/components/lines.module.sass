@@ -1,0 +1,66 @@
+@use '../app/variables.module'
+
+.lineX, .lineY
+  background: variables.$line-color
+
+.lineY
+  width: 1px
+  height: 100%
+  transform-origin: top
+
+
+.lineX
+  height: 1px
+  width: 100%
+  transform-origin: left
+
+.lineContainerY
+  flex-grow: 1
+  width: auto
+  height: 100%
+  display: flex
+  justify-content: center
+  align-items: center
+
+.lineContainer
+  display: flex
+  justify-content: space-between
+  height: 100%
+  width: 100%
+  position: fixed
+  top: 0
+  left: 0
+  pointer-events: none
+
+  &.animate
+
+    .lineX
+      transform: scaleX(0)
+      animation: 3s variables.$bezier 300ms 1 normal forwards running expandX
+
+    .lineY
+      transform: scaleY(0)
+
+    @for $i from 1 through 6
+      .lineContainerY:nth-child(#{$i}) > .lineY
+          animation: 300ms + $i * 600ms variables.$bezier 300ms 1 normal forwards running expandY
+
+@keyframes expandY
+  0%
+    transform: scaleY(0)
+
+  100%
+    transform: scaleY(1)
+
+@keyframes expandX
+  0%
+    transform: scaleX(0)
+
+  100%
+    transform: scaleX(1)
+
+#lineTop
+  position: fixed
+  top: variables.$unit * 5
+  left: 0
+
