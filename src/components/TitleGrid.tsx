@@ -1,13 +1,11 @@
 import GridLayout from "@/layouts/GridLayout";
 import { AnimatedCharacter } from "@/components/AnimatedText/AnimatedCharacter";
 import styles from "./TitleGrid.module.sass"
-import variables from "../app/variables.module.sass"
-import fontRepo from "@/app/fonts";
+import { titleCharKlass } from "@/app/fonts";
 interface TitleGridProps {
   title: string;
+  className?: string;
 }
-
-const charKlass = (small?: boolean) => `${variables.titleChar} ${fontRepo.title.bitmap.className}`
 
 // TODO: fix padding and letter spacing
 
@@ -24,7 +22,7 @@ const getGridPos = (index: number) => {
 
 export default function TitleGrid(props: TitleGridProps) {
   return (
-    <GridLayout>
+    <GridLayout className={props.className}>
       {props.title.split('').map((char, index) => {
         const pos = getGridPos(index);
         const style = {
@@ -35,7 +33,7 @@ export default function TitleGrid(props: TitleGridProps) {
           <div className={ styles.titleCharContainer }
                key={ 'titleChar' + index }
                style={ style }>
-            <AnimatedCharacter className={ charKlass() }
+            <AnimatedCharacter className={ titleCharKlass() }
                                fixedDuration={ 1200 }>{ char }</AnimatedCharacter>
           </div>
         )

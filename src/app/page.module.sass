@@ -1,16 +1,22 @@
 @use "variables.module"
 
-$circle-size: calc(100vw / 5 * 2)
-$circle-x-offset: calc((100vh - $circle-size) / 2)
-$description-x-offset: calc($circle-size + $circle-x-offset + 3 * variables.$unit)
+
+@media only screen and (max-width: variables.$breakpoint-mobile)
+  $circle-size: calc(100vw / 5 * 4)
 
 .infoRow
   width: 100%
   position: fixed
-  top: $description-x-offset
+  top: variables.$page-content-x-offset
   left: 0
   right: 0
+  align-items: start
+
+  @media only screen and (max-width: variables.$breakpoint-mobile)
+    top: variables.$page-content-x-offset-mobile
+
 
 .description
   grid-column-end: span 3
   @include variables.flex-center
+  padding: 0 variables.$unit

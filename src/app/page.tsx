@@ -2,18 +2,23 @@ import PageLayout from "@/layouts/PageLayout";
 import GridLayout, { GridItemCenter } from "@/layouts/GridLayout";
 import { AnimatedCharacter } from "@/components/AnimatedText/AnimatedCharacter";
 import AnimatedText from "@/components/AnimatedText/AnimatedText";
-import fonts from "./fonts.module.sass"
-import fontRepo from "@/app/fonts";
+import { titleCharKlass } from "@/app/fonts";
 import styles from './page.module.sass'
+import { headers } from "next/headers";
 
 const description = 'Jean-nicolas veigel is a french multi-disciplinary designer.\nHe creates for and with individuals, artists, start-ups\n& well established companies around the world.'
 
 export default function Home() {
-  const titleCharKlass = (small?: boolean) => `${small ? fonts.titleSmall : fonts.titleChar} ${fontRepo.title.bitmap.className}`
+  const h = headers();
+  const referer = h.get('referer')
+  const host = h.get('host');
+  const consecutiveLoad = (referer ?? "").includes((host ?? ""));
+
   const title = titleCharKlass()
   const titleSmall = titleCharKlass(true)
+
   const titleDuration = 900
-  const titleDelay = 2000
+  const titleDelay = consecutiveLoad ? 0 : 2000
   const infoDuration = 600
   const infoDelay = titleDelay + 1200
   return (

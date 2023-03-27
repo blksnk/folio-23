@@ -1,4 +1,5 @@
 import localFont from 'next/font/local'
+import fonts from "@/app/fonts.module.sass";
 
 const fraktionMono = localFont({
   src: [
@@ -80,3 +81,5 @@ const fontRepo = {
 }
 
 export default fontRepo
+
+export const titleCharKlass = (small?: boolean) => `${small ? fonts.titleSmall : fonts.titleChar} ${fontRepo.title.bitmap.className}`

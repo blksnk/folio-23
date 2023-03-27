@@ -3,8 +3,6 @@
 import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 import variables from '../app/variables.module.sass'
 import styles from './Blobs.module.sass'
-import { debounce } from "lodash"
-import { setIn } from "immutable";
 
 type Vec2<T = number> = {
   x: T;
@@ -91,7 +89,9 @@ export const Blobs = ({ count = 10, maxBlobSize, minBlobSize, offsetAmount = 10,
   const computeSize = useCallback((): number => {
     const sidePaddingPx = parseFloat(variables.linesPadding) * 16
     if(typeof window === "undefined") return 400
-    return Math.min(window.innerHeight - sidePaddingPx, window.innerWidth / 5 * 2);
+    // make it take a larger screen portion if mobile
+    const fifths = window.innerWidth > Number(parseInt(variables.breakpointMobile)) ? 2 : 4
+    return Math.min(window.innerHeight - sidePaddingPx, window.innerWidth / 5 * fifths);
   }, [])
 
   const [circleSize, setCircleSize] = useState(400);

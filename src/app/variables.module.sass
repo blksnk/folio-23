@@ -14,6 +14,15 @@ $min-side-padding: 1rem
 
 $lines-padding: 9.5rem
 
+
+$circle-size: calc(100vw / 5 * 2)
+$circle-x-offset: calc((100vh - $circle-size) / 2)
+$page-content-x-offset: calc($circle-size + $circle-x-offset + 3 * $unit)
+
+$circle-size-mobile: calc(100vw / 5 * 4)
+$circle-x-offset-mobile: calc((100vh - $circle-size-mobile) / 2)
+$page-content-x-offset-mobile: calc($circle-size-mobile + $circle-x-offset-mobile + 3 * $unit)
+
 // Breakpoints
 $breakpoint-mobile: 600px
 $breakpoint-tablet: 900px
@@ -63,3 +72,5 @@ $bezier: cubic-bezier(0.38,0,0.21,0.98)
   minSidePadding: $min-side-padding
   linesPadding: $lines-padding
   bezier: $bezier
+  breakpointMobile: $breakpoint-mobile
+  breakpointTablet: $breakpoint-tablet
