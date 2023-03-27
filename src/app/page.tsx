@@ -5,76 +5,72 @@ import AnimatedText from "@/components/AnimatedText/AnimatedText";
 import { titleCharKlass } from "@/app/fonts";
 import styles from './page.module.sass'
 import { headers } from "next/headers";
+import { isConsecutiveLoad } from "@/utils/isConsecutiveLoad";
+import { pageTextProps } from "@/utils/animations";
 
 const description = 'Jean-nicolas veigel is a french multi-disciplinary designer.\nHe creates for and with individuals, artists, start-ups\n& well established companies around the world.'
 
 export default function Home() {
-  const h = headers();
-  const referer = h.get('referer')
-  const host = h.get('host');
-  const consecutiveLoad = (referer ?? "").includes((host ?? ""));
+  const consecutiveLoad = isConsecutiveLoad()
 
-  const title = titleCharKlass()
+  const titleKlass = titleCharKlass()
   const titleSmall = titleCharKlass(true)
 
-  const titleDuration = 900
-  const titleDelay = consecutiveLoad ? 0 : 2000
-  const infoDuration = 600
-  const infoDelay = titleDelay + 1200
+  const { title, content } = pageTextProps()
   return (
     <PageLayout paddingTop>
       <GridLayout>
         <GridItemCenter>
-          <AnimatedCharacter delay={titleDelay} fixedDuration={titleDuration} className={title}>g</AnimatedCharacter>
+          <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>g</AnimatedCharacter>
         </GridItemCenter>
         <GridItemCenter>
-          <AnimatedCharacter delay={titleDelay} fixedDuration={titleDuration} className={title}>e</AnimatedCharacter>
+          <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>e</AnimatedCharacter>
         </GridItemCenter>
         <GridItemCenter>
-          <AnimatedCharacter delay={titleDelay} fixedDuration={titleDuration} className={title}>n</AnimatedCharacter>
+          <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>n</AnimatedCharacter>
         </GridItemCenter>
         <GridItemCenter>
         </GridItemCenter>
         <GridItemCenter>
         </GridItemCenter>
         <GridItemCenter>
-        <AnimatedCharacter delay={titleDelay} fixedDuration={titleDuration} className={title}>m</AnimatedCharacter>
+        <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>m</AnimatedCharacter>
         </GridItemCenter>
         <GridItemCenter>
-          <AnimatedCharacter delay={titleDelay} fixedDuration={titleDuration} className={title}>e</AnimatedCharacter>
+          <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>e</AnimatedCharacter>
         </GridItemCenter>
         <GridItemCenter>
-          <AnimatedCharacter delay={titleDelay} fixedDuration={titleDuration} className={title}>t</AnimatedCharacter>
+          <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>t</AnimatedCharacter>
         </GridItemCenter>
         <GridItemCenter>
-          <AnimatedCharacter delay={titleDelay} fixedDuration={titleDuration} className={title}>s</AnimatedCharacter>
+          <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>s</AnimatedCharacter>
         </GridItemCenter>
         <GridItemCenter>
-          <AnimatedCharacter delay={titleDelay} fixedDuration={titleDuration} className={title}>u</AnimatedCharacter>
+          <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>u</AnimatedCharacter>
         </GridItemCenter>
         <GridItemCenter></GridItemCenter>
         <GridItemCenter>
-        <AnimatedText delay={titleDelay} fixedDuration={titleDuration} className={titleSmall}>dot</AnimatedText>
+        <AnimatedText delay={title.delay} fixedDuration={title.fixedDuration} className={titleSmall}>dot</AnimatedText>
         </GridItemCenter>
         <GridItemCenter>
-          <AnimatedCharacter delay={titleDelay} fixedDuration={titleDuration} className={title}>a</AnimatedCharacter>
+          <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>a</AnimatedCharacter>
         </GridItemCenter>
         <GridItemCenter>
-          <AnimatedCharacter delay={titleDelay} fixedDuration={titleDuration} className={title}>r</AnimatedCharacter>
+          <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>r</AnimatedCharacter>
         </GridItemCenter>
         <GridItemCenter>
-          <AnimatedCharacter delay={titleDelay} fixedDuration={titleDuration} className={title}>t</AnimatedCharacter>
+          <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>t</AnimatedCharacter>
         </GridItemCenter>
       </GridLayout>
       <GridLayout className={styles.infoRow}>
         <GridItemCenter>
-          <AnimatedText fixedDuration={infoDuration} delay={infoDelay}>2018-present</AnimatedText>
+          <AnimatedText fixedDuration={content.fixedDuration} delay={content.delay}>2018-present</AnimatedText>
         </GridItemCenter>
       <GridItemCenter className={styles.description}>
-        <AnimatedText fixedDuration={infoDuration} delay={infoDelay} staggerDelay={30}>{description}</AnimatedText>
+        <AnimatedText fixedDuration={content.fixedDuration} delay={content.delay} staggerDelay={30}>{description}</AnimatedText>
       </GridItemCenter>
         <GridItemCenter>
-          <AnimatedText fixedDuration={infoDuration} delay={infoDelay}>available mid-2023</AnimatedText>
+          <AnimatedText fixedDuration={content.fixedDuration} delay={content.delay}>available mid-2023</AnimatedText>
         </GridItemCenter>
       </GridLayout>
     </PageLayout>

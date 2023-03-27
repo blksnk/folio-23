@@ -1,0 +1,38 @@
+@use "../variables.module"
+
+.container
+  row-gap: variables.$unit * 8
+  padding-top: variables.$unit * 4
+  overflow-y: hidden
+
+.thumbnailContainer
+  animation-name: thumbnailEnter
+  animation-timing-function: variables.$bezier
+  animation-fill-mode: forwards
+  transform: translateY(100vh)
+  height: 100%
+
+
+.thumbnail
+  aspect-ratio: auto
+  max-width: variables.$unit * 10
+  max-height: variables.$unit * 10
+  transition: transform 300ms variables.$bezier
+  object-fit: contain
+  position: relative !important
+
+.year
+  grid-column: 1 / span 1
+
+.projectsLabel
+  @include variables.body-bold
+  color: variables.$white
+
+.header
+  color: variables.$white
+
+@keyframes thumbnailEnter
+  0%
+    transform: translateY(100vh)
+  100%
+    transform: translateY(0)

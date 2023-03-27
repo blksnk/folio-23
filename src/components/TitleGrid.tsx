@@ -5,6 +5,8 @@ import { titleCharKlass } from "@/app/fonts";
 interface TitleGridProps {
   title: string;
   className?: string;
+  fixedDuration?: number;
+  delay?: number;
 }
 
 // TODO: fix padding and letter spacing
@@ -33,8 +35,11 @@ export default function TitleGrid(props: TitleGridProps) {
           <div className={ styles.titleCharContainer }
                key={ 'titleChar' + index }
                style={ style }>
-            <AnimatedCharacter className={ titleCharKlass() }
-                               fixedDuration={ 1200 }>{ char }</AnimatedCharacter>
+            <AnimatedCharacter
+              className={ titleCharKlass() }
+              fixedDuration={ props.fixedDuration ?? 1200 }
+              delay={props.delay}
+            >{ char }</AnimatedCharacter>
           </div>
         )
       })}

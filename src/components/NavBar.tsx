@@ -32,7 +32,6 @@ const links: LinkProps[] = [
 
 const NavBar = () => {
   const activePath = usePathname()
-  console.log(activePath)
   const linkKlass = (link: LinkProps) => `${styles.linkContainer} ${activePath === link.to ? styles.linkActive : ""}`
   return (
     <nav id={styles.nav}>

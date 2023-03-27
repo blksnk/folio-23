@@ -155,10 +155,13 @@ export const Blobs = ({ count = 10, maxBlobSize, minBlobSize, offsetAmount = 10,
     }
   })), [ mousePos, polarities, blobs])
 
-  const containerStyle = useMemo(() => ({
-    height: circleSize * 2,
-    width: circleSize * 2,
-  }), [ circleSize ])
+  const containerStyle = useMemo(() => {
+    const size = Math.round(circleSize * 2);
+  return {
+    height: size,
+    width: size,
+  }
+  }, [ circleSize ])
 
   return (
     <div className={styles.blobCircle} onClick={updateBlobsWithTransition} style={containerStyle}>

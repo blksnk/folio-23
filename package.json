@@ -18,13 +18,18 @@
     "@types/node": "18.15.9",
     "@types/react": "18.0.29",
     "@types/react-dom": "18.0.11",
+    "@urql/core": "^3.2.2",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
+    "graphql": "^16.6.0",
     "lodash": "^4.17.21",
     "next": "13.2.4",
+    "next-urql": "^4.0.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "5.0.2"
+    "react-is": "^18.2.0",
+    "typescript": "5.0.2",
+    "urql": "^3.0.4"
   },
   "devDependencies": {
     "@prismicio/types": "^0.2.7",
