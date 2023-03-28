@@ -37,6 +37,14 @@ $bezier: cubic-bezier(0.38,0,0.21,0.98)
   line-height: 123%
   text-transform: uppercase
   text-align: center
+  font-feature-settings: 'case' on, 'ss03' on, 'ss04' on
+
+@mixin body-super
+  @include body
+  vertical-align: super
+  font-size: 0.5rem
+  transform: translateY($unit * 0.4)
+  letter-spacing: 3px
 
 @mixin body-bold
   @include body

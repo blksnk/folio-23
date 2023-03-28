@@ -19,7 +19,7 @@ export default function Loading () {
 
   return (
     <PageLayout className={styles.page}>
-    <AnimatedText fixedDuration={500}>loading</AnimatedText>
+    <AnimatedText fixedDuration={500} staggerDelay={30}>loading project data...</AnimatedText>
       <AnimatedText fixedDuration={300} className={styles.percentage}>{`${percentage}%`}</AnimatedText>
 
   </PageLayout>

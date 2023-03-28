@@ -9,20 +9,13 @@ import {
 } from "@/api/queries/allProjects";
 import AnimatedText from "@/components/AnimatedText/AnimatedText";
 import { pageTextProps } from "@/utils/animations";
-import { ProjectTypes } from "@/api/typings/project";
+import { ProjectType, ProjectTypes } from "@/api/typings/project";
 import Image from "next/image";
-
-const api = 'https://jsonplaceholder.typicode.com/photos'
-
-type Project = {
-  title: string;
-  thumbnailUrl: string;
-}
+import Link from "next/link";
 
 const fetchProjects = async () => {
   try {
     const res = await queryClient<AllProjectsResponse>(allProjects, { height: 240 })
-    console.log(res.projects)
     return res.projects
   } catch(e) {
     console.error(e)
@@ -33,12 +26,10 @@ const fetchProjects = async () => {
 const sortProjectsByDate = (a: ProjectThumbnailResponse, b: ProjectThumbnailResponse) =>
   new Date(a.year) < new Date(b.year) ? 1 : -1
 
-const sortProjectsByType = (a: ProjectThumbnailResponse, b: ProjectThumbnailResponse): 0 | -1 | 1 => {
-  if(a.type === b.type) return 0;
-  if(a.type === "ux_ui") return -1;
-  if(a.type === "branding") return 1;
+const projectTypeSortingOrder = Object.fromEntries(ProjectTypes.map((type, index) => ([ type, index + 1 ]))) as { [k: ProjectType]: number }
 
-  return 1;
+const sortProjectsByType = (a: ProjectThumbnailResponse, b: ProjectThumbnailResponse): number => {
+  return projectTypeSortingOrder[a.type] - projectTypeSortingOrder[b.type]
 }
 
 const groupProjectsByYear = (projects: ProjectThumbnailResponse[]) => {
@@ -53,7 +44,6 @@ const groupProjectsByYear = (projects: ProjectThumbnailResponse[]) => {
     }
     // sort all projects by type on last iteration
     if(index === projects.length - 1) {
-      console.log('sort by type')
       Object.keys(acc).forEach(k => {
         acc[k] = acc[k].sort(sortProjectsByType)
       })
@@ -66,10 +56,12 @@ const groupProjectsByYear = (projects: ProjectThumbnailResponse[]) => {
     .sort((a, b) => a.year < b.year ? 1 : -1 )
 }
 
-const createHeaderLabel = (header: { count: number, label: string }): string => `${header.label}(${header.count})`
+const formatNumber = (n: number): string => n < 10 ? "0" + n : String(n);
+
+const createHeaderLabel = (header: { count: number, label: string }) => ({ label: header.label, count: `(${formatNumber(header.count)})`})
 
 const groupProjectsByType = (projects: ProjectThumbnailResponse[]) => (
-  projects.reduce((acc, project, index) => {
+  projects.reduce((acc, project) => {
     switch(project.type) {
       case "ux_ui":
       case "print":
@@ -129,25 +121,23 @@ const projectTypeColumnMap: {
 
 const getYearRowCount = (projectsCount: number) => Math.ceil(projectsCount / 5)
 
-interface ProjectsListGridProps {
-  onHover: (t: string) => void;
-  onLeave: () => void;
-}
+const createProjectLink = (project: { slug: string }) => '/project/' + project.slug
 
-export default async function ProjectsListGrid(props: ProjectsListGridProps) {
+export default async function ProjectsListGrid() {
   const { content } = pageTextProps()
   const projects = await fetchProjects()
   const projectsByType = groupProjectsByType(projects)
   const projectsByYear = groupProjectsByYear(projects)
   const headers = createHeaders(projectsByType, projects.length)
-  console.log(projectsByYear)
-  // TODO: rework project grid placement
   return (
     <>
-      <GridLayout>
+      <GridLayout className={styles.headerContainer}>
         {headers.map((header, index) => (
           <GridItemCenter key={"header" + index}>
-            <AnimatedText className={index === 0 ? styles.projectsLabel : styles.header} fixedDuration={content.fixedDuration} delay={content.delay}>{header}</AnimatedText>
+            <span>
+              <AnimatedText className={index === 0 ? styles.projectsLabel : styles.header} fixedDuration={content.fixedDuration} delay={content.delay}>{header.label}</AnimatedText>
+              <AnimatedText className={styles.headerCount} fixedDuration={content.fixedDuration} delay={content.delay}>{header.count}</AnimatedText>
+            </span>
           </GridItemCenter>
         ))}
       </GridLayout>
@@ -159,7 +149,9 @@ export default async function ProjectsListGrid(props: ProjectsListGridProps) {
             </GridItemCenter>
             {projectsOfTheYear.map((project, index) => (
               <GridItemCenter style={{ gridColumn: projectTypeColumnMap[project.type], animationDelay: content.delay + 1200 + 600 * yearIndex + 'ms', animationDuration: 900 + 300 * index + 'ms'}} className={styles.thumbnailContainer} key={project.id}>
-                <Image fill  className={styles.thumbnail} src={project.cover.url} alt={project.title}/>
+                <Link href={createProjectLink(project)}>
+                  <Image height={120} width={120} className={styles.thumbnail} src={project.cover.url} alt={project.slug}/>
+                </Link>
               </GridItemCenter>
               ))}
           </Fragment>

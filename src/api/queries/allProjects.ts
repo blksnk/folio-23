@@ -3,10 +3,10 @@ import { ProjectType } from "@/api/typings/project";
 export const allProjects = `
   query AllProjects($height: Int!) {
     projects {
-      title
       id
       type
       year
+      slug
       cover {
         id
         url(
@@ -22,7 +22,7 @@ export const allProjects = `
 
 
 export type ProjectThumbnailResponse = {
-  title: string;
+  slug: string;
   id: string;
   year: string;
   type: ProjectType;
