@@ -16,6 +16,8 @@ export const clientConfig: ClientOptions = {
       authorization: `Bearer ${ token }`
     }
   },
+  requestPolicy: "network-only",
+  suspense: true,
   exchanges: [ dedupExchange, ssrExchange(), fetchExchange ],
 }
 
@@ -38,7 +40,6 @@ export const queryClient = async <TData, EType>(
     return res.data as unknown as TData
   })
   .catch((e) => {
-    console.log("FETCH ERROR")
     console.log(e)
     return errorVar
   })

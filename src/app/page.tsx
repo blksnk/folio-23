@@ -18,8 +18,8 @@ export default function Home() {
 
   const { title, content } = pageTextProps()
   return (
-    <PageLayout paddingTop>
-      <GridLayout>
+    <PageLayout className={styles.page}>
+      <GridLayout className={styles.titleContainer}>
         <GridItemCenter>
           <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>g</AnimatedCharacter>
         </GridItemCenter>

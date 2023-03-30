@@ -28,7 +28,7 @@ export interface ProjectData extends ProjectThumbnailData {
   displayTitle: string;
   tools: string[];
   description?: string;
-  client?: string;
+  client: string;
 }
 
 export type ProjectDataResponse = {
