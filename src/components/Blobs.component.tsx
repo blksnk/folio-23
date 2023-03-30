@@ -23,10 +23,12 @@ const randomFloat = (min: number, max: number): number => {
   return Math.random() * (max - min) + min;
 }
 
-const randomPosition = (containerSize: number): Vec2 => ({
-  x: containerSize / 2 + mapRange(randomCoord(containerSize), 0, containerSize, -containerSize / 2, containerSize / 2),
-  y: containerSize / 2 + mapRange(randomCoord(containerSize), 0, containerSize, -containerSize / 2, containerSize / 2),
-})
+const randomPosition = (containerSize: number): Vec2 => {
+  ({
+    x: containerSize / 2 + mapRange(randomCoord(containerSize), 0, containerSize, -containerSize / 2, containerSize / 2),
+    y: containerSize / 2 + mapRange(randomCoord(containerSize), 0, containerSize, -containerSize / 2, containerSize / 2),
+  })
+}
 
 const randomSize = (maxSize = 100, minSize = 10,): number => {
   return Math.round(Math.max(minSize, Math.random() * maxSize));
@@ -156,10 +158,9 @@ export const Blobs = ({ count = 10, maxBlobSize, minBlobSize, offsetAmount = 10,
   })), [ mousePos, polarities, blobs])
 
   const containerStyle = useMemo(() => {
-    const size = Math.round(circleSize * 2);
   return {
-    height: size,
-    width: size,
+    height: circleSize,
+    width: circleSize,
   }
   }, [ circleSize ])
 

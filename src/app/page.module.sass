@@ -20,3 +20,7 @@
   grid-column-end: span 3
   @include variables.flex-center
   padding: 0 variables.$unit
+
+  @media only screen and (max-width: variables.$breakpoint-mobile)
+    grid-row-end: span 2
+    align-self: end

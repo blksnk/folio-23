@@ -3,8 +3,10 @@
 .page
   padding-top: variables.$page-content-x-offset
 
+  @media only screen and (max-width: variables.$breakpoint-mobile)
+    padding-top: variables.$page-content-x-offset-mobile
+
 .titleGrid
   position: fixed
   top: variables.$unit * 8
   left: 0
-

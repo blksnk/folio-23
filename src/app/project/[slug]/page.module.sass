@@ -3,6 +3,11 @@
 .page
   padding-top: variables.$page-content-x-offset
 
+  @media only screen and (max-width: variables.$breakpoint-mobile)
+    padding-top: variables.$page-content-x-offset-mobile
+
+
+
 .titleGrid
   position: fixed
   top: variables.$unit * 8
@@ -14,12 +19,16 @@
   top: 50%
   right: 50%
   transform: translate(50%,-50%) skew(0.001deg)
-  width: calc(100vw / 5 * 2)
-  height: calc(100vw / 5 * 2)
+  width: variables.$circle-size
+  height: variables.$circle-size
   aspect-ratio: 1 / 1
   object-fit: cover !important
   z-index: 2
   border-radius: 50%
   filter: saturate(0)
   mix-blend-mode: overlay
+
+  @media only screen and (max-width: variables.$breakpoint-mobile)
+    width: variables.$circle-size-mobile
+    height: variables.$circle-size-mobile
 

@@ -27,6 +27,10 @@ $thumbnail-scale : 1
   transform-origin: bottom center
   position: relative !important
 
+  @media only screen and (max-width: variables.$breakpoint-mobile)
+    max-width: calc(20vw - variables.$unit / 2)
+    max-height: calc(20vw - variables.$unit / 2)
+
   &:hover
     transform: scale(1.2) translateZ(0)
     mix-blend-mode: darken
