@@ -1,0 +1,25 @@
+@use "../../variables.module"
+
+.page
+  padding-top: variables.$page-content-x-offset
+
+.titleGrid
+  position: fixed
+  top: variables.$unit * 8
+  left: 0
+  z-index: 3
+
+.cover
+  position: fixed !important
+  top: 50%
+  right: 50%
+  transform: translate(50%,-50%) skew(0.001deg)
+  width: calc(100vw / 5 * 2)
+  height: calc(100vw / 5 * 2)
+  aspect-ratio: 1 / 1
+  object-fit: cover !important
+  z-index: 2
+  border-radius: 50%
+  filter: saturate(0)
+  mix-blend-mode: overlay
+

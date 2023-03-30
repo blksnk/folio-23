@@ -21,7 +21,7 @@ export const allProjects = `
 `
 
 
-export type ProjectThumbnailResponse = {
+export type ProjectThumbnailData = {
   slug: string;
   id: string;
   year: string;
@@ -36,5 +36,5 @@ export type ProjectThumbnailResponse = {
 }
 
 export type AllProjectsResponse = {
-  projects: ProjectThumbnailResponse[]
+  projects: ProjectThumbnailData[]
 }

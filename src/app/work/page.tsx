@@ -12,10 +12,10 @@ export default function Work() {
   const { title } = pageTextProps()
 
   return (
-  <PageLayout className={styles.page}>
-    <TitleGrid fixedDuration={title.fixedDuration} delay={title.delay} className={styles.titleGrid} title={baseTitleText}/>
-    <ProjectsListGrid/>
-  </PageLayout>
+    <PageLayout className={styles.page}>
+      <TitleGrid fixedDuration={title.fixedDuration} delay={title.delay} className={styles.titleGrid} title={baseTitleText}/>
+      <ProjectsListGrid/>
+    </PageLayout>
   )
 }
 

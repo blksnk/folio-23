@@ -25,11 +25,20 @@ export type QueryVariables = {
   [k: string]: string | number;
 } | null | undefined;
 
-export const queryClient = async <TData>(
+export const queryClient = async <TData, EType>(
   query: string,
-  queryVars?: QueryVariables
-): Promise<TData> =>
+  errorVar: EType,
+  queryVars?: QueryVariables,
+): Promise<TData | EType> =>
   client
   .query<TData>(query, queryVars ?? undefined)
   .toPromise()
-  .then((res) => res.data as unknown as TData)
+  .then((res) => {
+    console.log(res)
+    return res.data as unknown as TData
+  })
+  .catch((e) => {
+    console.log("FETCH ERROR")
+    console.log(e)
+    return errorVar
+  })

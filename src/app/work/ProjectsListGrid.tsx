@@ -5,7 +5,7 @@ import { queryClient } from "@/api/client";
 import {
   allProjects,
   AllProjectsResponse,
-  ProjectThumbnailResponse
+  ProjectThumbnailData
 } from "@/api/queries/allProjects";
 import AnimatedText from "@/components/AnimatedText/AnimatedText";
 import { pageTextProps } from "@/utils/animations";
@@ -14,28 +14,21 @@ import Image from "next/image";
 import Link from "next/link";
 
 const fetchProjects = async () => {
-  try {
-    const res = await queryClient<AllProjectsResponse>(allProjects, { height: 240 })
-    return res.projects
-  } catch(e) {
-    console.error(e)
-    return []
-  }
+  const res = await queryClient<AllProjectsResponse, { projects: never[]}>(allProjects, {projects: []}, { height: 240 })
+  return res.projects
 }
 
-const sortProjectsByDate = (a: ProjectThumbnailResponse, b: ProjectThumbnailResponse) =>
+const sortProjectsByDate = (a: ProjectThumbnailData, b: ProjectThumbnailData) =>
   new Date(a.year) < new Date(b.year) ? 1 : -1
 
-const projectTypeSortingOrder = Object.fromEntries(ProjectTypes.map((type, index) => ([ type, index + 1 ]))) as { [k: ProjectType]: number }
+const projectTypeSortingOrder = Object.fromEntries(ProjectTypes.map((type, index) => ([ type, index + 1 ])))
 
-const sortProjectsByType = (a: ProjectThumbnailResponse, b: ProjectThumbnailResponse): number => {
+const sortProjectsByType = (a: ProjectThumbnailData, b: ProjectThumbnailData): number => {
   return projectTypeSortingOrder[a.type] - projectTypeSortingOrder[b.type]
 }
 
-const groupProjectsByYear = (projects: ProjectThumbnailResponse[]) => {
-  const byYear: {
-    [k: string]: ProjectThumbnailResponse[]
-  } = projects.sort(sortProjectsByDate).reduce((acc, project, index) => {
+const groupProjectsByYear = (projects: ProjectThumbnailData[]) => {
+  const byYear = projects.sort(sortProjectsByDate).reduce((acc, project, index) => {
     const year = project.year.split('-')[0]
     if(acc[year]) {
       acc[year].push(project)
@@ -49,7 +42,7 @@ const groupProjectsByYear = (projects: ProjectThumbnailResponse[]) => {
       })
     }
     return acc
-  }, {})
+  }, {} as { [k: string] : ProjectThumbnailData[] })
   return Object
     .entries(byYear)
     .map(([year, projects]) => ({ year, projects }))
@@ -60,7 +53,7 @@ const formatNumber = (n: number): string => n < 10 ? "0" + n : String(n);
 
 const createHeaderLabel = (header: { count: number, label: string }) => ({ label: header.label, count: `(${formatNumber(header.count)})`})
 
-const groupProjectsByType = (projects: ProjectThumbnailResponse[]) => (
+const groupProjectsByType = (projects: ProjectThumbnailData[]) => (
   projects.reduce((acc, project) => {
     switch(project.type) {
       case "ux_ui":
@@ -79,22 +72,22 @@ const groupProjectsByType = (projects: ProjectThumbnailResponse[]) => (
     ux_ui: {
       label: "ux/ui",
       count: 0,
-      projects: [],
+      projects: [] as ProjectThumbnailData[],
     },
     print: {
       label: "print",
       count: 0,
-      projects: [],
+      projects: [] as ProjectThumbnailData[],
     },
     branding: {
-      label: "brand identity",
+      label: "branding",
       count: 0,
-      projects: [],
+      projects: [] as ProjectThumbnailData[],
     },
     other: {
       label: "other",
       count: 0,
-      projects: [],
+      projects: [] as ProjectThumbnailData[],
     }
   })
 )
@@ -110,15 +103,7 @@ const createHeaders = (projectsByType: ProjectsByType, totalCount: number) => {
   ].map(createHeaderLabel)
 }
 
-const projectTypeColumnMap: {
-  [k: typeof ProjectTypes[number]]: number
-} = {
-  ux_ui: 2,
-  print: 3,
-  branding: 4,
-  other: 5,
-}
-
+const projectTypeColumnMap = Object.fromEntries(ProjectTypes.map((type, index) => [type, Math.min(index + 2, 5)]));
 const getYearRowCount = (projectsCount: number) => Math.ceil(projectsCount / 5)
 
 const createProjectLink = (project: { slug: string }) => '/project/' + project.slug
