@@ -1,0 +1,55 @@
+@use "../../app/variables.module"
+
+.section
+  margin-bottom: variables.$unit * 6
+
+
+.title
+  @include variables.body-bold
+  color: variables.$white
+
+.sectionTitle
+  grid-row: 1 / -1
+
+.paragraphContainer
+  padding: 0 variables.$unit
+
+.paragraph, .paragraph span
+  text-align: left
+  word-break: normal
+
+.scroller
+  display: flex
+  align-items: center
+  justify-content: flex-start
+  padding: 0 5vw
+  gap: variables.$unit / 2
+  width: auto
+  overflow-x: scroll
+  margin-bottom: variables.$unit * 6
+
+  @media only screen and (max-width: variables.$breakpoint-mobile)
+    margin-bottom: variables.$unit * 4
+
+
+  img
+    position: relative !important
+    height: 20vw !important
+    aspect-ratio: auto
+    width: auto
+    border-radius: 4px
+
+@media only screen and (max-width: variables.$breakpoint-mobile)
+  .section
+    margin-bottom: variables.$unit * 4
+    align-items: start
+    padding: 0 10vw
+    grid-template-columns: 1fr 3fr
+    grid-row-gap: variables.$unit
+
+    & > *
+      justify-content: flex-start
+
+    .paragraphContainer
+      grid-column: 2 / span 1
+      padding: 0

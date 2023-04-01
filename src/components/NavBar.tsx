@@ -4,6 +4,7 @@ import styles from "./NavBar.module.sass"
 import Image from 'next/image'
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Lines from "@/components/Lines";
 
 
 type LinkProps = {
@@ -34,7 +35,7 @@ const NavBar = () => {
   const activePath = usePathname()
   const linkKlass = (link: LinkProps) => `${styles.linkContainer} ${activePath === link.to ? styles.linkActive : ""}`
   return (
-    <nav id={styles.nav}>
+    <nav className={styles.nav}>
       <Link href="/" className={styles.sideContainer}>
         <Image
           src="/genmetsuLogo.svg"
@@ -53,6 +54,7 @@ const NavBar = () => {
       })}
       <div className={styles.sideContainer}>
       </div>
+      <Lines animate lineX/>
     </nav>
   )
 }

@@ -9,6 +9,26 @@
 
 body
   background: variables.$black
+  overflow-x: hidden
+
+::-webkit-scrollbar
+  width: 6px
+  height: 6px
+  background: none
+
+  &:horizontal
+    display: none
 
 p, span
   @include variables.body
+
+
+::-webkit-scrollbar-track
+  background: none
+  display: none
+
+::-webkit-scrollbar-track-piece
+  background: none
+
+::-webkit-scrollbar-thumb
+  background-color: variables.$dark-grey

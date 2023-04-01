@@ -1,5 +1,5 @@
 import {
-  cacheExchange, ClientOptions,
+  ClientOptions,
   createClient,
   dedupExchange,
   fetchExchange,
@@ -14,10 +14,10 @@ export const clientConfig: ClientOptions = {
   fetchOptions: {
     headers: {
       authorization: `Bearer ${ token }`
-    }
+    },
+    cache: "no-cache"
   },
   requestPolicy: "network-only",
-  suspense: true,
   exchanges: [ dedupExchange, ssrExchange(), fetchExchange ],
 }
 
@@ -36,10 +36,10 @@ export const queryClient = async <TData, EType>(
   .query<TData>(query, queryVars ?? undefined)
   .toPromise()
   .then((res) => {
-    console.log(res)
+    if(res.error) throw new Error(res.error.message)
     return res.data as unknown as TData
   })
   .catch((e) => {
-    console.log(e)
+    console.error(e)
     return errorVar
   })

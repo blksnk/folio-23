@@ -2,10 +2,8 @@
 
 .page
   padding-top: variables.$page-content-x-offset
-
-  @media only screen and (max-width: variables.$breakpoint-mobile)
-    padding-top: variables.$page-content-x-offset-mobile
-
+  position: relative
+  z-index: 2
 
 
 .titleGrid
@@ -33,3 +31,88 @@
     width: variables.$circle-size-mobile
     height: variables.$circle-size-mobile
 
+.header
+  align-items: start
+
+  @media only screen and (max-width: variables.$breakpoint-mobile)
+    padding: 0 10vw
+    grid-template-columns: repeat(4, 1fr)
+    grid-row-gap: variables.$unit
+
+.description
+  grid-column-end: span 3
+
+
+  span
+    @include variables.body-bold
+    color: variables.$white
+    width: 100%
+
+  @media only screen and (max-width: variables.$breakpoint-mobile)
+    grid-column: 1  / span 4
+    grid-row: 1 / 1
+
+    span
+      word-break: normal
+
+.year
+  @media only screen and (max-width: variables.$breakpoint-mobile)
+    grid-row-start: 2
+    grid-column: 3 / span 2
+    justify-content: flex-end
+
+.client
+  @media only screen and (max-width: variables.$breakpoint-mobile)
+    grid-row: 2
+    grid-column: 1 / span 2
+    justify-content: flex-start
+
+.title
+  @include variables.body-bold
+  color: variables.$white
+
+.info
+  margin: variables.$unit * 6 0
+  align-items: start
+
+  @media only screen and (max-width: variables.$breakpoint-mobile)
+    margin: variables.$unit * 4 0
+    padding: 0 10vw
+    grid-template-columns: repeat(4, 1fr)
+    grid-row-gap: variables.$unit * 2
+
+    *
+      text-align: left
+      justify-content: start
+      align-items: start
+      word-break: normal !important
+
+.briefTitle, .brief
+  grid-row-end: span 2
+
+
+.brief span
+  text-align: left
+  word-break: normal
+
+.grid2
+  grid-template-columns: repeat(2, 1fr)
+  grid-column-end: span 2
+  grid-column-start: 3
+
+.type
+  grid-row-start: 2
+  align-self: end
+
+
+@media only screen and (max-width: variables.$breakpoint-mobile)
+  .briefTitle
+    grid-row: 1 / span 1
+
+  .brief
+    grid-column: 2 / span 3
+    grid-row: 1 / span 1
+
+  .grid2
+    grid-column: 1 / span 4
+    grid-template-columns: 1fr 3fr

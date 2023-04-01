@@ -1,6 +1,6 @@
 @use '../app/variables.module'
 
-#nav
+.nav
   position: fixed
   top: 0
   left: 0
@@ -10,10 +10,12 @@
   justify-content: space-between
   align-items: center
   z-index: 20
+  background: variables.$black
+
 
   .sideContainer
-    width: 10vw
     min-width: 10vw
+    width: 10vw
     @include variables.flex-center
     height: variables.$unit * 5
 
@@ -21,14 +23,13 @@
     @include variables.flex-center
     width: 20vw
     padding: 0 variables.$min-side-padding
-    height: calc(variables.$unit * 5 + 1px)
+    height: 100%
     position: relative
     border-width: 1px
     border-style: solid
     border-color: transparent
-    border-radius: 0rem
+    border-radius: 0
     transition: border-radius 300ms variables.$bezier 0s, border-color 200ms linear 0s
-
 
     &:after
       position: absolute
@@ -59,3 +60,10 @@
 
       &:after
         transform: translate(50%,-50%) scale(1)
+
+@media only screen and (max-width: variables.$breakpoint-tablet)
+  .nav
+    top: unset
+    bottom: 0
+    align-items: flex-end
+

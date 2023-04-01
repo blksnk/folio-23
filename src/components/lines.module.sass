@@ -59,9 +59,32 @@
   100%
     transform: scaleX(1)
 
-#lineTop
+.lineNav
   position: fixed
   top: variables.$unit * 5
   left: 0
   z-index: 20
 
+  @media only screen and (max-width: variables.$breakpoint-tablet)
+    display: none
+
+nav
+  .lineX
+    top: variables.$unit * 5
+    bottom: unset
+
+  .lineContainer
+    top: 0
+    height: variables.$unit * 5
+
+
+@media only screen and (max-width: variables.$breakpoint-tablet)
+  nav
+    .lineX
+      display: block
+      top: unset
+      bottom: variables.$unit * 5
+
+    .lineContainer
+      top: unset
+      bottom: 0

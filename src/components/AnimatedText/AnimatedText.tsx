@@ -10,6 +10,8 @@ interface TextProps {
   staggerDelay?: number;
 }
 
+// TODO: optimize long texts by moving refresh interval to text component
+
 export default function AnimatedText(props: TextProps) {
   const klass = `${styles.text} ${props.className ?? ''}`
   return (

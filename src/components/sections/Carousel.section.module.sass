@@ -1,0 +1,57 @@
+@use "../../app/variables.module"
+
+.section
+  margin-bottom: variables.$unit * 6
+
+.header
+  margin-bottom: variables.$unit
+
+.prev
+  grid-column-start: 4
+
+.next
+  grid-column-start: 5
+
+.title
+  @include variables.body-bold
+  color: variables.$white
+
+.scroller
+  display: flex
+  align-items: center
+  justify-content: flex-start
+  padding: 0 5vw
+  gap: variables.$unit / 2
+  width: auto
+  overflow-x: scroll
+  height: 20vw
+
+
+  img
+    position: relative !important
+    height: 20vw !important
+    aspect-ratio: auto
+    width: auto
+    border-radius: 4px
+
+.description
+  opacity: 0.7
+  margin-top: variables.$unit
+
+  span
+    font-style: italic
+
+@media only screen and (max-width: variables.$breakpoint-mobile)
+  .section
+    margin-bottom: variables.$unit * 4
+
+  .header > *:first-child
+    padding-left: 10vw
+    grid-column-end: span 2
+    justify-content: flex-start
+
+  .scroller
+    height: 60vw
+
+    img
+      height: 60vw !important

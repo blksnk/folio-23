@@ -1,25 +1,26 @@
-import { ProjectType } from "@/api/typings/project";
-import { sections } from "@/api/queries/sections";
+import { SectionList, sections } from "@/api/queries/sections";
 import { ProjectThumbnailData } from "@/api/queries/allProjects";
 
 export const oneProject = `
   query OneProject($slug: String!, $height: Int!) {
     project(where: {slug: $slug}) {
-    cover {
-      url(
-        transformation: {image: {resize: {fit: scale, height: $height}}, document: {output: {format: webp}}}
-      )
-      mimeType
+      cover {
+        url(
+          transformation: {image: {resize: {fit: scale, height: $height}}, document: {output: {format: webp}}}
+        )
+        mimeType
+      }
+      slug
+      title
+      displayTitle
+      tools
+      type
+      year
+      description
+      client
+      brief
+      ${sections}
     }
-    slug
-    title
-    displayTitle
-    tools
-    type
-    year
-    description
-    client
-  }
   }
 `
 
@@ -29,6 +30,8 @@ export interface ProjectData extends ProjectThumbnailData {
   tools: string[];
   description?: string;
   client: string;
+  brief: string;
+  sections: SectionList
 }
 
 export type ProjectDataResponse = {
