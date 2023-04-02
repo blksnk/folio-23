@@ -56,6 +56,7 @@ $bezier: cubic-bezier(0.38,0,0.21,0.98)
   color: $white
   text-align: center
   font-family: "__neueBit_9e67b5"
+  @include glow
 
 // Layout
 @mixin flex-center
@@ -69,6 +70,10 @@ $bezier: cubic-bezier(0.38,0,0.21,0.98)
   left: 0
   height: 100%
   width: 100%
+
+// Effects
+@mixin glow
+  text-shadow: 0 0 9px $white
 
 // JS Exports
 :export

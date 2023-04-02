@@ -1,11 +1,12 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   AnimatedCharacter,
   characters
 } from "@/components/AnimatedText/AnimatedCharacter";
 import styles from './AnimatedText.module.sass'
+import { observe } from "@/utils/intersectionObserver";
 
 interface TextProps {
   children: string;
@@ -14,6 +15,7 @@ interface TextProps {
   fixedDuration?: number;
   className?: string;
   staggerDelay?: number;
+  whenVisible?: boolean
 }
 
 export default function AnimatedText({
@@ -22,6 +24,7 @@ export default function AnimatedText({
   duration = 20,
   fixedDuration,
   className,
+  whenVisible,
 }: TextProps) {
   const klass = `${styles.text} ${className ?? ''}`
   const charKlass = `${styles.character} ${className ?? ''}`
@@ -29,6 +32,7 @@ export default function AnimatedText({
   const s = children.toUpperCase();
 
   const chars = s.split('')
+  const element = useRef<HTMLSpanElement | null>(null)
   const [ currentIndexes, setCurrentIndexes ] = useState(Array(s.length).fill(0))
   const [ delayElapsed, setDelayElapsed ] = useState(false);
 
@@ -40,14 +44,32 @@ export default function AnimatedText({
   }, [ s ])
 
   useEffect(() => {
-    if (delay && delay > 0 && !delayElapsed) {
-      setTimeout(() => {
+    const startTimeout = () => {
+      if (delay && delay > 0 && !delayElapsed) {
+        setTimeout(() => {
+          setDelayElapsed(true)
+        }, delay)
+      } else {
         setDelayElapsed(true)
-      }, delay)
-    } else {
-      setDelayElapsed(true)
+      }
     }
-  }, [ delay, delayElapsed ])
+
+    const startWhenVisible = (entries: IntersectionObserverEntry[]) => {
+      console.log(entries);
+      if(entries.every(entry => entry.isIntersecting)) {
+        startTimeout()
+      }
+    }
+
+    if(whenVisible) {
+      if(element.current !== null) {
+        observe(element.current as HTMLSpanElement, startWhenVisible)
+      }
+    } else {
+      startTimeout()
+    }
+
+  }, [ delay, delayElapsed, whenVisible, element ])
 
   useEffect(() => {
     if (!delayElapsed || s === "\n") return;
@@ -81,10 +103,10 @@ export default function AnimatedText({
   }, [ delayElapsed, duration, fixedDuration ])
 
   return (
-    <span className={klass}>
+    <span className={klass} ref={element}>
       {
-        displayChars.map((char, index) =>
-        <span className={ charKlass } key={"char" + index} >{ char }</span>
+         chars.map((_, index) =>
+        <span className={ charKlass } key={"char" + index} >{ displayChars[index] }</span>
       )}
     </span>
   )

@@ -10,6 +10,7 @@ export const oneProject = `
         )
         mimeType
       }
+      id
       slug
       title
       displayTitle

@@ -1,5 +1,8 @@
 import { isConsecutiveLoad } from "@/utils/isConsecutiveLoad";
 
+export const titleFixedDuration = 600;
+export const contentFixedDuration = 600;
+
 export const pageTextProps = () => {
     const consecutiveLoad = isConsecutiveLoad()
     const titleDelay = consecutiveLoad ? 0 : 2000
@@ -7,12 +10,13 @@ export const pageTextProps = () => {
     const infoDelay = titleDelay + 1200
   return {
     title: {
-      fixedDuration: 900,
+      fixedDuration: titleFixedDuration,
       delay: titleDelay,
     },
     content: {
-      fixedDuration: 600,
+      fixedDuration: contentFixedDuration,
       delay: infoDelay
     }
   }
 }
+

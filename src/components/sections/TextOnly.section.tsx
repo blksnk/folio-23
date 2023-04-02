@@ -6,6 +6,7 @@ import styles from "./TextOnly.section.module.sass"
 
 interface TextOnlyProps {
   section: TextOnlySection
+  delay: number;
 }
 
 const splitTextByParagraph = (text: string) => text.split('\n\n')
@@ -18,13 +19,13 @@ export default function TextOnly ({ section }: TextOnlyProps) {
     <>
       <GridLayout className={styles.section}>
         <GridItemCenter className={styles.sectionTitle}>
-          <AnimatedText fixedDuration={content.fixedDuration} delay={content.delay} className={styles.title}>{ section.title }</AnimatedText>
+          <AnimatedText whenVisible fixedDuration={content.fixedDuration} className={styles.title}>{ section.title }</AnimatedText>
         </GridItemCenter>
         {paragraphs.map((p, index) => {
-          const delay = content.delay * (index * 0.5 + 1)
+          const d = content.delay * index * 0.5
           return  (
             <GridItemCenter className={styles.paragraphContainer} key={'paragraph' + index}>
-              <AnimatedText fixedDuration={content.fixedDuration} delay={delay} className={styles.paragraph}>{ p }</AnimatedText>
+              <AnimatedText whenVisible fixedDuration={content.fixedDuration} delay={d} className={styles.paragraph}>{ p }</AnimatedText>
             </GridItemCenter>
           )
         })}
