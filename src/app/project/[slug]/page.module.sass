@@ -5,6 +5,8 @@
   position: relative
   z-index: 2
 
+  @media only screen and (max-width: variables.$breakpoint-tablet)
+    padding-top: variables.$page-content-x-offset-mobile
 
 .titleGrid
   position: fixed
@@ -27,7 +29,7 @@
   mix-blend-mode: soft-light
   pointer-events: none
 
-  @media only screen and (max-width: variables.$breakpoint-mobile)
+  @media only screen and (max-width: variables.$breakpoint-tablet)
     width: variables.$circle-size-mobile
     height: variables.$circle-size-mobile
 

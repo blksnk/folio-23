@@ -1,6 +1,8 @@
 
 import PageLayout from "@/layouts/PageLayout";
-import AnimatedText from "@/components/AnimatedText/AnimatedText";
+import AnimatedText, {
+  AnimatedTextStaggered
+} from "@/components/AnimatedText/AnimatedText";
 import styles from "../../loading.module.sass"
 
 let count = 0;
@@ -19,7 +21,7 @@ export default function Loading () {
 
   return (
     <PageLayout className={styles.page}>
-    <AnimatedText fixedDuration={500} staggerDelay={30}>loading project data...</AnimatedText>
+    <AnimatedTextStaggered fixedDuration={500} staggerDelay={30}>loading project data...</AnimatedTextStaggered>
       <AnimatedText fixedDuration={300} className={styles.percentage}>{`${percentage}%`}</AnimatedText>
 
   </PageLayout>

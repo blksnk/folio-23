@@ -1,5 +1,7 @@
 import PageLayout from "@/layouts/PageLayout";
-import AnimatedText from "@/components/AnimatedText/AnimatedText";
+import AnimatedText, {
+  AnimatedTextStaggered
+} from "@/components/AnimatedText/AnimatedText";
 import TitleGrid from "@/components/TitleGrid";
 import { queryClient } from "@/api/client";
 import { oneProject, ProjectDataResponse } from "@/api/queries/oneProject";
@@ -44,7 +46,7 @@ export default async function Project({ params }: { params: { slug: string } }) 
           </GridItemCenter>
 
           <GridItemCenter className={styles.description}>
-            <AnimatedText fixedDuration={content.fixedDuration} delay={content.delay} staggerDelay={30}>{projectDescription}</AnimatedText>
+            <AnimatedTextStaggered fixedDuration={content.fixedDuration} delay={content.delay} staggerDelay={30}>{projectDescription}</AnimatedTextStaggered>
           </GridItemCenter>
 
           <GridItemCenter className={styles.year}>

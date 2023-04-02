@@ -24,10 +24,14 @@ const randomFloat = (min: number, max: number): number => {
 }
 
 const randomPosition = (containerSize: number): Vec2 => {
-  ({
-    x: containerSize / 2 + mapRange(randomCoord(containerSize), 0, containerSize, -containerSize / 2, containerSize / 2),
-    y: containerSize / 2 + mapRange(randomCoord(containerSize), 0, containerSize, -containerSize / 2, containerSize / 2),
-  })
+  const x = randomCoord(containerSize)
+  const y = randomCoord(containerSize)
+  const args = [ 0 , containerSize, -containerSize, containerSize / 2 ]
+  const pos = {
+    x: mapRange(x, ...args),
+    y: mapRange(y, ...args),
+  }
+  return pos
 }
 
 const randomSize = (maxSize = 100, minSize = 10,): number => {
@@ -47,13 +51,17 @@ interface BlobProps {
   offsetAmount: number,
 }
 
-const randomBlobProps = (containerSize: number, maxBlobSize?: number, minBlobSize?: number): Omit<BlobProps, 'offset' | 'offsetAmount'> => ({
-  ...randomPosition(containerSize),
-  color: randomColor(),
-  height: randomSize(maxBlobSize, minBlobSize),
-  width: randomSize(maxBlobSize, minBlobSize),
-  angle: parseFloat(randomFloat(0, 180).toFixed(2)),
-})
+
+const randomBlobProps = (containerSize: number, maxBlobSize?: number, minBlobSize?: number): Omit<BlobProps, 'offset' | 'offsetAmount'> => {
+
+  return ({
+    ...randomPosition(containerSize),
+    color: randomColor(),
+    height: randomSize(maxBlobSize, minBlobSize),
+    width: randomSize(maxBlobSize, minBlobSize),
+    angle: parseFloat(randomFloat(0, 180).toFixed(2)),
+  })
+}
 
 const createRandomBlobs = (
   count: number,
@@ -82,17 +90,16 @@ interface BlobsProps {
   maxBlobSize?: number;
   minBlobSize?: number;
   offsetAmount?: number;
-  showText?: boolean;
 }
 
 
-export const Blobs = ({ count = 10, maxBlobSize, minBlobSize, offsetAmount = 10, showText }: BlobsProps): JSX.Element => {
+export const Blobs = ({ count = 10, maxBlobSize, minBlobSize, offsetAmount = 10 }: BlobsProps): JSX.Element => {
 
   const computeSize = useCallback((): number => {
     const sidePaddingPx = parseFloat(variables.linesPadding) * 16
     if(typeof window === "undefined") return 400
     // make it take a larger screen portion if mobile
-    const fifths = window.innerWidth > Number(parseInt(variables.breakpointMobile)) ? 2 : 4
+    const fifths = window.innerWidth > Number(parseInt(variables.breakpointTablet)) ? 2 : 4
     return Math.min(window.innerHeight - sidePaddingPx, window.innerWidth / 5 * fifths);
   }, [])
 
@@ -102,15 +109,15 @@ export const Blobs = ({ count = 10, maxBlobSize, minBlobSize, offsetAmount = 10,
     setCircleSize(computeSize())
   }
 
-  minBlobSize = minBlobSize ?? circleSize * 0.2;
-  maxBlobSize = maxBlobSize ?? circleSize * 1.2;
+  minBlobSize = minBlobSize ?? circleSize * 0.5;
+  maxBlobSize = maxBlobSize ?? circleSize * 1.5;
 
-  const [blobs, refreshBlobs] = useReducer(() => createRandomBlobs(count, circleSize, maxBlobSize, minBlobSize), createInitBlobProps(count))
+  const [blobs, refreshBlobs] = useReducer(() => createRandomBlobs(count ?? 10, circleSize, maxBlobSize, minBlobSize), count, createInitBlobProps)
   const [mousePos, setMousePos] = useState({x: 0, y: 0});
   const [transition, setTransition] = useState(true);
   const [intervalId, setIntervalId] = useState(0);
 
-  const polarities = useMemo(() => Array(count).fill({}).map(_ => ({
+  const polarities = useMemo(() => Array(count).fill(0).map(_ => ({
     x: randomFloat(-1, 1),
     y: randomFloat(-1, 1),
   })), [ count ]);
@@ -166,7 +173,7 @@ export const Blobs = ({ count = 10, maxBlobSize, minBlobSize, offsetAmount = 10,
 
   return (
     <div className={styles.blobCircle} onClick={updateBlobsWithTransition} style={containerStyle}>
-      {blobsWithOffset.map((blob, index) => <Blob transition={transition} offsetAmount={offsetAmount} {...blob} key={index}/>)}
+      {blobsWithOffset.map((blob, index) => <Blob transition={transition} offsetAmount={offsetAmount ?? 0} {...blob} key={index}/>)}
     </div>
   )
 }

@@ -1,17 +1,16 @@
 import PageLayout from "@/layouts/PageLayout";
 import GridLayout, { GridItemCenter } from "@/layouts/GridLayout";
 import { AnimatedCharacter } from "@/components/AnimatedText/AnimatedCharacter";
-import AnimatedText from "@/components/AnimatedText/AnimatedText";
+import AnimatedText, {
+  AnimatedTextStaggered
+} from "@/components/AnimatedText/AnimatedText";
 import { titleCharKlass } from "@/app/fonts";
 import styles from './page.module.sass'
-import { headers } from "next/headers";
-import { isConsecutiveLoad } from "@/utils/isConsecutiveLoad";
 import { pageTextProps } from "@/utils/animations";
 
 const description = 'Jean-nicolas veigel is a french multi-disciplinary designer.\nHe creates for and with individuals, artists, start-ups\n& well established companies around the world.'
 
 export default function Home() {
-  const consecutiveLoad = isConsecutiveLoad()
 
   const titleKlass = titleCharKlass()
   const titleSmall = titleCharKlass(true)
@@ -67,7 +66,7 @@ export default function Home() {
           <AnimatedText fixedDuration={content.fixedDuration} delay={content.delay}>2018-present</AnimatedText>
         </GridItemCenter>
       <GridItemCenter className={styles.description}>
-        <AnimatedText fixedDuration={content.fixedDuration} delay={content.delay} staggerDelay={30}>{description}</AnimatedText>
+        <AnimatedTextStaggered fixedDuration={content.fixedDuration} delay={content.delay} staggerDelay={30}>{description}</AnimatedTextStaggered>
       </GridItemCenter>
         <GridItemCenter>
           <AnimatedText fixedDuration={content.fixedDuration} delay={content.delay}>available mid-2023</AnimatedText>

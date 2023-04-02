@@ -1,4 +1,10 @@
-import { AnimatedCharacter } from "@/components/AnimatedText/AnimatedCharacter";
+"use client"
+
+import { useEffect, useMemo, useState } from "react";
+import {
+  AnimatedCharacter,
+  characters
+} from "@/components/AnimatedText/AnimatedCharacter";
 import styles from './AnimatedText.module.sass'
 
 interface TextProps {
@@ -10,10 +16,83 @@ interface TextProps {
   staggerDelay?: number;
 }
 
-// TODO: optimize long texts by moving refresh interval to text component
+export default function AnimatedText({
+  children,
+  delay,
+  duration = 20,
+  fixedDuration,
+  className,
+}: TextProps) {
+  const klass = `${styles.text} ${className ?? ''}`
+  const charKlass = `${styles.character} ${className ?? ''}`
 
-export default function AnimatedText(props: TextProps) {
+  const s = children.toUpperCase();
+
+  const chars = s.split('')
+  const [ currentIndexes, setCurrentIndexes ] = useState(Array(s.length).fill(0))
+  const [ delayElapsed, setDelayElapsed ] = useState(false);
+
+  const targetIndexes = useMemo(() => chars.map(c => characters.indexOf(c)), [ chars ])
+  const displayChars = useMemo(() => currentIndexes.map(i => chars[i] === "\n" ? "\n" : characters[i]), [ currentIndexes, chars ])
+
+  useEffect(() => {
+    setDelayElapsed(false)
+  }, [ s ])
+
+  useEffect(() => {
+    if (delay && delay > 0 && !delayElapsed) {
+      setTimeout(() => {
+        setDelayElapsed(true)
+      }, delay)
+    } else {
+      setDelayElapsed(true)
+    }
+  }, [ delay, delayElapsed ])
+
+  useEffect(() => {
+    if (!delayElapsed || s === "\n") return;
+
+    const diffsAndOffsetPolarities = currentIndexes.map((currentIndex, i) => {
+      const targetIndex = targetIndexes[i]
+      const offsetPolarity = targetIndex >= currentIndex ? 1 : -1
+      return [Math.abs(targetIndexes[i] - currentIndex), offsetPolarity]
+    })
+    const maxDiff = diffsAndOffsetPolarities.reduce((acc, [ diff ]) => Math.max(acc, diff), 0)
+    let count = 1;
+
+    const intervalDuration = fixedDuration ? Math.round(fixedDuration / maxDiff) : duration;
+    // break early if all indexes match
+    if (currentIndexes.every((currentIndex, index) => currentIndex === targetIndexes[index])) return;
+    let intervalId = setInterval(() => {
+
+      if (count > maxDiff) {
+        clearInterval(intervalId)
+      } else {
+        const newIndexes = currentIndexes.map((currentIndex, index) =>{
+          const targetIndex = targetIndexes[index]
+          const [diff, offsetPolarity] = diffsAndOffsetPolarities[index]
+          return count > diff ? targetIndex : (currentIndex + count * offsetPolarity)
+        })
+        setCurrentIndexes(newIndexes)
+        count++
+      }
+    }, intervalDuration)
+    return () => clearInterval(intervalId)
+  }, [ delayElapsed, duration, fixedDuration ])
+
+  return (
+    <span className={klass}>
+      {
+        displayChars.map((char, index) =>
+        <span className={ charKlass } key={"char" + index} >{ char }</span>
+      )}
+    </span>
+  )
+}
+
+export function AnimatedTextStaggered(props: TextProps) {
   const klass = `${styles.text} ${props.className ?? ''}`
+
   return (
     <span className={klass}>
       {
