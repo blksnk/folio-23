@@ -25,9 +25,9 @@ export default function RootLayout({
         <Providers>
           <CenterTextVector/>
           <Lines animate/>
-          <Blobs count={8} offsetAmount={80} showText/>
-          <NavBar/>
+          <Blobs count={8} offsetAmount={80}/>
           {children}
+          <NavBar/>
         </Providers>
       </body>
     </html>

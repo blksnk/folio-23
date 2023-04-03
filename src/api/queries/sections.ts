@@ -18,7 +18,7 @@ export type CenterImageSection = {
   id: string;
   title: string;
   alignment?: "left" | "right" | "center";
-  size: "big" | "huge";
+  size: "small" | "big" | "huge";
   media: {
     url: string;
     mimeType: string;

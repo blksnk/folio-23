@@ -135,7 +135,7 @@ export default async function ProjectsListGrid() {
             {projectsOfTheYear.map((project, index) => (
               <GridItemCenter style={{ gridColumn: projectTypeColumnMap[project.type], animationDelay: content.delay + 1200 + 600 * yearIndex + 'ms', animationDuration: 900 + 300 * index + 'ms'}} className={styles.thumbnailContainer} key={project.id}>
                 <Link href={createProjectLink(project)}>
-                  <Image height={120} width={120} className={styles.thumbnail} src={project.cover.url} alt={project.slug}/>
+                  <Image fill sizes="(max-width: 600px) 20vw, 15vw" className={styles.thumbnail} src={project.cover.url} alt={project.slug}/>
                 </Link>
               </GridItemCenter>
               ))}

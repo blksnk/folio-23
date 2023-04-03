@@ -29,6 +29,9 @@
     position: relative !important
     border-radius: 4px
 
+    &.small
+      width: 30vw !important
+
     &.big
       width: 50vw !important
 
@@ -36,6 +39,9 @@
       width: 70vw !important
 
     @media only screen and (max-width: variables.$breakpoint-tablet)
+      &.small
+        width: 40vw !important
+
       &.big
         width: 60vw !important
 
