@@ -100,6 +100,7 @@ export const Blobs = ({ count = 10, maxBlobSize, minBlobSize, offsetAmount = 10 
     const sidePaddingPx = parseFloat(variables.linesPadding) * 16
     if(typeof window === "undefined") return 400
     // make it take a larger screen portion if mobile
+    console.log(isTablet())
     const fifths = isTablet() ? 4 : 2
     return Math.min(window.innerHeight - sidePaddingPx, window.innerWidth / 5 * fifths);
   }, [])

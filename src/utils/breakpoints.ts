@@ -10,5 +10,9 @@ export default {
   mobile,
 }
 
-export const isMobile = () => window.innerWidth <= mobile;
-export const isTablet = () => window.innerWidth <= tablet;
+const isServer = typeof window === "undefined"
+
+const w = isServer ? { innerWidth: 1200 } : window;
+
+export const isMobile = () => w.innerWidth <= mobile;
+export const isTablet = () => w.innerWidth <= tablet;

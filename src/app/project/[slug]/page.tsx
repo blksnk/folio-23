@@ -128,10 +128,12 @@ async function NextButton ({ currentId }: { currentId: string }) {
   const href = `/project/${projectData.slug}`
   
   return (
-    <Link href={href}>
-      <AnimatedText whenVisible fixedDuration={contentFixedDuration} >next project</AnimatedText>
-      <AnimatedText whenVisible fixedDuration={contentFixedDuration} >{projectData.title}</AnimatedText>
-      <AnimatedText whenVisible fixedDuration={contentFixedDuration} >{projectData.type}</AnimatedText>
-    </Link>
+    <div className={styles.nextProjectContainer}>
+      <Link href={href} className={styles.nextProjectButton}>
+        <AnimatedText whenVisible fixedDuration={contentFixedDuration} >next project</AnimatedText>
+        <AnimatedText className={styles.nextProjectTitle} whenVisible fixedDuration={contentFixedDuration} >{projectData.title}</AnimatedText>
+        <AnimatedText whenVisible fixedDuration={contentFixedDuration} >{projectData.type}</AnimatedText>
+      </Link>
+    </div>
   )
 }
