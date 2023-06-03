@@ -5,29 +5,29 @@ import { queryClient } from "@/api/client";
 import {
   allProjects,
   AllProjectsResponse,
-  ProjectThumbnailData
+  ProjectListItemData
 } from "@/api/queries/allProjects";
 import AnimatedText from "@/components/AnimatedText/AnimatedText";
 import { pageTextProps } from "@/utils/animations";
-import { ProjectType, ProjectTypes } from "@/api/typings/project";
+import { ProjectTypes } from "@/api/typings/project";
 import Image from "next/image";
 import Link from "next/link";
 
-const fetchProjects = async () => {
-  const res = await queryClient<AllProjectsResponse, { projects: never[]}>(allProjects, {projects: []}, { height: 240 })
+export const fetchProjects = async () => {
+  const res = await queryClient<AllProjectsResponse, { projects: never[]} >(allProjects, {projects: []}, { height: 240 })
   return res.projects
 }
 
-const sortProjectsByDate = (a: ProjectThumbnailData, b: ProjectThumbnailData) =>
+const sortProjectsByDate = (a: ProjectListItemData, b: ProjectListItemData) =>
   new Date(a.year) < new Date(b.year) ? 1 : -1
 
 const projectTypeSortingOrder = Object.fromEntries(ProjectTypes.map((type, index) => ([ type, index + 1 ])))
 
-const sortProjectsByType = (a: ProjectThumbnailData, b: ProjectThumbnailData): number => {
+const sortProjectsByType = (a: ProjectListItemData, b: ProjectListItemData): number => {
   return projectTypeSortingOrder[a.type] - projectTypeSortingOrder[b.type]
 }
 
-const groupProjectsByYear = (projects: ProjectThumbnailData[]) => {
+const groupProjectsByYear = (projects: ProjectListItemData[]) => {
   const byYear = projects.sort(sortProjectsByDate).reduce((acc, project, index) => {
     const year = project.year.split('-')[0]
     if(acc[year]) {
@@ -42,18 +42,18 @@ const groupProjectsByYear = (projects: ProjectThumbnailData[]) => {
       })
     }
     return acc
-  }, {} as { [k: string] : ProjectThumbnailData[] })
+  }, {} as { [k: string] : ProjectListItemData[] })
   return Object
     .entries(byYear)
     .map(([year, projects]) => ({ year, projects }))
     .sort((a, b) => a.year < b.year ? 1 : -1 )
 }
 
-const formatNumber = (n: number): string => n < 10 ? "0" + n : String(n);
+export const formatNumber = (n: number): string => n < 10 ? "0" + n : String(n);
 
 const createHeaderLabel = (header: { count: number, label: string }) => ({ label: header.label, count: `(${formatNumber(header.count)})`})
 
-const groupProjectsByType = (projects: ProjectThumbnailData[]) => (
+const groupProjectsByType = (projects: ProjectListItemData[]) => (
   projects.reduce((acc, project) => {
     switch(project.type) {
       case "ux_ui":
@@ -72,22 +72,22 @@ const groupProjectsByType = (projects: ProjectThumbnailData[]) => (
     ux_ui: {
       label: "ux/ui",
       count: 0,
-      projects: [] as ProjectThumbnailData[],
+      projects: [] as ProjectListItemData[],
     },
     print: {
       label: "print",
       count: 0,
-      projects: [] as ProjectThumbnailData[],
+      projects: [] as ProjectListItemData[],
     },
     branding: {
       label: "branding",
       count: 0,
-      projects: [] as ProjectThumbnailData[],
+      projects: [] as ProjectListItemData[],
     },
     other: {
       label: "other",
       count: 0,
-      projects: [] as ProjectThumbnailData[],
+      projects: [] as ProjectListItemData[],
     }
   })
 )

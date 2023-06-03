@@ -72,12 +72,29 @@ const neueMontreal = localFont({
   display: 'swap'
 })
 
+const otBrut = localFont({
+  src: [
+    {
+      path: '../fonts/OTBrut-Regular.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../fonts/OTBrut-Italic.woff2',
+      weight: '400',
+      style: 'italic',
+    },
+  ],
+  display: 'swap'
+})
+
 const fontRepo = {
   body: fraktionMono,
   title: {
     bitmap: neueBit,
     sans: neueMontreal,
-  }
+  },
+  button: otBrut,
 }
 
 export default fontRepo

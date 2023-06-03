@@ -1,0 +1,19 @@
+@use "../../app/variables.module"
+
+.lineGroup
+  height: 100%
+  width: 100%
+
+  .line
+    background: variables.$white
+    opacity: 0.5
+
+  &.vertical .line
+    height: 100%
+    width: 1px
+    display: inline-block
+
+  &.horizontal .line
+    height: 1px
+    width: 100%
+    display: block

@@ -22,13 +22,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={fontRepo.body.className} style={{backgroundColor: "#000"}}>
       <body>
-        <Providers>
-          <CenterTextVector/>
-          <Lines animate/>
-          <Blobs count={8} offsetAmount={80}/>
-          {children}
-          <NavBar/>
-        </Providers>
+        <div id="backgroundRoot"></div>
+        {/*<CenterTextVector/>*/}
+        {/*<Lines animate/>*/}
+        {/*<Blobs count={8} offsetAmount={80}/>*/}
+        {children}
+        {/*<NavBar/>*/}
       </body>
     </html>
   )

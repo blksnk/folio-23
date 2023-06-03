@@ -4,9 +4,14 @@ export const allProjects = `
   query AllProjects($height: Int!) {
     projects {
       id
+      title
+      client
       type
       year
       slug
+      backgroundColor {
+        hex
+      }
       cover {
         id
         url(
@@ -21,11 +26,16 @@ export const allProjects = `
 `
 
 
-export type ProjectThumbnailData = {
+export type ProjectListItemData = {
   slug: string;
   id: string;
   year: string;
+  title: string;
+  client: string;
   type: ProjectType;
+  backgroundColor: {
+    hex: string;
+  };
   cover: {
     id: string;
     url: string;
@@ -36,5 +46,5 @@ export type ProjectThumbnailData = {
 }
 
 export type AllProjectsResponse = {
-  projects: ProjectThumbnailData[]
+  projects: ProjectListItemData[]
 }

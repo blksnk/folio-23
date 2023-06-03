@@ -1,0 +1,345 @@
+@use "../variables.module"
+
+$w50: rgba(255, 255, 255, 0.5)
+
+.line
+  user-select: none
+  pointer-events: none
+
+.arrow
+  padding: variables.$unit * 2 variables.$unit
+  transform: rotate(180deg)
+
+  &.arrowDown
+    transform: rotate(0deg)
+
+  &.arrowDisabled
+    opacity: 0.5
+
+.main
+  position: fixed
+  top: variables.$unit * 3
+  bottom: variables.$unit * 3
+  left: 2.75rem
+  right: 2.75rem
+  display: grid
+  grid-template-rows: repeat(12, 1fr)
+  grid-template-columns: repeat(12, 1fr)
+
+  @media (max-width: variables.$breakpoint-mobile)
+    top: variables.$unit
+    bottom: variables.$unit
+    left: variables.$unit * 0.75
+    right: variables.$unit * 0.75
+
+
+  .logo
+    grid-column: 1 / 1
+    grid-row: 1 / 1
+
+  .dateAndWeather
+    grid-row: 2 / span 2
+    grid-column: 10 / span 2
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+
+  .visual
+    grid-row: 4 / span 3
+    grid-column: 10 / span 2
+
+  .explore
+    grid-row: 7 / span 3
+    grid-column: 10 / span 2
+
+  .list
+    grid-row: 7 / span 3
+    grid-column: 1 / 9
+
+  .profile
+    grid-row: 11 / -1
+    grid-column: 2 / span 3
+
+  .linesCenter
+    grid-row: 1 / -1
+    grid-column: 9 / span 1
+    overflow: hidden
+    border-right: 1px solid $w50
+
+  .linesRight
+    grid-row: 1 / -1
+    grid-column: 12 / span 1
+    overflow: hidden
+    border-right: 1px solid $w50
+
+  .lineLeft
+    grid-row: 1 / -1
+    grid-column: 1 / span 1
+    border-left: 1px solid $w50
+
+  .lineThird
+    grid-row: 1 / -1
+    grid-column: 5 / span 1
+    border-left: 1px solid $w50
+
+  .linesTop
+    grid-row: 6 / span 1
+    grid-column: 9 / -1
+    align-self: end
+    margin-bottom: variables.$unit
+    border-bottom: 1px solid $w50
+
+  .lineTop
+    grid-column: 1 / -1
+    grid-row: 1 / span 1
+    border-bottom: 1px solid $w50
+
+  .lineBottom
+    grid-column: 1 / -1
+    grid-row: 10 / 11
+    border-bottom: 1px solid $w50
+
+  .lineAcross
+    grid-column: 1 / -1
+    grid-row: 6 / 7
+    border-bottom: 1px solid $w50
+
+  .linesBottomLeft
+    grid-column: 1 / 5
+    grid-row: 10 / 11
+    overflow: hidden
+
+  .lineTopCenter
+    grid-row: 3 / 4
+    grid-column: 5 / -1
+    border-bottom: 1px solid $w50
+
+  .lineBottomRight
+    grid-column: 9 / -1
+    grid-row: 10 / -1
+    border-top: 1px solid $w50
+
+  .linesCenterLeft
+    grid-column: 1 / 5
+    grid-row: 6 / 7
+    align-self: end
+    margin-bottom: variables.$unit / 2
+
+.pageLeft
+  display: grid
+  grid-template-rows: 1fr
+  grid-template-columns: repeat(2, 1fr)
+  grid-row: 1 / -1
+  grid-column: 1 / 9
+
+  .indices, .titles
+    display: flex
+    gap: variables.$unit
+    flex-direction: column
+    padding: variables.$unit 0
+    grid-row: 7 / span 3
+
+  .leftSplit
+    display: grid
+    grid-template-rows: repeat(12, 1fr)
+    grid-template-columns: auto 1fr
+    grid-column: 1 / span 1
+    grid-row: 1 / span 1
+    grid-column-gap: variables.$unit / 2
+
+    .profile
+      grid-column: 2 / span 1
+      grid-row: 11 / span 2
+      padding: variables.$unit 0
+      display: grid
+      grid-template-rows: auto 1fr auto
+      grid-template-columns: 1fr
+      gap: variables.$unit
+
+      .name
+        font-style: italic
+        font-weight: 600
+
+    .logoContainer
+      @include variables.flex-center
+      grid-row: 1 / 1
+      grid-column: 1 / 1
+      border-top: 1px solid $w50
+      margin-right: -7px // needed to bring top border over to second vertical line
+      padding-right: 7px // keep logo centered in its container
+
+    .colorContainer
+      grid-column: 1 / 2
+      grid-row: 11 / -1
+      display: flex
+      align-items: flex-start
+      justify-content: flex-end
+      padding: variables.$unit variables.$unit / 2
+
+      .color
+        transform: rotate(180deg)
+        opacity: 0.5
+        writing-mode: vertical-lr
+        padding: 0
+        user-select: none
+        pointer-events: none
+
+    .indices
+      grid-column: 1 / span 1
+      padding-left: variables.$unit / 2
+      padding-right: variables.$unit
+
+    .titles
+      grid-column: 2 / span 1
+      padding: variables.$unit
+
+    .lineLeft, .lineRight
+      grid-row: 1 / -1
+      border: none
+
+    .lineLeft
+      border-right: 1px solid $w50
+      grid-column: 1 / 2
+
+    .lineRight
+      border-left: 1px solid $w50
+      grid-column: 2 / 3
+
+  .rightSplit
+    display: grid
+    grid-template-columns: 1fr auto
+    grid-template-rows: repeat(12, 1fr)
+    grid-column: 2 / span 1
+    grid-row: 1 / span 1
+
+    .arrowsContainer
+      grid-column: 2 / span 1
+      grid-row: 7 / span 3
+      display: grid
+      grid-template-columns: 1fr
+      grid-template-rows: repeat(2, 1fr)
+      align-items: center
+      border-bottom: 1px solid $w50
+      margin-bottom: -1px
+      padding-bottom: 1px
+
+      .arrowButton
+        padding: variables.$unit variables.$unit / 2
+        background: rgba(255, 255, 255, 0)
+        border: none
+        display: inline-flex
+        justify-content: center
+        align-items: flex-end
+        height: 100%
+        pointer-events: all
+        cursor: pointer
+        transition: background 400ms variables.$bezier 0s
+
+        &:first-child
+          align-items: flex-start
+
+        &:hover
+          background: rgba(255, 255, 255, 0.2)
+          transition: background 200ms variables.$bezier 0s
+
+
+    .activeIdContainer
+      grid-column: 2 / -1
+      grid-row: 4 / 7
+      display: flex
+      align-items: center
+      justify-content: center
+
+      .activeId
+        transform: rotate(180deg)
+        opacity: 0.5
+        writing-mode: vertical-lr
+        padding: 0
+        user-select: none
+        pointer-events: none
+
+    .info
+      grid-column: 1 / span 1
+      grid-row: 7 / span 3
+      display: grid
+      grid-template-columns: auto 1fr auto
+      grid-template-rows: 1fr
+
+      .type, .client, .year
+        grid-row: 1 / 1
+        display: flex
+        gap: variables.$unit
+        flex-direction: column
+        padding: variables.$unit
+        border-right: 1px solid $w50
+        margin: -1px 0 // needed to make lines intersect
+
+      .type
+        grid-column: 1 / 2
+
+      .client
+        grid-column: 2 / 3
+
+      .year
+        grid-column: 3 / 4
+        padding-right: variables.$unit / 2
+
+  .linesBottomCenter
+    grid-column: 1 / 2
+    grid-row: 10 / 11
+    max-height: calc((100vh - (12px * 6)) / 12)
+    overflow-y: hidden
+    display: flex
+    border-right: 1px solid $w50
+
+    div
+      width: calc(100% + 2px)
+
+  .linesCenterRight
+    grid-column: 1 / 2
+    grid-row: 6/ 7
+    align-self: end
+    margin-bottom: variables.$unit / 2
+
+
+  .lineVerticalTop
+    grid-column: 1 / 2
+    grid-row: 1 / 7
+    border-right: 1px solid $w50
+
+  .lineVerticalBottom
+    grid-column: 1 / 2
+    grid-row: 11 / -1
+    border-right: 1px solid $w50
+
+.background, .backgroundImageContainer
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  transition: background-color 1200ms variables.$bezier 200ms
+
+
+
+.backgroundImageContainer
+  mix-blend-mode: color-burn
+
+  .backgroundImage, .oldBackgroundImage
+    height: 100%
+    width: 100%
+    object-fit: cover
+    transition: opacity 400ms variables.$bezier 0s
+    position: absolute
+    top: 0
+    left: 0
+
+  .oldBackgroundImage
+    opacity: 1
+
+  .backgroundImage
+    opacity: 0
+
+  &.backgroundTransition
+    .backgroundImage
+      opacity: 1

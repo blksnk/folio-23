@@ -1,5 +1,5 @@
 import { SectionList, sections } from "@/api/queries/sections";
-import { ProjectThumbnailData } from "@/api/queries/allProjects";
+import { ProjectListItemData } from "@/api/queries/allProjects";
 
 export const oneProject = `
   query OneProject($slug: String!, $height: Int!) {
@@ -25,7 +25,7 @@ export const oneProject = `
   }
 `
 
-export interface ProjectData extends ProjectThumbnailData {
+export interface ProjectData extends ProjectListItemData {
   title: string;
   displayTitle: string;
   tools: string[];

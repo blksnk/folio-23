@@ -8,7 +8,7 @@ import {
 import styles from './AnimatedText.module.sass'
 import { observe } from "@/utils/intersectionObserver";
 
-interface TextProps {
+export interface AnimatedTextProps {
   children: string;
   delay?: number;
   duration?: number;
@@ -25,7 +25,7 @@ export default function AnimatedText({
   fixedDuration,
   className,
   whenVisible,
-}: TextProps) {
+}: AnimatedTextProps) {
   const klass = `${styles.text} ${className ?? ''}`
   const charKlass = `${styles.character} ${className ?? ''}`
 
@@ -112,7 +112,7 @@ export default function AnimatedText({
   )
 }
 
-export function AnimatedTextStaggered(props: TextProps) {
+export function AnimatedTextStaggered(props: AnimatedTextProps) {
   const klass = `${styles.text} ${props.className ?? ''}`
 
   return (
@@ -132,3 +132,4 @@ export function AnimatedTextStaggered(props: TextProps) {
     </span>
   )
 }
+

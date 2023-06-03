@@ -1,0 +1,18 @@
+@use "../variables.module"
+
+.container
+  display: grid
+  grid-template-columns: repeat(2, 1fr)
+  grid-template-rows: auto auto
+  padding: variables.$unit 0
+  gap: variables.$unit
+
+  .city
+    width: min-content
+
+.dateTime
+  display: grid
+  grid-template-columns: 1fr
+  grid-template-rows: repeat(2, 1fr)
+  padding-bottom: variables.$unit
+  opacity: 0.5

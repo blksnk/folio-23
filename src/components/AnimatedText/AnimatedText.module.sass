@@ -1,6 +1,27 @@
+@use "../../app/variables.module"
+
 .character
   display: inline
   white-space: pre-wrap
 
 .text
   display: inline-block
+
+.textLine
+  display: inline-block
+  padding: 0 18px
+  text-align: left
+  user-select: none
+
+  &.textLineActive
+    background: variables.$white
+    color: variables.$black
+    white-space: pre
+
+    *
+      color: variables.$black
+      white-space: pre
+
+  &.textLineHovering
+    outline: 1px solid rgba(255, 255, 255, 0.5)
+    outline-offset: -1px
