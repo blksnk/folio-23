@@ -7,14 +7,30 @@ import { ProjectListItemData } from "@/api/queries/allProjects";
 import { useCallback, useEffect, useState } from "react";
 import ClientOnlyPortal from "@/components/ClientOnlyPortal.component";
 import { preloadImage } from "@/utils/images";
+import { OverlayLines } from "@/app/new/Overlay.component";
+import { clearInterval, clearTimeout } from "timers";
+import { Weather } from "@/app/new/Weather.component";
+import { Timer } from "@/app/new/Timer.component";
+import { combineClasses } from "@/utils/css";
+import { useRouter } from "next/navigation";
+import { useSetMousePos } from "@/utils/mousePos";
+import {
+  BackgroundCover
+} from "@/components/BackgroundCover/BackgroundCover.component";
 
 export interface RendererProps {
   projects: ProjectListItemData[];
-  activeIndex: number;
+  weatherProps: {
+    city: string;
+    weather: string;
+  }
 }
 
-export const Renderer = (props: Omit<RendererProps, "activeIndex">) => {
+export const Renderer = (props: RendererProps) => {
   const [activeIndex, setActiveIndex] = useState(0)
+  const [transitionOut, setTransitionOut] = useState(false)
+  const router = useRouter()
+  useSetMousePos()
 
   const changeActiveIndex = useCallback((n: 1 | -1) => {
     const maxIndex = props.projects.length-1;
@@ -28,80 +44,43 @@ export const Renderer = (props: Omit<RendererProps, "activeIndex">) => {
 
   }, [activeIndex, props.projects])
 
+
+  const redirectTo = (url: string) => {
+    setTransitionOut(true)
+    setTimeout(() => router.push(url), 1200)
+  }
+
   const childProps = {
     projects: props.projects,
     activeIndex,
     changeActiveIndex,
     setActiveIndex,
+    hide: transitionOut
+  }
+  const activeProjectSlug = props.projects[activeIndex].slug;
+  const allProjectCoverUrls = props.projects.map(({ cover }) => cover.url)
+  const allProjectColors = props.projects.map(({ backgroundColor }) => backgroundColor.hex);
+
+  const backgroundProps = {
+    coverUrls: allProjectCoverUrls,
+    colors: allProjectColors,
+    hide: transitionOut,
+    activeIndex,
   }
 
   return (
     <>
-      <Background {...childProps}/>
+      <BackgroundCover {...backgroundProps} />
+      <section className={styles.dateAndWeather}>
+        <Weather {...props.weatherProps} hide={transitionOut}/>
+        <Timer hide={transitionOut}/>
+      </section>
       <section className={styles.explore}>
-        <Explore/>
+        <Explore slug={activeProjectSlug} hide={transitionOut} redirectTo={redirectTo}/>
       </section>
       <PageLeft {...childProps}/>
+      <OverlayLines hide={transitionOut}/>
+
     </>
-  )
-}
-
-const preloadAllImages = async (projects: ProjectListItemData[]) => {
-  await Promise.all(projects.map(({ cover }) => preloadImage(cover.url)))
-  return true
-}
-
-
-const Background = (props: RendererProps) => {
-  const [imagesLoaded, setImagesLoaded] = useState(false);
-  const [inTransition, setInTransition] = useState(false);
-  const [oldCoverUrl, setOldCoverUrl] = useState("");
-  const [transitionTimeoutId, setTransitionTimeoutId] = useState<NodeJS.Timeout | number>(0);
-  const [backgroundTransitionTimeoutId, setBackgroundTransitionTimeoutId] = useState<NodeJS.Timeout | number>(0);
-  const activeProject = props.projects[props.activeIndex]
-  useEffect(() => {
-    setOldCoverUrl(activeProject?.cover.url ?? "")
-    if(!imagesLoaded) {
-      preloadAllImages(props.projects).then(() => setImagesLoaded(true))
-    }
-  }, [])
-
-  useEffect(() => {
-    // trigger image animation when index changes
-    if(inTransition) {
-      clearTimeout(transitionTimeoutId)
-      clearTimeout(backgroundTransitionTimeoutId)
-    }
-    console.log("start transition")
-    setInTransition(true)
-    setBackgroundTransitionTimeoutId(
-      setTimeout(() => {
-        setOldCoverUrl(props.projects[props.activeIndex].cover.url)
-        console.log('end transition')
-      }, 600)
-    )
-    setTransitionTimeoutId(
-      setTimeout(() => {
-        setInTransition(false)
-      }, 800))
-  }, [props.activeIndex])
-
-  if(!activeProject || !imagesLoaded) return null
-
-  const backgroundKlass = `${styles.backgroundImageContainer} ${inTransition ? styles.backgroundTransition : ""}`
-
-  const backgroundColor = activeProject.backgroundColor.hex
-  const coverUrl = activeProject.cover.url
-
-  return (
-    <ClientOnlyPortal selector="#backgroundRoot">
-      <>
-        <div className={styles.background} style={{ backgroundColor }}></div>
-        <div className={backgroundKlass}>
-          <img src={oldCoverUrl} alt={activeProject.title} className={styles.oldBackgroundImage}></img>
-          <img src={coverUrl} alt={activeProject.title} className={styles.backgroundImage}></img>
-        </div>
-      </>
-    </ClientOnlyPortal>
   )
 }

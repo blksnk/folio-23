@@ -23,6 +23,24 @@ $circle-size-mobile: 80vw
 $circle-x-offset-mobile: calc((100vh - $circle-size-mobile) / 2)
 $page-content-x-offset-mobile: calc($circle-size-mobile + $circle-x-offset-mobile + 2 * $unit)
 
+// Fixed Overlay
+@mixin Overlay
+  position: fixed
+  top: $unit * 3
+  bottom: $unit * 3
+  left: 2.75rem
+  right: 2.75rem
+  display: grid
+  grid-template-rows: repeat(12, 1fr)
+  grid-template-columns: repeat(12, 1fr)
+
+  @media (max-width: $breakpoint-mobile)
+    top: $unit
+    bottom: $unit
+    left: $unit * 0.75
+    right: $unit * 0.75
+
+
 // Breakpoints
 $breakpoint-mobile: 600px
 $breakpoint-tablet: 900px
@@ -56,7 +74,6 @@ $bezier: cubic-bezier(0.38,0,0.21,0.98)
   color: $white
   text-align: center
   font-family: "__neueBit_9e67b5"
-  @include glow
 
 @mixin title-small
   @include title

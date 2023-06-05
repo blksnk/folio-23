@@ -12,8 +12,35 @@
     height: 100%
     width: 1px
     display: inline-block
+    transform: scaleY(0)
+    transform-origin: top center
+
+    @for $i from 1 through 20
+      &:nth-child(#{$i})
+        animation: 600ms + $i * 100ms variables.$bezier 300ms + $i * 50ms 1 normal forwards running appearY
 
   &.horizontal .line
     height: 1px
     width: 100%
     display: block
+    transform: scaleX(0)
+    transform-origin: left center
+
+
+    @for $i from 1 through 20
+      &:nth-child(#{$i})
+        animation: 500ms variables.$bezier 300ms + $i * 300ms 1 normal forwards running appearX
+
+@keyframes appearX
+  from
+    transform: scaleX(0)
+
+  to
+    transform: scaleX(1)
+
+@keyframes appearY
+  from
+    transform: scaleY(0)
+
+  to
+    transform: scaleY(1)

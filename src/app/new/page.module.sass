@@ -1,5 +1,35 @@
 @use "../variables.module"
 
+
+@mixin lineY($delay: 300ms)
+  transform: scaleY(0)
+  transform-origin: top
+  animation: 600ms variables.$bezier $delay 1 normal forwards appearY
+  pointer-events: none
+  user-select: none
+  transition: all 600ms variables.$bezier 0s
+
+  &.hideLine
+    transform: scaleY(1)
+    transform-origin: bottom
+    animation-name: hideY
+    animation-play-state: running
+
+@mixin lineX($delay: 300ms)
+  transform: scaleX(0)
+  transform-origin: left center
+  animation: 600ms variables.$bezier $delay 1 normal forwards appearX
+  pointer-events: none
+  user-select: none
+  transition: all 600ms variables.$bezier 0s
+
+  &.hideLine
+    transform: scaleX(1)
+    transform-origin: right
+    animation-name: hideX
+    animation-play-state: running
+
+
 $w50: rgba(255, 255, 255, 0.5)
 
 .line
@@ -17,25 +47,8 @@ $w50: rgba(255, 255, 255, 0.5)
     opacity: 0.5
 
 .main
-  position: fixed
-  top: variables.$unit * 3
-  bottom: variables.$unit * 3
-  left: 2.75rem
-  right: 2.75rem
-  display: grid
-  grid-template-rows: repeat(12, 1fr)
-  grid-template-columns: repeat(12, 1fr)
+  @include variables.Overlay
 
-  @media (max-width: variables.$breakpoint-mobile)
-    top: variables.$unit
-    bottom: variables.$unit
-    left: variables.$unit * 0.75
-    right: variables.$unit * 0.75
-
-
-  .logo
-    grid-column: 1 / 1
-    grid-row: 1 / 1
 
   .dateAndWeather
     grid-row: 2 / span 2
@@ -56,31 +69,31 @@ $w50: rgba(255, 255, 255, 0.5)
     grid-row: 7 / span 3
     grid-column: 1 / 9
 
-  .profile
-    grid-row: 11 / -1
-    grid-column: 2 / span 3
-
   .linesCenter
     grid-row: 1 / -1
     grid-column: 9 / span 1
     overflow: hidden
     border-right: 1px solid $w50
+    @include lineY
 
   .linesRight
     grid-row: 1 / -1
     grid-column: 12 / span 1
     overflow: hidden
     border-right: 1px solid $w50
+    @include lineY
 
   .lineLeft
     grid-row: 1 / -1
     grid-column: 1 / span 1
     border-left: 1px solid $w50
+    @include lineY
 
   .lineThird
     grid-row: 1 / -1
     grid-column: 5 / span 1
     border-left: 1px solid $w50
+    @include lineY
 
   .linesTop
     grid-row: 6 / span 1
@@ -88,42 +101,52 @@ $w50: rgba(255, 255, 255, 0.5)
     align-self: end
     margin-bottom: variables.$unit
     border-bottom: 1px solid $w50
+    @include lineX
 
   .lineTop
     grid-column: 1 / -1
     grid-row: 1 / span 1
     border-bottom: 1px solid $w50
+    @include lineX
 
   .lineBottom
     grid-column: 1 / -1
     grid-row: 10 / 11
     border-bottom: 1px solid $w50
+    @include lineX
 
   .lineAcross
     grid-column: 1 / -1
     grid-row: 6 / 7
     border-bottom: 1px solid $w50
+    @include lineX
 
   .linesBottomLeft
     grid-column: 1 / 5
     grid-row: 10 / 11
+    padding-top: 16px
     overflow: hidden
+    @include lineX
 
   .lineTopCenter
     grid-row: 3 / 4
     grid-column: 5 / -1
     border-bottom: 1px solid $w50
+    @include lineX
 
   .lineBottomRight
-    grid-column: 9 / -1
+    grid-column: 1 / -1
     grid-row: 10 / -1
     border-top: 1px solid $w50
+    @include lineX
 
   .linesCenterLeft
     grid-column: 1 / 5
     grid-row: 6 / 7
     align-self: end
     margin-bottom: variables.$unit / 2
+    @include lineX
+
 
 .pageLeft
   display: grid
@@ -138,6 +161,13 @@ $w50: rgba(255, 255, 255, 0.5)
     flex-direction: column
     padding: variables.$unit 0
     grid-row: 7 / span 3
+    @include lineY
+    pointer-events: all
+
+    &.hideLine
+      transform-origin: top
+      opacity: 0
+
 
   .leftSplit
     display: grid
@@ -150,15 +180,75 @@ $w50: rgba(255, 255, 255, 0.5)
     .profile
       grid-column: 2 / span 1
       grid-row: 11 / span 2
-      padding: variables.$unit 0
+      padding-top: variables.$unit
+      padding-bottom: variables.$unit / 2
       display: grid
       grid-template-rows: auto 1fr auto
       grid-template-columns: 1fr
       gap: variables.$unit
+      background: none
+      border: none
+      font-family: inherit
+      pointer-events: all
+      position: relative
+      cursor: pointer
+
+      h3
+        font-size: 24px
+        text-align: right
+        padding-right: variables.$unit * 1.5
+        font-weight: 400
+        font-style: italic
+        align-self: end
+        transition: all 400ms variables.$bezier 0s
+        transform: translateY(50%)
+        opacity: 0
+        animation: 600ms variables.$bezier 1200ms 1 normal forwards appearText
 
       .name
         font-style: italic
-        font-weight: 600
+        transition: all 400ms variables.$bezier 0s
+
+        span
+          font-weight: 600
+
+      .description, .description span
+        text-align: left
+
+      &:before
+        position: absolute
+        content: ""
+        top: calc(100% - (variables.$unit * 3.65))
+        left: calc(100% - (variables.$unit * 12))
+        bottom: variables.$unit / 2
+        right: variables.$unit / 2
+        background: rgba(255, 255, 255, 0)
+        border-radius: 50%
+        transition: all 400ms variables.$bezier 0s
+
+      &:hover
+        &:before
+          background: rgba(255, 255, 255, 0.2)
+          top: 0
+          left: 0
+          bottom: 0
+          right: 0
+          border-radius: 0
+
+        h3
+          padding-right: variables.$unit * 2
+          transition: all 600ms variables.$bezier 0s
+
+        .name
+          letter-spacing: 1px
+
+      &.hide h3
+        transform: translateY(0)
+        animation-name: hideText
+        animation-delay: 0ms
+        animation-duration: 300ms
+        animation-play-state: running
+
 
     .logoContainer
       @include variables.flex-center
@@ -167,6 +257,9 @@ $w50: rgba(255, 255, 255, 0.5)
       border-top: 1px solid $w50
       margin-right: -7px // needed to bring top border over to second vertical line
       padding-right: 7px // keep logo centered in its container
+
+      &.hide
+        border-color: transparent
 
     .colorContainer
       grid-column: 1 / 2
@@ -196,6 +289,7 @@ $w50: rgba(255, 255, 255, 0.5)
     .lineLeft, .lineRight
       grid-row: 1 / -1
       border: none
+      @include lineY
 
     .lineLeft
       border-right: 1px solid $w50
@@ -219,9 +313,13 @@ $w50: rgba(255, 255, 255, 0.5)
       grid-template-columns: 1fr
       grid-template-rows: repeat(2, 1fr)
       align-items: center
-      border-bottom: 1px solid $w50
-      margin-bottom: -1px
-      padding-bottom: 1px
+      opacity: 1
+      gap: 0
+      @include lineY
+
+      &.hide
+        gap: 100%
+        opacity: 0
 
       .arrowButton
         padding: variables.$unit variables.$unit / 2
@@ -264,6 +362,12 @@ $w50: rgba(255, 255, 255, 0.5)
       display: grid
       grid-template-columns: auto 1fr auto
       grid-template-rows: 1fr
+      @include lineY
+      pointer-events: all
+
+      &.hideLine
+        transform-origin: top
+        opacity: 0
 
       .type, .client, .year
         grid-row: 1 / 1
@@ -283,14 +387,16 @@ $w50: rgba(255, 255, 255, 0.5)
       .year
         grid-column: 3 / 4
         padding-right: variables.$unit / 2
+        border-color: transparent
 
   .linesBottomCenter
+    padding-top: 16px
     grid-column: 1 / 2
     grid-row: 10 / 11
     max-height: calc((100vh - (12px * 6)) / 12)
     overflow-y: hidden
     display: flex
-    border-right: 1px solid $w50
+    @include lineX
 
     div
       width: calc(100% + 2px)
@@ -300,17 +406,14 @@ $w50: rgba(255, 255, 255, 0.5)
     grid-row: 6/ 7
     align-self: end
     margin-bottom: variables.$unit / 2
-
+    @include lineX
 
   .lineVerticalTop
     grid-column: 1 / 2
-    grid-row: 1 / 7
+    grid-row: 1 / -1
     border-right: 1px solid $w50
+    @include lineY
 
-  .lineVerticalBottom
-    grid-column: 1 / 2
-    grid-row: 11 / -1
-    border-right: 1px solid $w50
 
 .background, .backgroundImageContainer
   position: fixed
@@ -318,28 +421,89 @@ $w50: rgba(255, 255, 255, 0.5)
   left: 0
   right: 0
   bottom: 0
-  transition: background-color 1200ms variables.$bezier 200ms
+  opacity: 1
+  filter: blur(0)
+  transition: all 1200ms variables.$bezier 200ms
 
+.backgroundLoading
+  opacity: 0
+  filter: blur(24px)
 
 
 .backgroundImageContainer
   mix-blend-mode: color-burn
+  transition-duration: 600ms
 
   .backgroundImage, .oldBackgroundImage
-    height: 100%
-    width: 100%
     object-fit: cover
-    transition: opacity 400ms variables.$bezier 0s
+    transition: all 600ms variables.$bezier 0s
     position: absolute
-    top: 0
-    left: 0
+    top: variables.$unit * -2
+    left: variables.$unit * -2
+    width: calc(100% + variables.$unit * 4)
+    height: calc(100% + variables.$unit * 4)
+
 
   .oldBackgroundImage
-    opacity: 1
-
-  .backgroundImage
     opacity: 0
 
+  .backgroundImage
+    opacity: 1
+    transition-delay: 400ms
+
   &.backgroundTransition
-    .backgroundImage
+    filter: blur(24px)
+    transition: all 400ms variables.$bezier 200ms
+
+    .oldBackgroundImage
       opacity: 1
+      transition-delay: 0ms
+
+
+
+
+@keyframes appearX
+  from
+    transform: scaleX(0)
+
+  to
+    transform: scaleX(1)
+
+@keyframes appearY
+  from
+    transform: scaleY(0)
+
+  to
+    transform: scaleY(1)
+
+@keyframes hideX
+  from
+    transform: scaleX(1)
+
+  to
+    transform: scaleX(0)
+
+@keyframes hideY
+  from
+    transform: scaleY(1)
+
+  to
+    transform: scaleY(0)
+
+@keyframes appearText
+  from
+    transform: translateY(50%)
+    opacity: 0
+
+  to
+    transform: translateY(0)
+    opacity: 1
+
+@keyframes hideText
+  from
+    transform: translateY(0)
+    opacity: 1
+
+  to
+    transform: translateY(50%)
+    opacity: 0

@@ -25,6 +25,17 @@ export const oneProject = `
   }
 `
 
+export interface ProjectMedia {
+  id: string;
+  asset: {
+    url: string;
+    width: number;
+    height: number;
+    mimeType: string;
+  },
+  title: string;
+}
+
 export interface ProjectData extends ProjectListItemData {
   title: string;
   displayTitle: string;
@@ -32,7 +43,8 @@ export interface ProjectData extends ProjectListItemData {
   description?: string;
   client: string;
   brief: string;
-  sections: SectionList
+  medias: ProjectMedia[];
+  sections: SectionList;
 }
 
 export type ProjectDataResponse = {

@@ -82,7 +82,7 @@ export default function AnimatedText({
     const maxDiff = diffsAndOffsetPolarities.reduce((acc, [ diff ]) => Math.max(acc, diff), 0)
     let count = 1;
 
-    const intervalDuration = fixedDuration ? Math.round(fixedDuration / maxDiff) : duration;
+    const intervalDuration = fixedDuration ? Math.round(fixedDuration / maxDiff) : duration ?? 20;
     // break early if all indexes match
     if (currentIndexes.every((currentIndex, index) => currentIndex === targetIndexes[index])) return;
     let intervalId = setInterval(() => {

@@ -24,6 +24,8 @@
     background: rgba(255, 255, 255, 0.1)
     border-radius: 50%
     transition: all 400ms variables.$bezier 0s
+    transform: scale(1)
+    animation: 1200ms variables.$bezier 0ms 1 normal grow
 
   .title
     align-self: center
@@ -31,8 +33,14 @@
     font-style: italic
     font-weight: 400
     font-size: 44px
+    line-height: 67px
     letter-spacing: 0
-    transition: letter-spacing 400ms variables.$bezier 0s
+    filter: blur(0)
+    opacity: 1
+    transition: all 400ms variables.$bezier 0s
+    animation: 1200ms variables.$bezier 0ms 1 normal unblur
+    leading-trim: both
+    text-edge: cap
 
   .topText
     text-align: left
@@ -43,6 +51,8 @@
   .topText, .bottomText
     opacity: 0.5
     transition: all 400ms variables.$bezier 0s
+    animation: 1200ms variables.$bezier 0ms 1 normal show
+
 
   &:hover
 
@@ -57,10 +67,50 @@
 
     .title
       letter-spacing: variables.$unit / 2
-      transition: letter-spacing 500ms variables.$bezier 0ms
+      transition: all 600ms variables.$bezier 0ms
 
 
     .topText, .bottomText
       opacity: 0.7
       letter-spacing: 1px
       transition: all 200ms variables.$bezier 0s
+
+  &.hide
+
+    &:before
+      transform: scale(0)
+      animation: none
+      transition-duration: 600ms
+
+    .title
+      opacity: 0
+      filter: blur(variables.$unit * 2)
+      letter-spacing: variables.$unit * 2 !important
+      transition-duration: 600ms
+
+    .topText, .bottomText
+      opacity: 0
+      transition-duration: 600ms
+
+
+@keyframes grow
+  from
+    transform: scale(0)
+  to
+    transform: scale(1)
+
+
+@keyframes show
+  from
+    opacity: 0
+  to
+    opacity: 0.5
+
+
+@keyframes unblur
+  from
+    opacity: 0
+    filter: blur(24px)
+  to
+    opacity: 1
+    filter: blur(0)

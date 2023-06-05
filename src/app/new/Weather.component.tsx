@@ -1,19 +1,21 @@
-import { headers } from "next/headers"
 import styles from './dateAndWeather.module.sass'
 import { TextLine } from "@/components/AnimatedText/TextLine";
+import { replaceWithSpacesWhenHidden } from "@/utils/css";
 
-export const Weather = () => {
-  const headersList = headers()
-  console.log(headersList)
-  const city = headersList.get('x-request-city') ?? ""
-  const weather = headersList.get('x-request-weather') ?? ""
+interface WeatherProps {
+  city: string;
+  weather: string;
+  hide?: boolean;
+}
+
+export const Weather = ({city, weather, hide}: WeatherProps) => {
 
   return (
     <div className={styles.container}>
-      <TextLine animatedTextProps={{ fixedDuration: 150, delay: 800 }} >Location</TextLine>
-      <TextLine animatedTextProps={{ fixedDuration: 300, delay: 1400 }} className={styles.city} active>{ city }</TextLine>
-      <TextLine animatedTextProps={{ fixedDuration: 300, delay: 800 }} >Weather</TextLine>
-      <TextLine animatedTextProps={{ fixedDuration: 300, delay: 2000 }}>{ weather }</TextLine>
+      <TextLine animatedTextProps={{ fixedDuration: 300, delay: 300 }} >{ replaceWithSpacesWhenHidden("Location", hide) }</TextLine>
+      <TextLine animatedTextProps={{ fixedDuration: 300, delay: 300 }} className={styles.city} hovering={!hide}>{ replaceWithSpacesWhenHidden(city, hide) }</TextLine>
+      <TextLine animatedTextProps={{ fixedDuration: 300, delay: 300 }} >{ replaceWithSpacesWhenHidden("Weather", hide) }</TextLine>
+      <TextLine animatedTextProps={{ fixedDuration: 300, delay: 300 }} className={styles.city} hovering={!hide} >{ replaceWithSpacesWhenHidden(weather, hide) }</TextLine>
     </div>
   )
 }

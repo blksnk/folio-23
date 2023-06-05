@@ -3,9 +3,15 @@
 import { useEffect, useReducer } from "react";
 import styles from './dateAndWeather.module.sass'
 import { TextLine } from "@/components/AnimatedText/TextLine";
+import { replaceWithSpacesWhenHidden } from "@/utils/css";
 
 const getDate = () => new Date(Date.now()).toString()
-export const Timer = () => {
+
+interface TimerProps {
+  hide?: boolean;
+}
+
+export const Timer = ({ hide }: TimerProps) => {
   const [datetime, update] = useReducer(getDate, null, () => '*** *** ** **** ******************')
   useEffect(() => {
     const intervalId = setInterval(update, 1000)
@@ -13,8 +19,8 @@ export const Timer = () => {
     return () => clearInterval(intervalId)
   })
   const words = datetime.split(" ")
-  const date = words.slice(0, 4).join(" ")
-  const time = words.slice(4, 6).join(" ")
+  const date = replaceWithSpacesWhenHidden(words.slice(0, 4).join(" "), hide)
+  const time = replaceWithSpacesWhenHidden(words.slice(4, 6).join(" "), hide)
 
   return (
     <div className={styles.dateTime}>

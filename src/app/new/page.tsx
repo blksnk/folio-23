@@ -6,8 +6,8 @@ import {
 import { Weather } from "@/app/new/Weather.component";
 import { Timer } from "@/app/new/Timer.component";
 import { Renderer } from "@/app/new/Renderer.component";
-import { OverlayLines } from "@/app/new/Overlay.component";
 import { queryClient } from "@/api/client";
+import { headers } from "next/headers"
 
 
 const fetchProjects = async () => {
@@ -17,19 +17,20 @@ const fetchProjects = async () => {
 
 
 export default async function Home() {
+  const headersList = headers()
+  const city = headersList.get('x-request-city') ?? ""
+  const weather = headersList.get('x-request-weather') ?? ""
   const projects = await fetchProjects()
+  const weatherProps = {
+    city,
+    weather
+  }
   return (
     <main className={styles.main}>
-      <Renderer projects={projects}></Renderer>
-      <OverlayLines/>
-      <section className={styles.dateAndWeather}>
-        <Weather/>
-        <Timer/>
-      </section>
+      <Renderer projects={projects} weatherProps={weatherProps}></Renderer>
       <section className={styles.visual}>
 
       </section>
-
     </main>
   )
 }
