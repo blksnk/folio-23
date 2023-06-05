@@ -27,7 +27,7 @@ export const Explore = (props: ExploreProps) => {
 
        <h2 className={titleKlass}>Explore</h2>
 
-       <TextLine className={styles.bottomText}>view project contents</TextLine>
+       <TextLine className={styles.bottomText}>view contents</TextLine>
      </Link>
    )
 }

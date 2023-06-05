@@ -7,6 +7,9 @@
   padding: variables.$unit 0
   row-gap: variables.$unit
 
+  @media only screen and (max-width: variables.$breakpoint-mobile)
+    display: none
+
   .city
     text-align: center
     margin-right: 18px
@@ -17,3 +20,6 @@
   grid-template-rows: repeat(2, 1fr)
   padding-bottom: variables.$unit
   opacity: 0.5
+
+  @media only screen and (max-width: variables.$breakpoint-mobile)
+    display: none

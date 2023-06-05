@@ -37,7 +37,7 @@ $w50: rgba(255, 255, 255, 0.5)
   pointer-events: none
 
 .arrow
-  padding: variables.$unit * 2 variables.$unit
+  padding: 0 variables.$unit
   transform: rotate(180deg)
 
   &.arrowDown
@@ -45,6 +45,20 @@ $w50: rgba(255, 255, 255, 0.5)
 
   &.arrowDisabled
     opacity: 0.5
+
+.tableCell
+  text-align: left
+  width: 100%
+  overflow-x: hidden
+
+  > span
+    text-align: left
+    display: inline
+    width: 100%
+    overflow-x: hidden
+
+    span
+      white-space: pre
 
 .main
   @include variables.Overlay
@@ -57,13 +71,19 @@ $w50: rgba(255, 255, 255, 0.5)
     flex-direction: column
     justify-content: space-between
 
-  .visual
-    grid-row: 4 / span 3
-    grid-column: 10 / span 2
+    @media only screen and (max-width: variables.$breakpoint-tablet)
+      grid-column-end: span 3
 
   .explore
     grid-row: 7 / span 3
     grid-column: 10 / span 2
+
+    @media only screen and (max-width: variables.$breakpoint-tablet)
+      grid-column-end: span 3
+
+    @media only screen and (max-width: variables.$breakpoint-mobile)
+      grid-column: 2 / -2
+      grid-row: 11 / -1
 
   .list
     grid-row: 7 / span 3
@@ -76,12 +96,29 @@ $w50: rgba(255, 255, 255, 0.5)
     border-right: 1px solid $w50
     @include lineY
 
+    @media only screen and (max-width: variables.$breakpoint-tablet)
+      width: 1px
+      justify-self: end
+
+    @media only screen and (max-width: variables.$breakpoint-mobile)
+      display: none
+
+
+
   .linesRight
     grid-row: 1 / -1
     grid-column: 12 / span 1
     overflow: hidden
     border-right: 1px solid $w50
     @include lineY
+
+    @media only screen and (max-width: variables.$breakpoint-tablet)
+      width: 1px
+      justify-self: end
+
+    @media only screen and (max-width: variables.$breakpoint-mobile)
+      width: auto
+      justify-self: start
 
   .lineLeft
     grid-row: 1 / -1
@@ -95,6 +132,13 @@ $w50: rgba(255, 255, 255, 0.5)
     border-left: 1px solid $w50
     @include lineY
 
+    @media only screen and (max-width: variables.$breakpoint-desktop-small)
+      grid-column-start: 6
+
+    @media only screen and (max-width: variables.$breakpoint-mobile)
+      grid-row-end: 11
+      grid-column-start: 8
+
   .linesTop
     grid-row: 6 / span 1
     grid-column: 9 / -1
@@ -102,6 +146,14 @@ $w50: rgba(255, 255, 255, 0.5)
     margin-bottom: variables.$unit
     border-bottom: 1px solid $w50
     @include lineX
+
+    @media only screen and (max-width: variables.$breakpoint-tablet)
+      grid-column-start: 10
+
+    @media only screen and (max-width: variables.$breakpoint-mobile)
+      grid-column-start: 1
+      grid-row-start: 4
+      margin-bottom: 0
 
   .lineTop
     grid-column: 1 / -1
@@ -117,9 +169,12 @@ $w50: rgba(255, 255, 255, 0.5)
 
   .lineAcross
     grid-column: 1 / -1
-    grid-row: 6 / 7
+    grid-row: 6 / span 1
     border-bottom: 1px solid $w50
     @include lineX
+
+    @media only screen and (max-width: variables.$breakpoint-mobile)
+      grid-row-start: 5
 
   .linesBottomLeft
     grid-column: 1 / 5
@@ -128,11 +183,25 @@ $w50: rgba(255, 255, 255, 0.5)
     overflow: hidden
     @include lineX
 
+    @media only screen and (max-width: variables.$breakpoint-desktop-small)
+      grid-column-end: 6
+
+    @media only screen and (max-width: variables.$breakpoint-mobile)
+      grid-column-end: 8
+
   .lineTopCenter
     grid-row: 3 / 4
     grid-column: 5 / -1
     border-bottom: 1px solid $w50
     @include lineX
+
+    @media only screen and (max-width: variables.$breakpoint-desktop-small)
+      grid-column-start: 6
+
+    @media only screen and (max-width: variables.$breakpoint-mobile)
+      grid-column: 1 / 8
+      grid-row: 4 / 5
+      display: none
 
   .lineBottomRight
     grid-column: 1 / -1
@@ -142,11 +211,17 @@ $w50: rgba(255, 255, 255, 0.5)
 
   .linesCenterLeft
     grid-column: 1 / 5
-    grid-row: 6 / 7
+    grid-row: 6 / span 1
     align-self: end
     margin-bottom: variables.$unit / 2
     @include lineX
 
+    @media only screen and (max-width: variables.$breakpoint-desktop-small)
+      grid-column-end: 6
+
+    @media only screen and (max-width: variables.$breakpoint-mobile)
+      grid-column-end: 8
+      grid-row-start: 5
 
 .pageLeft
   display: grid
@@ -154,6 +229,17 @@ $w50: rgba(255, 255, 255, 0.5)
   grid-template-columns: repeat(2, 1fr)
   grid-row: 1 / -1
   grid-column: 1 / 9
+
+  @media only screen and (max-width: variables.$breakpoint-desktop-small)
+    grid-template-columns: 5fr 3fr
+
+  @media only screen and (max-width: variables.$breakpoint-tablet)
+    grid-column-end: 10
+    grid-template-columns: 5fr 4fr
+
+  @media only screen and (max-width: variables.$breakpoint-mobile)
+    grid-column-end: 12
+    grid-template-columns: 7fr 4fr
 
   .indices, .titles
     display: flex
@@ -163,11 +249,97 @@ $w50: rgba(255, 255, 255, 0.5)
     grid-row: 7 / span 3
     @include lineY
     pointer-events: all
+    overflow-y: hidden
+    max-height: calc((100vh - 2 * 36px) / 12 * 3)
+
+    @media only screen and (max-width: variables.$breakpoint-mobile)
+      max-height: calc((100vh - 2 * 24px) / 12 * 3)
+
+    @media only screen and (max-width: variables.$breakpoint-mobile)
+      grid-row: 6 / span 4
+      justify-content: center
+      max-height: calc((100vh - 2 * 12px) / 12 * 4)
 
     &.hideLine
       transform-origin: top
       opacity: 0
 
+  .profileCta
+    grid-column: 1 / span 1
+    grid-row: 11 / span 2
+    position: relative
+    width: 50%
+    min-width: max-content
+    padding: variables.$unit
+    @include variables.flex-center
+
+    @media only screen and (max-width: variables.$breakpoint-desktop-small)
+      width: 100%
+
+    @media only screen and (max-width: variables.$breakpoint-mobile)
+      position: fixed
+      left: calc(24px + 12px + 9px + 6px)
+      right: calc((100vw - 18px) / 12 * 5 + 9px)
+      padding: 0
+      top: calc((100% - (variables.$unit * 2)) / 12 * 3 + 12px)
+      height: calc((100% - (variables.$unit * 2)) / 12) // take bottom lines into account
+      width: auto
+
+    h3
+      user-select: none
+      font-size: 24px
+      text-align: right
+      font-weight: 400
+      font-style: italic
+      transition: all 400ms variables.$bezier 0s
+      transform: translateY(50%)
+      opacity: 0
+      white-space: nowrap
+      animation: 600ms variables.$bezier 1200ms 1 normal forwards appearText
+
+    &:before
+      position: absolute
+      content: ""
+      top: variables.$unit * 1.5
+      left: variables.$unit * 1.5
+      bottom: variables.$unit * 1.5
+      right: variables.$unit * 1.5
+      background: rgba(255, 255, 255, 0.1)
+      border-radius: 50%
+      transition: all 400ms variables.$bezier 0s
+
+    &:hover
+      &:before
+        background: rgba(255, 255, 255, 0.2)
+        top: 0
+        left: 0
+        bottom: 0
+        right: 0
+        border-radius: 0
+
+      h3
+        transition: all 600ms variables.$bezier 0s
+
+    &.hide
+      &:before
+        transform: scale(0) !important
+        opacity: 0 !important
+
+      h3
+        transform: translateY(0)
+        animation-name: hideText
+        animation-delay: 0ms
+        animation-duration: 300ms
+        animation-play-state: running
+
+    @media only screen and (max-width: variables.$breakpoint-mobile)
+      grid-row: 5 / 7
+      min-width: unset
+
+      h3
+        font-size: 18px
+        white-space: initial
+        textalign: center
 
   .leftSplit
     display: grid
@@ -176,14 +348,14 @@ $w50: rgba(255, 255, 255, 0.5)
     grid-column: 1 / span 1
     grid-row: 1 / span 1
     grid-column-gap: variables.$unit / 2
+    max-width: 100%
 
     .profile
       grid-column: 2 / span 1
       grid-row: 11 / span 2
       padding-top: variables.$unit
-      padding-bottom: variables.$unit / 2
       display: grid
-      grid-template-rows: auto 1fr auto
+      grid-template-rows: auto 1fr
       grid-template-columns: 1fr
       gap: variables.$unit
       background: none
@@ -192,18 +364,10 @@ $w50: rgba(255, 255, 255, 0.5)
       pointer-events: all
       position: relative
       cursor: pointer
+      overflow-y: hidden
 
-      h3
-        font-size: 24px
-        text-align: right
-        padding-right: variables.$unit * 1.5
-        font-weight: 400
-        font-style: italic
-        align-self: end
-        transition: all 400ms variables.$bezier 0s
-        transform: translateY(50%)
-        opacity: 0
-        animation: 600ms variables.$bezier 1200ms 1 normal forwards appearText
+      @media only screen and (max-width: variables.$breakpoint-mobile)
+        grid-row: 2 / span 3
 
       .name
         font-style: italic
@@ -215,39 +379,8 @@ $w50: rgba(255, 255, 255, 0.5)
       .description, .description span
         text-align: left
 
-      &:before
-        position: absolute
-        content: ""
-        top: calc(100% - (variables.$unit * 3.65))
-        left: calc(100% - (variables.$unit * 12))
-        bottom: variables.$unit / 2
-        right: variables.$unit / 2
-        background: rgba(255, 255, 255, 0)
-        border-radius: 50%
-        transition: all 400ms variables.$bezier 0s
 
-      &:hover
-        &:before
-          background: rgba(255, 255, 255, 0.2)
-          top: 0
-          left: 0
-          bottom: 0
-          right: 0
-          border-radius: 0
 
-        h3
-          padding-right: variables.$unit * 2
-          transition: all 600ms variables.$bezier 0s
-
-        .name
-          letter-spacing: 1px
-
-      &.hide h3
-        transform: translateY(0)
-        animation-name: hideText
-        animation-delay: 0ms
-        animation-duration: 300ms
-        animation-play-state: running
 
 
     .logoContainer
@@ -268,6 +401,8 @@ $w50: rgba(255, 255, 255, 0.5)
       align-items: flex-start
       justify-content: flex-end
       padding: variables.$unit variables.$unit / 2
+      padding-bottom: 0
+      left-bottom: 0
 
       .color
         transform: rotate(180deg)
@@ -285,6 +420,7 @@ $w50: rgba(255, 255, 255, 0.5)
     .titles
       grid-column: 2 / span 1
       padding: variables.$unit
+      overflow-x: hidden
 
     .lineLeft, .lineRight
       grid-row: 1 / -1
@@ -340,13 +476,34 @@ $w50: rgba(255, 255, 255, 0.5)
           background: rgba(255, 255, 255, 0.2)
           transition: background 200ms variables.$bezier 0s
 
+      @media only screen and (max-width: variables.$breakpoint-mobile)
+        grid-row: 5 / span 6
+        grid-template-rows: repeat(6, 1fr)
+        pointer-events: none
+
+        .arrowButton
+          padding: 0 variables.$unit / 2
+          pointer-events: all
+          @include variables.flex-center
+          align-items: center !important
+
+          &:last-child
+            grid-row: -2 / -1
+
+          .arrow
+            padding: 0 variables.$unit
+            height: variables.$unit
+
 
     .activeIdContainer
       grid-column: 2 / -1
-      grid-row: 4 / 7
+      grid-row: 4 / span 3
       display: flex
       align-items: center
       justify-content: center
+      overflow-y: hidden
+      max-height: calc((100vh - 2 * 36px) / 12 * 3)
+
 
       .activeId
         transform: rotate(180deg)
@@ -356,6 +513,9 @@ $w50: rgba(255, 255, 255, 0.5)
         user-select: none
         pointer-events: none
 
+      @media only screen and (max-width: variables.$breakpoint-mobile)
+        grid-row-start: 2
+
     .info
       grid-column: 1 / span 1
       grid-row: 7 / span 3
@@ -364,6 +524,19 @@ $w50: rgba(255, 255, 255, 0.5)
       grid-template-rows: 1fr
       @include lineY
       pointer-events: all
+      overflow-y: hidden
+      max-height: calc((100vh - 2 * 36px) / 12 * 3)
+
+      @media only screen and (max-width: variables.$breakpoint-desktop-small)
+        grid-template-columns: 1fr auto
+        max-height: calc((100vh - 2 * 24px) / 12 * 3)
+
+
+      @media only screen and (max-width: variables.$breakpoint-mobile)
+        grid-column-end: span 2
+        grid-row: 6 / span 4
+        max-height: calc((100vh - 2 * 12px) / 12 * 4)
+
 
       &.hideLine
         transform-origin: top
@@ -378,16 +551,35 @@ $w50: rgba(255, 255, 255, 0.5)
         border-right: 1px solid $w50
         margin: -1px 0 // needed to make lines intersect
 
+        @media only screen and (max-width: variables.$breakpoint-mobile)
+          justify-content: center
+
+
       .type
         grid-column: 1 / 2
 
+        @media only screen and (max-width: variables.$breakpoint-desktop-small)
+          overflow-x: hidden
+
+        @media only screen and (max-width: variables.$breakpoint-mobile)
+          margin: 0
+          border-right: none
+
+
       .client
         grid-column: 2 / 3
+        overflow-x: hidden
+
+        @media only screen and (max-width: variables.$breakpoint-desktop-small)
+          display: none
 
       .year
         grid-column: 3 / 4
         padding-right: variables.$unit / 2
         border-color: transparent
+
+        @media only screen and (max-width: variables.$breakpoint-desktop-small)
+          grid-column: 2 / 3
 
   .linesBottomCenter
     padding-top: 16px
@@ -403,16 +595,22 @@ $w50: rgba(255, 255, 255, 0.5)
 
   .linesCenterRight
     grid-column: 1 / 2
-    grid-row: 6/ 7
+    grid-row: 6 / span 1
     align-self: end
     margin-bottom: variables.$unit / 2
     @include lineX
+
+    @media only screen and (max-width: variables.$breakpoint-mobile)
+      grid-row-start: 5
 
   .lineVerticalTop
     grid-column: 1 / 2
     grid-row: 1 / -1
     border-right: 1px solid $w50
     @include lineY
+
+    @media only screen and (max-width: variables.$breakpoint-mobile)
+      grid-row-end: -3
 
 
 .background, .backgroundImageContainer
@@ -507,3 +705,29 @@ $w50: rgba(255, 255, 255, 0.5)
   to
     transform: translateY(50%)
     opacity: 0
+
+
+.table
+  @media only screen and (max-height: variables.$breakpoint-height)
+    gap: 0.5 * variables.$unit !important
+    padding: variables.$unit variables.$unit * 0.75 !important
+
+  @media only screen and (max-width: variables.$breakpoint-desktop-small)
+    padding: variables.$unit variables.$unit * 0.75 !important
+
+    .tableCell
+      padding: 0 variables.$unit
+
+  @media only screen and (max-width: variables.$breakpoint-tablet)
+    padding: variables.$unit variables.$unit * 0.5 !important
+
+    .tableCell
+      padding: 0 variables.$unit * 0.75
+
+  @media only screen and (max-width: variables.$breakpoint-mobile)
+    gap: 0.5 * variables.$unit !important
+
+    .tableCell
+      padding: 0 variables.$unit * 0.5
+
+

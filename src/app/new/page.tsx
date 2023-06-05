@@ -3,8 +3,6 @@ import {
   allProjects,
   AllProjectsResponse,
 } from "@/api/queries/allProjects";
-import { Weather } from "@/app/new/Weather.component";
-import { Timer } from "@/app/new/Timer.component";
 import { Renderer } from "@/app/new/Renderer.component";
 import { queryClient } from "@/api/client";
 import { headers } from "next/headers"
@@ -28,9 +26,6 @@ export default async function Home() {
   return (
     <main className={styles.main}>
       <Renderer projects={projects} weatherProps={weatherProps}></Renderer>
-      <section className={styles.visual}>
-
-      </section>
     </main>
   )
 }

@@ -18,6 +18,15 @@ interface BackgroundProps {
   hide?: boolean;
 }
 
+const clearTimeoutSafe = (id: number) => {
+  try {
+    clearTimeout(id)
+  }
+  catch(e) {
+    // fail silently
+  }
+}
+
 export const BackgroundCover = (props: BackgroundProps) => {
   const activeCover = props.coverUrls[props.activeIndex];
   const [imagesLoaded, setImagesLoaded] = useState(false);
@@ -34,8 +43,8 @@ export const BackgroundCover = (props: BackgroundProps) => {
   useEffect(() => {
     // trigger image animation when index changes
     if(inTransition) {
-      clearTimeout(transitionTimeoutId)
-      clearTimeout(backgroundTransitionTimeoutId)
+      clearTimeoutSafe(transitionTimeoutId)
+      clearTimeoutSafe(backgroundTransitionTimeoutId)
     }
     setInTransition(true)
     setBackgroundTransitionTimeoutId(
