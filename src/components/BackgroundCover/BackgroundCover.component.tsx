@@ -16,6 +16,7 @@ interface BackgroundProps {
   singleColor?: string;
   activeIndex: number;
   hide?: boolean;
+  overBlur?: boolean;
 }
 
 const clearTimeoutSafe = (id: number) => {
@@ -50,19 +51,20 @@ export const BackgroundCover = (props: BackgroundProps) => {
     setBackgroundTransitionTimeoutId(
       setTimeout(() => {
         setOldCoverUrl(props.coverUrls[props.activeIndex])
-      }, 1200)
+      }, 1200) as unknown as number
     )
     setTransitionTimeoutId(
       setTimeout(() => {
         setInTransition(false)
-      }, 600))
+      }, 600) as unknown as number
+    )
     setTimeout(() => {
       setCoverUrl(props.coverUrls[props.activeIndex])
     }, 400)
   }, [props.activeIndex])
 
-  const backgroundKlass = combineClasses(styles.backgroundImageContainer, [styles.backgroundTransition, inTransition], [styles.backgroundLoading, !imagesLoaded || props.hide])
 
+  const backgroundKlass = combineClasses(styles.backgroundImageContainer, [styles.backgroundTransition, inTransition], [styles.backgroundLoading, !imagesLoaded || props.hide], [styles.overBlur, props.overBlur])
   const backgroundColorKlass = combineClasses(styles.background, [styles.backgroundLoading, !imagesLoaded || props.hide])
   const backgroundColor = ((props.colors ?? [])[props.activeIndex]) ?? props.singleColor ?? "transparent";
 

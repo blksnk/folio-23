@@ -3,6 +3,8 @@ $black: #000
 $dark-grey: #2D2D2D
 $off-white: #EFEFEF
 $white: #FFF
+$w50: rgba(255, 255, 255, 0.5)
+
 
 $line-color: $dark-grey
 
@@ -109,6 +111,63 @@ $bezier: cubic-bezier(0.38,0,0.21,0.98)
     bottom: $unit
     left: $unit * 0.75
     right: $unit * 0.75
+
+// Lines
+@mixin lineY($delay: 300ms)
+  transform: scaleY(0)
+  transform-origin: top
+  animation: 600ms $bezier $delay 1 normal forwards appearY
+  pointer-events: none
+  user-select: none
+  transition: all 600ms $bezier 0s
+
+  &.hideLine
+    transform: scaleY(1)
+    transform-origin: bottom
+    animation-name: hideY
+    animation-play-state: running
+
+@mixin lineX($delay: 300ms)
+  transform: scaleX(0)
+  transform-origin: left center
+  animation: 600ms $bezier $delay 1 normal forwards appearX
+  pointer-events: none
+  user-select: none
+  transition: all 600ms $bezier 0s
+
+  &.hideLine
+    transform: scaleX(1)
+    transform-origin: right
+    animation-name: hideX
+    animation-play-state: running
+
+@keyframes appearX
+  from
+    transform: scaleX(0)
+
+  to
+    transform: scaleX(1)
+
+@keyframes appearY
+  from
+    transform: scaleY(0)
+
+  to
+    transform: scaleY(1)
+
+@keyframes hideX
+  from
+    transform: scaleX(1)
+
+  to
+    transform: scaleX(0)
+
+@keyframes hideY
+  from
+    transform: scaleY(1)
+
+  to
+    transform: scaleY(0)
 
 // JS Exports
 :export

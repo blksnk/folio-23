@@ -4,6 +4,7 @@ import { landscapeRatios, portraitRatios, allRatios } from "@/components/Gallery
 import styles from './Gallery.module.sass';
 import breakpoints from "@/utils/breakpoints";
 import { useEffect, useState } from "react";
+import { combineClasses } from "@/utils/css";
 
 
 export function GalleryBackground() {
@@ -17,10 +18,9 @@ export function GalleryBackground() {
     return () => window.removeEventListener("resize", computeIsTablet)
   }, [])
   const sidePadding = isTablet ? "9px" : "44px"
-  const rowCount = isTablet ? 8 : 10
+  const columnCount = isTablet ? 8 : 10
   const topPadding = isTablet ? "9px" : "36px"
-  const containerWidth = `calc((100vw - (${sidePadding} * 2)) / 12 * ${rowCount})`
-  const containerHeight = `calc((100vh - (${topPadding} * 2)) / 12 * 10)`
+  const containerWidth = `calc((100vw - (${sidePadding} * 2)) / 12 * ${columnCount})`
 
   return (
     <div className={styles.framesContainer}>
@@ -28,13 +28,15 @@ export function GalleryBackground() {
 
         const height = `calc(${containerWidth} / ${landscapeRatios[0]} + ${index * 12}px)`
         const aspectRatio = String(ratio)
+
         const style = {
           height,
           maxWidth: containerWidth,
-          aspectRatio
+          aspectRatio,
+          animationDelay: index * 200 + "ms"
         }
         return (
-          <div key={ratio} style={style} className={styles.frame}></div>
+          <div key={ratio} style={style} className={combineClasses(styles.frame, styles.landscape)}></div>
         )
       })}
       {portraitRatios.map((ratio, index) => {
@@ -43,10 +45,11 @@ export function GalleryBackground() {
         const style = {
           height,
           maxWidth: containerWidth,
-          aspectRatio
+          aspectRatio,
+          animationDelay: index * 200 + "ms"
         }
         return (
-          <div key={ratio} style={style} className={styles.frame}></div>
+          <div key={ratio} style={style} className={combineClasses(styles.frame, styles.portrait)}></div>
         )
       })}
     </div>

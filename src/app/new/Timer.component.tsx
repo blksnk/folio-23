@@ -17,7 +17,7 @@ export const Timer = ({ hide }: TimerProps) => {
     const intervalId = setInterval(update, 1000)
 
     return () => clearInterval(intervalId)
-  })
+  })  
   const words = datetime.split(" ")
   const date = replaceWithSpacesWhenHidden(words.slice(0, 4).join(" "), hide)
   const time = replaceWithSpacesWhenHidden(words.slice(4, 6).join(" "), hide)

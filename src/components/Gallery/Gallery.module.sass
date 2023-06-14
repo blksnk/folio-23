@@ -4,12 +4,11 @@
 .framesContainer
   position: relative
   grid-column: 2 / -2
-  grid-row: 2 / -2
+  grid-row: 3 / -2
   display: grid
   grid-template-rows: 1fr
   grid-template-columns: 1fr
   max-width: 100%
-  background: red
   height: 100%
 
   @media only screen and (max-width: variables.$breakpoint-tablet)
@@ -22,3 +21,25 @@
     outline-offset: -1px
     align-self: center
     justify-self: center
+    transition: transform 600ms variables.$bezier 0ms
+
+    &.portrait
+      transform: scaleY(0)
+      animation: 400ms variables.$bezier 1 normal forwards appearPortrait
+
+    &.landscape
+      transform: scaleX(0)
+      animation: 400ms variables.$bezier 1 normal forwards appearLandscape
+
+
+@keyframes appearPortrait
+  from
+    transform: scaleY(0)
+  to
+    transform: scaleY(1)
+
+@keyframes appearLandscape
+  from
+    transform: scaleX(0)
+  to
+    transform: scaleX(1)

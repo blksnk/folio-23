@@ -1,37 +1,6 @@
 @use "../variables.module"
 
 
-@mixin lineY($delay: 300ms)
-  transform: scaleY(0)
-  transform-origin: top
-  animation: 600ms variables.$bezier $delay 1 normal forwards appearY
-  pointer-events: none
-  user-select: none
-  transition: all 600ms variables.$bezier 0s
-
-  &.hideLine
-    transform: scaleY(1)
-    transform-origin: bottom
-    animation-name: hideY
-    animation-play-state: running
-
-@mixin lineX($delay: 300ms)
-  transform: scaleX(0)
-  transform-origin: left center
-  animation: 600ms variables.$bezier $delay 1 normal forwards appearX
-  pointer-events: none
-  user-select: none
-  transition: all 600ms variables.$bezier 0s
-
-  &.hideLine
-    transform: scaleX(1)
-    transform-origin: right
-    animation-name: hideX
-    animation-play-state: running
-
-
-$w50: rgba(255, 255, 255, 0.5)
-
 .line
   user-select: none
   pointer-events: none
@@ -93,8 +62,8 @@ $w50: rgba(255, 255, 255, 0.5)
     grid-row: 1 / -1
     grid-column: 9 / span 1
     overflow: hidden
-    border-right: 1px solid $w50
-    @include lineY
+    border-right: 1px solid variables.$w50
+    @include variables.lineY
 
     @media only screen and (max-width: variables.$breakpoint-tablet)
       width: 1px
@@ -109,8 +78,8 @@ $w50: rgba(255, 255, 255, 0.5)
     grid-row: 1 / -1
     grid-column: 12 / span 1
     overflow: hidden
-    border-right: 1px solid $w50
-    @include lineY
+    border-right: 1px solid variables.$w50
+    @include variables.lineY
 
     @media only screen and (max-width: variables.$breakpoint-tablet)
       width: 1px
@@ -123,14 +92,14 @@ $w50: rgba(255, 255, 255, 0.5)
   .lineLeft
     grid-row: 1 / -1
     grid-column: 1 / span 1
-    border-left: 1px solid $w50
-    @include lineY
+    border-left: 1px solid variables.$w50
+    @include variables.lineY
 
   .lineThird
     grid-row: 1 / -1
     grid-column: 5 / span 1
-    border-left: 1px solid $w50
-    @include lineY
+    border-left: 1px solid variables.$w50
+    @include variables.lineY
 
     @media only screen and (max-width: variables.$breakpoint-desktop-small)
       grid-column-start: 6
@@ -144,8 +113,8 @@ $w50: rgba(255, 255, 255, 0.5)
     grid-column: 9 / -1
     align-self: end
     margin-bottom: variables.$unit
-    border-bottom: 1px solid $w50
-    @include lineX
+    border-bottom: 1px solid variables.$w50
+    @include variables.lineX
 
     @media only screen and (max-width: variables.$breakpoint-tablet)
       grid-column-start: 10
@@ -158,20 +127,20 @@ $w50: rgba(255, 255, 255, 0.5)
   .lineTop
     grid-column: 1 / -1
     grid-row: 1 / span 1
-    border-bottom: 1px solid $w50
-    @include lineX
+    border-bottom: 1px solid variables.$w50
+    @include variables.lineX
 
   .lineBottom
     grid-column: 1 / -1
     grid-row: 10 / 11
-    border-bottom: 1px solid $w50
-    @include lineX
+    border-bottom: 1px solid variables.$w50
+    @include variables.lineX
 
   .lineAcross
     grid-column: 1 / -1
     grid-row: 6 / span 1
-    border-bottom: 1px solid $w50
-    @include lineX
+    border-bottom: 1px solid variables.$w50
+    @include variables.lineX
 
     @media only screen and (max-width: variables.$breakpoint-mobile)
       grid-row-start: 5
@@ -181,7 +150,7 @@ $w50: rgba(255, 255, 255, 0.5)
     grid-row: 10 / 11
     padding-top: 16px
     overflow: hidden
-    @include lineX
+    @include variables.lineX
 
     @media only screen and (max-width: variables.$breakpoint-desktop-small)
       grid-column-end: 6
@@ -192,8 +161,8 @@ $w50: rgba(255, 255, 255, 0.5)
   .lineTopCenter
     grid-row: 3 / 4
     grid-column: 5 / -1
-    border-bottom: 1px solid $w50
-    @include lineX
+    border-bottom: 1px solid variables.$w50
+    @include variables.lineX
 
     @media only screen and (max-width: variables.$breakpoint-desktop-small)
       grid-column-start: 6
@@ -206,15 +175,15 @@ $w50: rgba(255, 255, 255, 0.5)
   .lineBottomRight
     grid-column: 1 / -1
     grid-row: 10 / -1
-    border-top: 1px solid $w50
-    @include lineX
+    border-top: 1px solid variables.$w50
+    @include variables.lineX
 
   .linesCenterLeft
     grid-column: 1 / 5
     grid-row: 6 / span 1
     align-self: end
     margin-bottom: variables.$unit / 2
-    @include lineX
+    @include variables.lineX
 
     @media only screen and (max-width: variables.$breakpoint-desktop-small)
       grid-column-end: 6
@@ -247,12 +216,12 @@ $w50: rgba(255, 255, 255, 0.5)
     flex-direction: column
     padding: variables.$unit 0
     grid-row: 7 / span 3
-    @include lineY
+    @include variables.lineY
     pointer-events: all
     overflow-y: hidden
     max-height: calc((100vh - 2 * 36px) / 12 * 3)
 
-    @media only screen and (max-width: variables.$breakpoint-mobile)
+    @media only screen and (max-width: variables.$breakpoint-tablet)
       max-height: calc((100vh - 2 * 24px) / 12 * 3)
 
     @media only screen and (max-width: variables.$breakpoint-mobile)
@@ -295,7 +264,7 @@ $w50: rgba(255, 255, 255, 0.5)
       transform: translateY(50%)
       opacity: 0
       white-space: nowrap
-      animation: 600ms variables.$bezier 1200ms 1 normal forwards appearText
+      animation: 600ms variables.$bezier 1200ms normal forwards appearText
 
     &:before
       position: absolute
@@ -306,7 +275,9 @@ $w50: rgba(255, 255, 255, 0.5)
       right: variables.$unit * 1.5
       background: rgba(255, 255, 255, 0.1)
       border-radius: 50%
+      transform: scale(0)
       transition: all 400ms variables.$bezier 0s
+      animation: 600ms variables.$bezier 1200ms normal forwards showBefore
 
     &:hover
       &:before
@@ -322,8 +293,9 @@ $w50: rgba(255, 255, 255, 0.5)
 
     &.hide
       &:before
-        transform: scale(0) !important
-        opacity: 0 !important
+        animation-name: hideBefore
+        animation-delay: 0ms
+        animation-play-state: running
 
       h3
         transform: translateY(0)
@@ -380,19 +352,23 @@ $w50: rgba(255, 255, 255, 0.5)
         text-align: left
 
 
-
-
-
     .logoContainer
       @include variables.flex-center
       grid-row: 1 / 1
       grid-column: 1 / 1
-      border-top: 1px solid $w50
+      border-top: 1px solid variables.$w50
       margin-right: -7px // needed to bring top border over to second vertical line
       padding-right: 7px // keep logo centered in its container
 
+      img
+        transform: scale(1)
+        transition: transform 400ms variables.$bezier 200ms
+
       &.hide
         border-color: transparent
+
+        img
+          transform: scale(0)
 
     .colorContainer
       grid-column: 1 / 2
@@ -425,14 +401,14 @@ $w50: rgba(255, 255, 255, 0.5)
     .lineLeft, .lineRight
       grid-row: 1 / -1
       border: none
-      @include lineY
+      @include variables.lineY
 
     .lineLeft
-      border-right: 1px solid $w50
+      border-right: 1px solid variables.$w50
       grid-column: 1 / 2
 
     .lineRight
-      border-left: 1px solid $w50
+      border-left: 1px solid variables.$w50
       grid-column: 2 / 3
 
   .rightSplit
@@ -451,7 +427,7 @@ $w50: rgba(255, 255, 255, 0.5)
       align-items: center
       opacity: 1
       gap: 0
-      @include lineY
+      @include variables.lineY
 
       &.hide
         gap: 100%
@@ -522,15 +498,16 @@ $w50: rgba(255, 255, 255, 0.5)
       display: grid
       grid-template-columns: auto 1fr auto
       grid-template-rows: 1fr
-      @include lineY
+      @include variables.lineY
       pointer-events: all
       overflow-y: hidden
       max-height: calc((100vh - 2 * 36px) / 12 * 3)
 
       @media only screen and (max-width: variables.$breakpoint-desktop-small)
         grid-template-columns: 1fr auto
-        max-height: calc((100vh - 2 * 24px) / 12 * 3)
 
+      @media only screen and (max-width: variables.$breakpoint-tablet)
+        max-height: calc((100vh - 2 * 24px) / 12 * 3)
 
       @media only screen and (max-width: variables.$breakpoint-mobile)
         grid-column-end: span 2
@@ -548,7 +525,7 @@ $w50: rgba(255, 255, 255, 0.5)
         gap: variables.$unit
         flex-direction: column
         padding: variables.$unit
-        border-right: 1px solid $w50
+        border-right: 1px solid variables.$w50
         margin: -1px 0 // needed to make lines intersect
 
         @media only screen and (max-width: variables.$breakpoint-mobile)
@@ -580,7 +557,6 @@ $w50: rgba(255, 255, 255, 0.5)
 
         @media only screen and (max-width: variables.$breakpoint-desktop-small)
           grid-column: 2 / 3
-
   .linesBottomCenter
     padding-top: 16px
     grid-column: 1 / 2
@@ -588,7 +564,7 @@ $w50: rgba(255, 255, 255, 0.5)
     max-height: calc((100vh - (12px * 6)) / 12)
     overflow-y: hidden
     display: flex
-    @include lineX
+    @include variables.lineX
 
     div
       width: calc(100% + 2px)
@@ -598,7 +574,7 @@ $w50: rgba(255, 255, 255, 0.5)
     grid-row: 6 / span 1
     align-self: end
     margin-bottom: variables.$unit / 2
-    @include lineX
+    @include variables.lineX
 
     @media only screen and (max-width: variables.$breakpoint-mobile)
       grid-row-start: 5
@@ -606,41 +582,50 @@ $w50: rgba(255, 255, 255, 0.5)
   .lineVerticalTop
     grid-column: 1 / 2
     grid-row: 1 / -1
-    border-right: 1px solid $w50
-    @include lineY
+    border-right: 1px solid variables.$w50
+    @include variables.lineY
 
     @media only screen and (max-width: variables.$breakpoint-mobile)
       grid-row-end: -3
 
 
 .background, .backgroundImageContainer
+  $offset-n: variables.$unit * -4
   position: fixed
-  top: 0
-  left: 0
-  right: 0
-  bottom: 0
+  top: $offset-n
+  left: $offset-n
+  right: $offset-n
+  bottom: $offset-n
   opacity: 1
   filter: blur(0)
   transition: all 1200ms variables.$bezier 200ms
+
+
 
 .backgroundLoading
   opacity: 0
   filter: blur(24px)
 
+  &.overBlur
+    filter: blur(variables.$unit * 3)
 
 .backgroundImageContainer
   mix-blend-mode: color-burn
   transition-duration: 600ms
+  // TODO: find a way to allow image transform on mouse move w/o breaking image blur transition
+  // transform: translateX(calc(var(--mouse-x) * variables.$unit * 2)) translatey(calc(var(--mouse-y) * variables.$unit * 2))
+
+  &.overBlur
+    filter: blur(variables.$unit)
 
   .backgroundImage, .oldBackgroundImage
     object-fit: cover
     transition: all 600ms variables.$bezier 0s
     position: absolute
-    top: variables.$unit * -2
-    left: variables.$unit * -2
-    width: calc(100% + variables.$unit * 4)
-    height: calc(100% + variables.$unit * 4)
-
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
 
   .oldBackgroundImage
     opacity: 0
@@ -653,40 +638,13 @@ $w50: rgba(255, 255, 255, 0.5)
     filter: blur(24px)
     transition: all 400ms variables.$bezier 200ms
 
+    &.overBlur
+    filter: blur(variables.$unit * 3)
+
     .oldBackgroundImage
       opacity: 1
       transition-delay: 0ms
 
-
-
-
-@keyframes appearX
-  from
-    transform: scaleX(0)
-
-  to
-    transform: scaleX(1)
-
-@keyframes appearY
-  from
-    transform: scaleY(0)
-
-  to
-    transform: scaleY(1)
-
-@keyframes hideX
-  from
-    transform: scaleX(1)
-
-  to
-    transform: scaleX(0)
-
-@keyframes hideY
-  from
-    transform: scaleY(1)
-
-  to
-    transform: scaleY(0)
 
 @keyframes appearText
   from
@@ -705,6 +663,23 @@ $w50: rgba(255, 255, 255, 0.5)
   to
     transform: translateY(50%)
     opacity: 0
+
+@keyframes showBefore
+  from
+    opacity: 0
+    transform: scale(0)
+  to
+    opacity: 1
+    transform: scale(1)
+
+@keyframes hideBefore
+  from
+    opacity: 1
+    transform: scale(1)
+  to
+    opacity: 0
+    transform: scale(0)
+
 
 
 .table

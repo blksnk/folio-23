@@ -2,3 +2,92 @@
 
 .main
   @include variables.Overlay
+
+  .line
+    pointer-events: none
+
+.leftContent
+  grid-column: 1 / span 3
+  grid-row: 1 / -1
+  display: grid
+  grid-template-columns: auto 1fr
+  grid-template-rows: repeat(12, 1fr)
+  grid-column-gap: variables.$unit / 2
+
+  .leftContentLeftLine
+    grid-column: 1 / span 1
+    grid-row: 1 / -1
+    border-right: 1px solid variables.$w50
+    border-left: 1px solid variables.$w50
+    @include variables.lineY
+
+  .leftContentRightLine
+    grid-column: 2 / span 1
+    grid-row: 1 / -1
+    border-left: 1px solid variables.$w50
+    @include variables.lineY
+
+  .leftColumn
+    grid-column: 1 / span 1
+    grid-row: 1 / -1
+    display: grid
+    grid-template-rows: repeat(12, 1fr)
+
+    .leftColumnSpacerContainer
+      padding: 0 0.75 * variables.$unit
+      opacity: 0
+      pointer-events: none
+
+
+    .logoContainer
+      @include variables.flex-center
+      grid-row: 1 / 1
+      border-top: 1px solid variables.$w50
+      margin-right: -7px // needed to bring top border over to second vertical line
+      padding-right: 7px // keep logo centered in its container
+      background: transparent
+
+      &:hover
+        background: rgba(255, 255, 255, 0.1)
+
+      &.hide
+        border-color: transparent
+        background: transparent !important
+
+  .rightColumn
+    grid-column: 2 / span 1
+    grid-row: 1 / -1
+
+
+// project info
+
+.projectInfo
+  grid-column: 2 / -2
+  grid-row: 1 / span 1
+  display: flex
+  gap: variables.$unit * 2
+  padding: variables.$unit 0
+  align-items: flex-end
+
+  .projectInfoBlock
+    display: flex
+
+    span:last-child
+      margin-left: -1px // hide transparent left outline
+
+      *
+        @include variables.body-bold
+
+// overlay lines
+
+.lineTop
+  grid-column: 1 / -1
+  grid-row: 2 / span 1
+  border-top: 1px solid variables.$w50
+  @include variables.lineX
+
+.lineRight
+  border-right: 1px solid variables.$w50
+  grid-column: -2 / -1
+  grid-row: 1 / -1
+  @include variables.lineY

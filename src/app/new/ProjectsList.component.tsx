@@ -9,22 +9,11 @@ import { useState } from "react";
 import fontRepo from "@/app/fonts";
 import { combineClasses, replaceWithSpacesWhenHidden } from "@/utils/css";
 import { ProjectListItemData } from "@/api/queries/allProjects";
+import { Logo } from "@/components/Logo.component";
 
 export const formatNumber = (n: number): string => n < 10 ? "0" + n : String(n);
 const extractYear = (date: string) => date.split('-')[0];
 const l = (lineClass: string, hide?: boolean) => `${ hide ? styles.hideLine : '' } ${ lineClass }`
-
-const Logo = (): JSX.Element => {
-  return (
-    <Image
-      src="/genmetsuLogo.svg"
-      alt="Genmetsu Logo"
-      width={ 32 }
-      height={ 36 }
-      priority
-    />
-  )
-}
 
 interface ArrowProps {
   down?: boolean;

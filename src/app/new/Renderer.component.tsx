@@ -12,11 +12,11 @@ import { clearInterval, clearTimeout } from "timers";
 import { Weather } from "@/app/new/Weather.component";
 import { Timer } from "@/app/new/Timer.component";
 import { combineClasses } from "@/utils/css";
-import { useRouter } from "next/navigation";
 import { useSetMousePos } from "@/utils/mousePos";
 import {
   BackgroundCover
 } from "@/components/BackgroundCover/BackgroundCover.component";
+import { useTransition } from "@/utils/transition";
 
 export interface RendererProps {
   projects: ProjectListItemData[];
@@ -28,8 +28,7 @@ export interface RendererProps {
 
 export const Renderer = (props: RendererProps) => {
   const [activeIndex, setActiveIndex] = useState(0)
-  const [transitionOut, setTransitionOut] = useState(false)
-  const router = useRouter()
+  const { transitionOut, setTransitionOut, redirectTo} = useTransition()
   useSetMousePos()
 
   const changeActiveIndex = useCallback((n: 1 | -1) => {
@@ -43,12 +42,6 @@ export const Renderer = (props: RendererProps) => {
     return setActiveIndex(activeIndex + n)
 
   }, [activeIndex, props.projects])
-
-
-  const redirectTo = (url: string) => {
-    setTransitionOut(true)
-    setTimeout(() => router.push(url), 1200)
-  }
 
   const childProps = {
     projects: props.projects,

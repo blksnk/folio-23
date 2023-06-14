@@ -19,7 +19,19 @@ export const portraitRatios = [
 
 export const allRatios = [
   ...landscapeRatios,
-  portraitRatios,
+  ...portraitRatios,
   1, // take square ratio into account
 ]
 
+export const getClosestRatio = (imgRatio: number): number => {
+  const { diff, ratio } = allRatios.reduce((acc: { diff: number; ratio: number }, currentRatio) => {
+    const currentDiff = Math.abs(currentRatio - imgRatio);
+    if(currentDiff > acc.diff) return acc;
+    return {
+      diff: currentDiff,
+      ratio: currentRatio,
+    }
+  }, { diff: Infinity, ratio: 1})
+  console.log('original ratio : ', imgRatio, '; closest ratio : ', ratio, '; diff : ', diff);
+  return ratio;
+}

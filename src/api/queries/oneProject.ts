@@ -2,11 +2,11 @@ import { SectionList, sections } from "@/api/queries/sections";
 import { ProjectListItemData } from "@/api/queries/allProjects";
 
 export const oneProject = `
-  query OneProject($slug: String!, $height: Int!) {
+  query OneProject($slug: String!, $width: Int!) {
     project(where: {slug: $slug}) {
       cover {
         url(
-          transformation: {image: {resize: {fit: scale, height: $height}}, document: {output: {format: webp}}}
+          transformation: {image: {resize: {fit: scale, width: $width}}, document: {output: {format: webp}}}
         )
         mimeType
       }
@@ -20,6 +20,24 @@ export const oneProject = `
       description
       client
       brief
+      backgroundColor {
+        hex
+        css
+      }
+      medias {
+      ... on GalleryMedia {
+        id
+        title
+        asset {
+          width
+          height
+          url(
+            transformation: {image: {resize: {fit: scale, width: $width}}, document: {output: {format: webp}}}
+          )
+          mimeType
+        }
+      }
+    }
       ${sections}
     }
   }
@@ -45,8 +63,24 @@ export interface ProjectData extends ProjectListItemData {
   brief: string;
   medias: ProjectMedia[];
   sections: SectionList;
+  backgroundColor: {
+    hex: string;
+    css: string;
+  }
 }
 
 export type ProjectDataResponse = {
   project: ProjectData;
+}
+
+export interface FormattedProjectMedia {
+  displayTitle: string;
+  imgRatio: number;
+  closestRatio: number;
+  url: string;
+  id: string;
+}
+
+export interface FormattedProject extends ProjectData {
+  formattedMedias: FormattedProjectMedia[];
 }

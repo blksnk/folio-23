@@ -17,3 +17,7 @@ export const combineClasses = (...classes: ClassDef[]): string => {
 }
 
 export const replaceWithSpacesWhenHidden = (s: string, hide?: boolean) => hide ? Array(s.length).fill(" ").join("") : s
+
+export const clamp = (n: number, min: number, max: number) => {
+  return Math.max(Math.min(n, max), min);
+}
