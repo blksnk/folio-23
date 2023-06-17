@@ -76,8 +76,11 @@ export function Gallery(props: GalleryProps) {
   const topPadding = isTablet ? "9px" : "36px"
   const containerWidth = `calc((100vw - (${sidePadding} * 2)) / 12 * ${columnCount})`
   const containerHeight = `calc((100vh - (${topPadding} * 2)) / 12 * ${rowCount})`
-  const frameHeight = (i: number) => {
+  const frameHeightLandscape = (i: number) => {
     return `calc(min(calc(${containerWidth} / ${landscapeMedias[0].imgRatio}), ${containerHeight}) - ${i * 12}px)`
+  }
+  const frameHeightPortrait = (i: number) => {
+    return `calc(min(calc(${containerWidth} / ${portraitMedias[0].imgRatio}), ${containerHeight}) - ${i * 12}px)`
   }
 
   return (
@@ -85,7 +88,7 @@ export function Gallery(props: GalleryProps) {
 
       {[...landscapeMedias, ...squareMedias].map((media, index) => {
 
-        const height = frameHeight(index)
+        const height = frameHeightLandscape(index)
         const { aspectRatio, zIndex, active } = mediaProps(media);
         const style = {
           height,
@@ -95,14 +98,14 @@ export function Gallery(props: GalleryProps) {
           zIndex,
         }
         return (
-          <div key={media.id} style={style} className={combineClasses(styles.frame, styles.landscape)}>
+          <div key={media.id} style={style} className={combineClasses(styles.frame, styles.landscape, [styles.visible, active])}>
             <GalleryMedia media={media} visible={active}/>
           </div>
         )
       })}
       {portraitMedias.map((media, index) => {
         const i = index + landscapeMedias.length + squareMedias.length;
-        const height = frameHeight(i)
+        const height = frameHeightPortrait(i)
         const { aspectRatio, zIndex, active } = mediaProps(media);
         const style = {
           height,
@@ -111,7 +114,7 @@ export function Gallery(props: GalleryProps) {
           zIndex,
         }
         return (
-          <div key={media.id} style={style} className={combineClasses(styles.frame, styles.portrait)}>
+          <div key={media.id} style={style} className={combineClasses(styles.frame, styles.portrait, [styles.visible, active])}>
             <GalleryMedia media={media} visible={active}/>
           </div>
         )

@@ -17,14 +17,18 @@
   .frame
     grid-row: 1 / span 1
     grid-column: 1 / span 1
-    outline: 1px solid rgba(255, 255, 255, 0.5)
-    outline-offset: -1px
+    outline: 1px solid variables.$w30
+    outline-offset: -0.5px
     align-self: center
     justify-self: center
-    transition: transform 600ms variables.$bezier 0ms background 200ms variables.$bezier 0s
+    transition: transform 600ms variables.$bezier 0ms
     background-size: cover
     background-position: center center
     position: relative
+    overflow: hidden
+
+    &.visible
+      outline-color: variables.$white
 
     &.portrait
       transform: scaleY(0)
@@ -35,9 +39,8 @@
       animation: 400ms variables.$bezier 1 normal forwards appearLandscape
 
     .galleryMedia
-      height: 100%
-      width: 100%
       object-fit: cover
+
 
       transition: all 900ms variables.$bezier 300ms
 
