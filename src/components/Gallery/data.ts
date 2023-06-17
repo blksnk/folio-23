@@ -4,6 +4,7 @@ export const landscapeRatios = [
   1.85,
   1.75,
   1.5,
+  1.4,
   1.33,
   1.25,
 ]
@@ -32,6 +33,5 @@ export const getClosestRatio = (imgRatio: number): number => {
       ratio: currentRatio,
     }
   }, { diff: Infinity, ratio: 1})
-  console.log('original ratio : ', imgRatio, '; closest ratio : ', ratio, '; diff : ', diff);
   return ratio;
 }

@@ -21,7 +21,9 @@
     outline-offset: -1px
     align-self: center
     justify-self: center
-    transition: transform 600ms variables.$bezier 0ms
+    transition: transform 600ms variables.$bezier 0ms background 200ms variables.$bezier 0s
+    background-size: cover
+    background-position: center center
 
     &.portrait
       transform: scaleY(0)
@@ -30,6 +32,21 @@
     &.landscape
       transform: scaleX(0)
       animation: 400ms variables.$bezier 1 normal forwards appearLandscape
+
+    .galleryMedia
+      height: 100%
+      width: 100%
+      object-fit: cover
+
+      transition: all 900ms variables.$bezier 300ms
+
+      filter: blur(variables.$unit * 2)
+      opacity: 0
+
+      &.visible
+        opacity: 1
+        filter: blur(0)
+
 
 
 @keyframes appearPortrait

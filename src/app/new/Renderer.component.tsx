@@ -59,6 +59,7 @@ export const Renderer = (props: RendererProps) => {
     colors: allProjectColors,
     hide: transitionOut,
     activeIndex,
+    blendMode: "color-burn",
   }
 
   return (

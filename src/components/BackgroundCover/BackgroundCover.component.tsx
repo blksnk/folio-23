@@ -17,6 +17,7 @@ interface BackgroundProps {
   activeIndex: number;
   hide?: boolean;
   overBlur?: boolean;
+  blendMode: "color-burn" | "multiply";
 }
 
 const clearTimeoutSafe = (id: number) => {
@@ -72,7 +73,7 @@ export const BackgroundCover = (props: BackgroundProps) => {
     <ClientOnlyPortal selector="#backgroundRoot">
       <>
         <div className={backgroundColorKlass} style={{ backgroundColor }}></div>
-        <div className={backgroundKlass}>
+        <div className={backgroundKlass} style={{ mixBlendMode: props.blendMode }}>
           <img src={coverUrl} alt="project cover" className={styles.backgroundImage}></img>
           <img src={oldCoverUrl} alt="project cover" className={styles.oldBackgroundImage}></img>
         </div>

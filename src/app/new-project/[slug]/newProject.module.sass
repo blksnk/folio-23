@@ -14,18 +14,6 @@
   grid-template-rows: repeat(12, 1fr)
   grid-column-gap: variables.$unit / 2
 
-  .leftContentLeftLine
-    grid-column: 1 / span 1
-    grid-row: 1 / -1
-    border-right: 1px solid variables.$w50
-    border-left: 1px solid variables.$w50
-    @include variables.lineY
-
-  .leftContentRightLine
-    grid-column: 2 / span 1
-    grid-row: 1 / -1
-    border-left: 1px solid variables.$w50
-    @include variables.lineY
 
   .leftColumn
     grid-column: 1 / span 1
@@ -80,6 +68,27 @@
 
 // overlay lines
 
+
+.leftContentLeftLine
+  grid-column: 1 / span 1
+  grid-row: 1 / -1
+  border-right: 1px solid variables.$w50
+  border-left: 1px solid variables.$w50
+  @include variables.lineY
+
+.leftContentRightLine
+  grid-column: 2 / span 1
+  grid-row: 1 / -1
+  border-left: 1px solid variables.$w50
+  @include variables.lineY
+
+.leftContentHorizontalTopLine
+  grid-column: 1 / span 1
+  grid-row: 6 / span 1
+  @include variables.lineX
+  border-bottom: 1px solid variables.$w50
+
+
 .lineTop
   grid-column: 1 / -1
   grid-row: 2 / span 1
@@ -91,3 +100,80 @@
   grid-column: -2 / -1
   grid-row: 1 / -1
   @include variables.lineY
+
+.rightContentLineLeft
+  border-left: 1px solid variables.$w50
+  grid-column: 1 / -1
+  grid-row: 1 / -1
+  @include variables.lineY
+
+
+// media selection and close button
+
+.pageRight
+  grid-column: -2 / -1
+  grid-row: 1 / -1
+  display: grid
+  justify-self: end
+  grid-template-rows: repeat(12, 1fr)
+
+.mediaSelector
+  grid-row: 2 / -1
+  display: flex
+  flex-direction: column
+  gap: variables.$unit / 2
+  padding: variables.$unit / 3
+
+  .arrowContainer
+    @include variables.flex-center
+    border: none
+    background: none
+    cursor: pointer
+    padding: variables.$unit / 2
+    border: 1px solid transparent
+
+
+    &:first-child
+      padding-bottom: variables.$unit
+
+    &:last-child
+      padding-top: variables.$unit
+
+    &:hover
+      // border-color: variables.$w50
+      background: variables.$w10
+
+  .mediaSelectButton
+    border: 1px solid variables.$w50
+    padding: variables.$unit / 2 variables.$unit * 0.75
+    background: transparent
+    display: flex
+    flex-direction: column
+    justify-content: flex-end
+    flex: 1
+    transition: all 300ms variables.$bezier 0s
+
+
+    &.active
+      flex: 2
+      background: variables.$w10
+      border-color: variables.$white
+
+    &:not(.active):hover
+      background: variables.$w10
+
+
+.mediaTitleContainer
+  grid-column: 1 / -1
+  grid-row: 2 / span 5
+  display: flex
+  align-items: flex-end
+  justify-content: flex-end
+  padding: variables.$unit variables.$unit / 2
+
+  span
+    transform: rotate(180deg)
+    opacity: 0.5
+    writing-mode: vertical-lr
+    padding: 0
+    user-select: none

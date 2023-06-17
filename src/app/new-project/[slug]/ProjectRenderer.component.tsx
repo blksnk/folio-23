@@ -3,8 +3,8 @@
 import { FormattedProjectMedia, ProjectData } from "@/api/queries/oneProject";
 import { useState } from "react";
 import {
-  GalleryBackground
-} from "@/components/Gallery/GalleryBackground.component";
+  Gallery
+} from "@/components/Gallery/Gallery";
 import {
   BackgroundCover
 } from "@/components/BackgroundCover/BackgroundCover.component";
@@ -15,11 +15,21 @@ import {
 import { ProjectInfo } from "@/app/new-project/[slug]/ProjectInfo.component";
 import { useSetMousePos } from "@/utils/mousePos";
 import { useTransition } from "@/utils/transition";
+import styles from "@/app/new-project/[slug]/newProject.module.sass";
+import { TextLine } from "@/components/AnimatedText/TextLine";
+import {
+  MediaSelector, MediaSelectorProps
+} from "@/app/new-project/[slug]/MediaSelector.component";
+
 
 interface ProjectRendererProps {
   medias: FormattedProjectMedia[];
   coverUrls: string[];
-  colors: string[];
+  colors: {
+    rgb: string;
+    values: number[];
+    hex: string;
+  }[]
   project: ProjectData;
 }
 
@@ -31,19 +41,45 @@ export const ProjectRenderer = (props: ProjectRendererProps) => {
 
   const backgroundProps = {
     coverUrls: props.coverUrls,
-    colors: props.colors,
+    colors: props.colors.map(({ rgb }) => rgb),
     hide: transitionOut,
     activeIndex,
     overBlur: true,
+    blendMode: "multiply",
+  }
+
+  const mediaSelectorProps = {
+    colors: props.colors,
+    activeIndex,
+    setActiveIndex,
+  }
+
+  const activeMedia = props.medias[activeIndex]
+
+  const galleryProps = {
+    medias: props.medias,
+    activeMediaId: activeMedia?.id ?? "no id",
   }
 
   return (
     <>
       <BackgroundCover {...backgroundProps} />
-      <GalleryBackground/>
-      <LeftContent />
+      <Gallery { ...galleryProps }/>
+      <LeftContent media={activeMedia} />
       <ProjectInfo project={props.project} />
+      <RightColumn {...mediaSelectorProps}/>
       <ProjectOverlay/>
     </>
   )
 }
+
+const RightColumn = (props: MediaSelectorProps) => {
+  return (
+    <section className={styles.pageRight}>
+
+    <MediaSelector {...props} />
+      <div className={styles.rightContentLineLeft}></div>
+    </section>
+  )
+}
+

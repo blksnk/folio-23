@@ -10,29 +10,12 @@ import fontRepo from "@/app/fonts";
 import { combineClasses, replaceWithSpacesWhenHidden } from "@/utils/css";
 import { ProjectListItemData } from "@/api/queries/allProjects";
 import { Logo } from "@/components/Logo.component";
+import { Arrow } from "@/components/Arrow.component";
 
 export const formatNumber = (n: number): string => n < 10 ? "0" + n : String(n);
 const extractYear = (date: string) => date.split('-')[0];
 const l = (lineClass: string, hide?: boolean) => `${ hide ? styles.hideLine : '' } ${ lineClass }`
 
-interface ArrowProps {
-  down?: boolean;
-  disabled?: boolean;
-}
-
-export const Arrow = (props: ArrowProps) => {
-  const klass = `${ styles.arrow } ${ props.down ? styles.arrowDown : "" } ${ props.disabled ? styles.arrowDisabled : "" }`
-  return (
-    <div className={ klass }>
-      <Image
-        src="/arrow.svg"
-        alt={ "Arrow " + (props.down ? "Down" : "Up") }
-        width={ 14 }
-        height={ 12 }
-      />
-    </div>
-  )
-}
 
 const profileDescription = `Creative designer with a focus on 3D,
 branding, UI and all things *experimental*.
