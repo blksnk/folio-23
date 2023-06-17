@@ -3,7 +3,6 @@
 import styles from './page.module.sass'
 import { TextLine } from "@/components/AnimatedText/TextLine";
 import Link from "next/link";
-import Image from "next/image";
 import { LineGroup } from "@/components/Lines/LineGroup";
 import { useState } from "react";
 import fontRepo from "@/app/fonts";
@@ -33,8 +32,6 @@ interface PageLeftProps {
 export const PageLeft = (props: PageLeftProps) => {
   const { hide } = props
   const [ hoveringIndex, setHoveringIndex ] = useState<number | null>(null)
-  const active = (i: number) => i === props.activeIndex;
-  const hovering = (i: number) => i === hoveringIndex;
   const activeProject = props.projects[props.activeIndex]
   const projectId = activeProject?.id ?? "unknown id"
   const activeProjectId = hide ? Array(projectId.length).fill(" ").join('') : projectId;

@@ -1,10 +1,6 @@
 import styles from "./newProject.module.sass"
-import {
-  Gallery
-} from "@/components/Gallery/Gallery";
 import { queryClient } from "@/api/client";
 import {
-  FormattedProject,
   FormattedProjectMedia,
   oneProject,
   ProjectDataResponse,
@@ -45,22 +41,6 @@ export const rgbToHex = (components: [number, number, number]) => '#' + componen
   return hex.length === 1 ? '0' + hex : hex
 }).join('')
 
-const createColorVariations = (rgbColor: string, nVariations: number, variance = 5, brightness = 0) => {
-  // extract r, g, b numbers from string
-  const [r, g, b] = rgbColor.slice(4, rgbColor.length - 1).split(',').map(c => parseInt(c));
-  const getVariation = () => Math.max(Math.round(Math.random() * variance * 2)) - variance;
-  const getAlteredColor = () => {
-  // vary channel values by variance arg
-    const altered = [r, g, b].map(channel => clamp(channel + getVariation() + brightness, 0, 255))
-    // convert back to rgb string
-    const alteredColor = `rgb(${altered.join(',')})`
-    return { rgb: alteredColor, values: altered, hex: rgbToHex(altered) }
-  }
-  const variations =  Array(nVariations).fill('').map(_ => getAlteredColor());
-  console.log(rgbColor, variations)
-  return variations;
-}
-
 const getAverageColors = async (mediaUrls: string[]) => {
   const colors = await Promise.all(mediaUrls.map((url) => getAverageColor(url, {
     mode: "speed",
@@ -86,8 +66,6 @@ export default async function ProjectPage({ params }: { params: { slug: string }
   const mediaUrls = formattedMedias.map(m => m.url);
   // TODO: add slight random variation to each background color of a project
   const colors = await getAverageColors(mediaUrls)
-  console.log(colors)
-  const colorVariations = createColorVariations(project.backgroundColor.css, formattedMedias.length, 30, -20);
 
   const rendererProps = {
     medias: formattedMedias,

@@ -1,7 +1,7 @@
 import sharp from "sharp";
 interface Size {
-  width?: number;
-  height?: number;
+  width: number;
+  height: number;
 }
 export type FastAverageColorRgb = [number, number, number];
 export type FastAverageColorRgba = [number, number, number, number];
@@ -44,7 +44,6 @@ const MIN_SIZE = 10;
 const MAX_SIZE = 100;
 
 function prepareSizeAndPosition(originalSize: Size, options?: FastAverageColorOptions) {
-  let _a, _b, _c, _d;
   const srcLeft = 0;
   const srcTop =  0;
   const srcWidth = originalSize.width;
@@ -221,7 +220,7 @@ function prepareResult(value: number[], error?: Error): FastAverageColorResult {
     isLight: !isDarkColor,
     error: error,
   };
-};
+}
 
 function getColorFromArray4 (arr: number[] | Uint8Array | Uint8ClampedArray, options?: FastAverageColorOptions): FastAverageColorRgba {
   options = options || {};
@@ -251,11 +250,10 @@ function getColorFromArray4 (arr: number[] | Uint8Array | Uint8ClampedArray, opt
     defaultColor: defaultColor,
     step: step
   });
-};
+}
 
 
 export async function getAverageColor(resourceUrl: string, options?: FastAverageColorOptions) {
-  let _a, _b;
   const response = await fetch(resourceUrl);
   const arrayBuffer = await response.arrayBuffer();
   let input = Buffer.from(arrayBuffer);

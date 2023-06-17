@@ -1,12 +1,12 @@
 "use client"
 
-import { landscapeRatios, portraitRatios, allRatios } from "@/components/Gallery/data";
 import styles from './Gallery.module.sass';
 import breakpoints from "@/utils/breakpoints";
 import { useEffect, useMemo, useState } from "react";
 import { combineClasses } from "@/utils/css";
 import { FormattedProjectMedia } from "@/api/queries/oneProject";
 import { preloadImage } from "@/utils/images";
+import Image from "next/image";
 const preloadAllImages = async (coverUrls: string[]) => {
   await Promise.all(coverUrls.map(url => preloadImage(url)))
   return true
@@ -53,7 +53,7 @@ export function Gallery(props: GalleryProps) {
         }
         return [ landscape, portrait, square ]
       }, [[], [], []])
-      .map((medias, orientationIndex) => medias.sort((a, b) => {
+      .map((medias) => medias.sort((a, b) => {
         const comp = 1
         return a.imgRatio > b.imgRatio ? -comp : comp;
       }))
@@ -123,12 +123,11 @@ export function Gallery(props: GalleryProps) {
 interface GalleryMediaProps {
   media: FormattedProjectMedia;
   visible?: boolean;
-  mediaTitle: string;
 }
 
 const GalleryMedia = (props: GalleryMediaProps) => {
   const klass = combineClasses(styles.galleryMedia, [styles.visible, props.visible])
   return (
-    <img src={props.media.url} alt={props.media.displayTitle} className={klass}/>
+    <Image fill src={props.media.url} alt={props.media.displayTitle} sizes="(max-width: 600px) 100vw, 80vw" className={klass}/>
   )
 }

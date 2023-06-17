@@ -4,6 +4,7 @@ import { clearTimeout } from "timers";
 import { combineClasses } from "@/utils/css";
 import styles from "@/app/new/page.module.sass";
 import ClientOnlyPortal from "@/components/ClientOnlyPortal.component";
+import Image from "next/image";
 
 const preloadAllImages = async (coverUrls: string[]) => {
   await Promise.all(coverUrls.map(url => preloadImage(url)))
@@ -74,8 +75,8 @@ export const BackgroundCover = (props: BackgroundProps) => {
       <>
         <div className={backgroundColorKlass} style={{ backgroundColor }}></div>
         <div className={backgroundKlass} style={{ mixBlendMode: props.blendMode }}>
-          <img src={coverUrl} alt="project cover" className={styles.backgroundImage}></img>
-          <img src={oldCoverUrl} alt="project cover" className={styles.oldBackgroundImage}></img>
+          <Image fill src={coverUrl} priority alt="project cover" className={styles.backgroundImage}></Image>
+          <Image fill src={oldCoverUrl} priority alt="project cover" className={styles.oldBackgroundImage}></Image>
         </div>
       </>
     </ClientOnlyPortal>

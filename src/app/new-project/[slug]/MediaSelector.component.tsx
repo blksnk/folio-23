@@ -1,7 +1,6 @@
 import styles from "@/app/new-project/[slug]/newProject.module.sass";
 import { TextLine } from "@/components/AnimatedText/TextLine";
 import { formatNumber } from "@/utils/number";
-import { combine } from "wonka";
 import { combineClasses } from "@/utils/css";
 import { Arrow } from "@/components/Arrow.component";
 import { useState } from "react";

@@ -16,7 +16,6 @@ import { ProjectInfo } from "@/app/new-project/[slug]/ProjectInfo.component";
 import { useSetMousePos } from "@/utils/mousePos";
 import { useTransition } from "@/utils/transition";
 import styles from "@/app/new-project/[slug]/newProject.module.sass";
-import { TextLine } from "@/components/AnimatedText/TextLine";
 import {
   MediaSelector, MediaSelectorProps
 } from "@/app/new-project/[slug]/MediaSelector.component";
@@ -35,7 +34,7 @@ interface ProjectRendererProps {
 
 export const ProjectRenderer = (props: ProjectRendererProps) => {
   const [ activeIndex, setActiveIndex ] = useState(0);
-  const { transitionOut, setTransitionOut, redirectTo} = useTransition()
+  const { transitionOut, redirectTo} = useTransition()
   useSetMousePos()
 
 

@@ -4,14 +4,10 @@ import styles from "@/app/new/page.module.sass";
 import { Explore } from "@/app/new/Explore.component";
 import { PageLeft } from "@/app/new/ProjectsList.component";
 import { ProjectListItemData } from "@/api/queries/allProjects";
-import { useCallback, useEffect, useState } from "react";
-import ClientOnlyPortal from "@/components/ClientOnlyPortal.component";
-import { preloadImage } from "@/utils/images";
+import { useCallback, useState } from "react";
 import { OverlayLines } from "@/app/new/Overlay.component";
-import { clearInterval, clearTimeout } from "timers";
 import { Weather } from "@/app/new/Weather.component";
 import { Timer } from "@/app/new/Timer.component";
-import { combineClasses } from "@/utils/css";
 import { useSetMousePos } from "@/utils/mousePos";
 import {
   BackgroundCover
@@ -28,7 +24,7 @@ export interface RendererProps {
 
 export const Renderer = (props: RendererProps) => {
   const [activeIndex, setActiveIndex] = useState(0)
-  const { transitionOut, setTransitionOut, redirectTo} = useTransition()
+  const { transitionOut, redirectTo} = useTransition()
   useSetMousePos()
 
   const changeActiveIndex = useCallback((n: 1 | -1) => {

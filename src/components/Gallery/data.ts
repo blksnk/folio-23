@@ -25,7 +25,7 @@ export const allRatios = [
 ]
 
 export const getClosestRatio = (imgRatio: number): number => {
-  const { diff, ratio } = allRatios.reduce((acc: { diff: number; ratio: number }, currentRatio) => {
+  const { ratio } = allRatios.reduce((acc: { diff: number; ratio: number }, currentRatio) => {
     const currentDiff = Math.abs(currentRatio - imgRatio);
     if(currentDiff > acc.diff) return acc;
     return {
