@@ -10,7 +10,6 @@ import { getClosestRatio } from "@/components/Gallery/data";
 import {
   ProjectRenderer
 } from "@/app/new-project/[slug]/ProjectRenderer.component";
-import { clamp } from "@/utils/css";
 import { getAverageColor } from "@/utils/averageColor";
 
 const coverSize = 2000
