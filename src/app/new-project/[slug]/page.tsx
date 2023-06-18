@@ -20,25 +20,31 @@ const fetchProjectData = async (slug: string) => {
 }
 
 const formatProjectMedias = (medias: ProjectMedia[]): FormattedProjectMedia[] => {
-  const formatSingleMedia = (m: ProjectMedia) => {
+  const formatDisplayTitle = (m: ProjectMedia) => m.title.replaceAll(' ', '_') + "." + m.asset.mimeType.split('/')[1];
+  const displayTitles = medias.map(m => formatDisplayTitle(m));
+
+  const longestMediaTitleLength = displayTitles.reduce((acc, title) => {
+    return title.length > acc ? title.length : acc
+  }, 0)
+
+  const formatSingleMedia = (m: ProjectMedia, i: number) => {
     const imgRatio = m.asset.width / m.asset.height;
-    const displayTitle = m.title.replaceAll(' ', '_') + "." + m.asset.mimeType.split('/')[1];
+    const title = displayTitles[i];
+    const titleDiff = longestMediaTitleLength - title.length
+    const displayTitle = title + Array(titleDiff).fill(" ").join("");
     const closestRatio = getClosestRatio(imgRatio);
+    const isVideo = m.asset.mimeType.includes("video")
     return {
       displayTitle,
       imgRatio,
       closestRatio,
       url: m.asset.url,
       id: m.id,
+      isVideo,
     }
   }
-  return medias.map(m => formatSingleMedia(m));
+  return medias.map((m, i) => formatSingleMedia(m, i));
 }
-
-export const rgbToHex = (components: [number, number, number]) => '#' + components.map(x => {
-  const hex = x.toString(16)
-  return hex.length === 1 ? '0' + hex : hex
-}).join('')
 
 const getAverageColors = async (mediaUrls: string[]) => {
   const colors = await Promise.all(mediaUrls.map((url) => getAverageColor(url, {

@@ -28,6 +28,7 @@ export function Gallery(props: GalleryProps) {
       setIsTablet(window.innerWidth <= breakpoints.tablet)
     }
     window.addEventListener("resize", computeIsTablet)
+    computeIsTablet()
 
     return () => window.removeEventListener("resize", computeIsTablet)
   }, [])
@@ -71,16 +72,17 @@ export function Gallery(props: GalleryProps) {
     }
   }
   const sidePadding = isTablet ? "9px" : "44px"
-  const columnCount = isTablet ? 8 : 10
-  const rowCount = 9;
+  const spacing = isTablet ? 6 : 12
+  const columnCount = 10
+  const rowCount = isTablet ? 7 : 9;
   const topPadding = isTablet ? "9px" : "36px"
   const containerWidth = `calc((100vw - (${sidePadding} * 2)) / 12 * ${columnCount})`
   const containerHeight = `calc((100vh - (${topPadding} * 2)) / 12 * ${rowCount})`
   const frameHeightLandscape = (i: number) => {
-    return `calc(min(calc(${containerWidth} / ${landscapeMedias[0].imgRatio}), ${containerHeight}) - ${i * 12}px)`
+    return `calc(min(calc(${containerWidth} / ${landscapeMedias[0].imgRatio}), ${containerHeight}) - ${i * spacing}px)`
   }
   const frameHeightPortrait = (i: number) => {
-    return `calc(min(calc(${containerWidth} / ${portraitMedias[0].imgRatio}), ${containerHeight}) - ${i * 12}px)`
+    return `calc(min(calc(${containerWidth} / ${portraitMedias[0].imgRatio}), ${containerHeight}) - ${i * spacing}px)`
   }
 
   return (

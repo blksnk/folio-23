@@ -79,6 +79,7 @@ export interface FormattedProjectMedia {
   closestRatio: number;
   url: string;
   id: string;
+  isVideo: boolean;
 }
 
 export interface FormattedProject extends ProjectData {

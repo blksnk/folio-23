@@ -30,6 +30,12 @@ const clearTimeoutSafe = (id: number) => {
   }
 }
 
+const setHTMLBackgroundColor = (color: string) => {
+  if(!document?.documentElement) return;
+
+  document.documentElement.style.backgroundColor = color;
+}
+
 export const BackgroundCover = (props: BackgroundProps) => {
   const activeCover = props.coverUrls[props.activeIndex];
   const [imagesLoaded, setImagesLoaded] = useState(false);

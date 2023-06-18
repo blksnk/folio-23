@@ -29,7 +29,7 @@
 
     @for $i from 1 through 20
       &:nth-child(#{$i})
-        animation: 500ms variables.$bezier 300ms + $i * 300ms 1 normal forwards running appearX
+        animation: 600ms + $i * 100ms variables.$bezier 300ms + $i * 50ms 1 normal forwards running appearX
 
 @keyframes appearX
   from

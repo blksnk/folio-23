@@ -15,3 +15,8 @@ export const useTransition = () => {
     setTransitionOut,
   }
 }
+
+export const textAnimation = (hide = false, duration = 600, delay = 1200) => ({
+  fixedDuration: hide ? 300 : duration,
+  delay: hide ? 0 : delay,
+})

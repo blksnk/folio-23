@@ -13,6 +13,7 @@ import {
   BackgroundCover
 } from "@/components/BackgroundCover/BackgroundCover.component";
 import { useTransition } from "@/utils/transition";
+import { ArrowDirection, useKeyboardInput } from "@/utils/keyboardInput";
 
 export interface RendererProps {
   projects: ProjectListItemData[];
@@ -21,6 +22,8 @@ export interface RendererProps {
     weather: string;
   }
 }
+
+const createProjectLink = (slug: string) => '/new-project/' + slug
 
 export const Renderer = (props: RendererProps) => {
   const [activeIndex, setActiveIndex] = useState(0)
@@ -46,9 +49,32 @@ export const Renderer = (props: RendererProps) => {
     setActiveIndex,
     hide: transitionOut
   }
+
   const activeProjectSlug = props.projects[activeIndex].slug;
+
   const allProjectCoverUrls = props.projects.map(({ cover }) => cover.url)
   const allProjectColors = props.projects.map(({ backgroundColor }) => backgroundColor.hex);
+  const onArrow = (dir: ArrowDirection) => {
+    switch(dir) {
+      case "down":
+      case "right":
+        changeActiveIndex(1)
+        break
+      case "up":
+      case "left":
+        changeActiveIndex(-1)
+    }
+  }
+  const redirectOnConfirm = () => {
+    const projectLink = createProjectLink(activeProjectSlug)
+    redirectTo(projectLink)
+  }
+
+  useKeyboardInput({
+    onArrow,
+    onConfirm: redirectOnConfirm
+  })
+
 
   const backgroundProps = {
     coverUrls: allProjectCoverUrls,

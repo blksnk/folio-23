@@ -12,7 +12,7 @@
   height: 100%
 
   @media only screen and (max-width: variables.$breakpoint-tablet)
-    grid-row: 3 / -3
+    grid-row: 3 / -4
 
   .frame
     grid-row: 1 / span 1
@@ -32,7 +32,7 @@
 
     &.portrait
       transform: scaleY(0)
-      animation: 400ms variables.$bezier 1 normal forwards appearPortrait
+      animation: 400ms variables.$bezier 1 normal forwards appearLandscape
 
     &.landscape
       transform: scaleX(0)
@@ -54,13 +54,17 @@
 
 
 @keyframes appearPortrait
-  from
-    transform: scaleY(0)
-  to
-    transform: scaleY(1)
+  0%
+    transform: scaleY(0) scaleX(0)
+  50%
+    transform: scaleY(1) scaleX(0)
+  100%
+    transform: scaleY(1) scaleX(1)
 
 @keyframes appearLandscape
-  from
-    transform: scaleX(0)
-  to
-    transform: scaleX(1)
+  0%
+    transform: scaleY(0) scaleX(0)
+  50%
+    transform: scaleY(0) scaleX(1)
+  100%
+    transform: scaleY(1) scaleX(1)
