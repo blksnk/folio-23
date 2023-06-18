@@ -32,11 +32,11 @@
 
     &.portrait
       transform: scaleY(0)
-      animation: 400ms variables.$bezier 1 normal forwards appearLandscape
+      animation: 1200ms variables.$bezier 1 normal forwards appearFrame
 
     &.landscape
       transform: scaleX(0)
-      animation: 400ms variables.$bezier 1 normal forwards appearLandscape
+      animation: 1200ms variables.$bezier 1 normal forwards appearFrame
 
     .galleryMedia
       object-fit: cover
@@ -51,20 +51,25 @@
         opacity: 1
         filter: blur(0)
 
+    &.hide
+      transform: scale(1)
+      animation-name: hideFrame !important
+      animation-duration: 400ms
+      animation-play-state: running
 
+      .galleryMedia
+        transition-duration: 300ms
 
-@keyframes appearPortrait
+@keyframes appearFrame
   0%
     transform: scaleY(0) scaleX(0)
   50%
-    transform: scaleY(1) scaleX(0)
+    transform: scaleY(0.001) scaleX(1)
   100%
     transform: scaleY(1) scaleX(1)
 
-@keyframes appearLandscape
+@keyframes hideFrame
   0%
-    transform: scaleY(0) scaleX(0)
-  50%
-    transform: scaleY(0) scaleX(1)
+    transform: scale(1)
   100%
-    transform: scaleY(1) scaleX(1)
+    transform: scaleY(0)

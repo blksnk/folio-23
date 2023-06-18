@@ -2,7 +2,7 @@ type ClassDef = [string, boolean | undefined] | string | [ string ];
 
 export const combineClasses = (...classes: ClassDef[]): string => {
   return classes.reduce((acc: string, classDef) => {
-    let additionalClass = ""
+    let additionalClass
     if (typeof classDef === "string") {
       additionalClass = classDef
     }
@@ -16,7 +16,7 @@ export const combineClasses = (...classes: ClassDef[]): string => {
   }, "") as string
 }
 
-export const replaceWithSpacesWhenHidden = (s: string, hide?: boolean) => hide ? Array(s.length).fill(" ").join("") : s
+export const replaceWithSpacesWhenHidden = (s: string, hide?: boolean) => hide ? Array(s.length).fill(" ").map((_, i) => s[i] === "\n" ? s[i] : _).join("") : s
 
 export const clamp = (n: number, min: number, max: number) => {
   return Math.max(Math.min(n, max), min);

@@ -32,6 +32,7 @@ const formatProjectMedias = (medias: ProjectMedia[]): FormattedProjectMedia[] =>
     const title = displayTitles[i];
     const titleDiff = longestMediaTitleLength - title.length
     const displayTitle = title + Array(titleDiff).fill(" ").join("");
+    const isPortrait = 1 > imgRatio
     const closestRatio = getClosestRatio(imgRatio);
     const isVideo = m.asset.mimeType.includes("video")
     return {
@@ -41,6 +42,7 @@ const formatProjectMedias = (medias: ProjectMedia[]): FormattedProjectMedia[] =>
       url: m.asset.url,
       id: m.id,
       isVideo,
+      isPortrait,
     }
   }
   return medias.map((m, i) => formatSingleMedia(m, i));
@@ -59,6 +61,17 @@ const getAverageColors = async (mediaUrls: string[]) => {
   }));
 }
 
+const sortMediasByRatio = (medias: FormattedProjectMedia[]) => {
+  return [...medias].sort((a, b) => {
+    const comp = a.isPortrait && b.isPortrait ? -1 : 1
+    return a.imgRatio > b.imgRatio ? -comp : comp;
+  })
+}
+
+const findNonPortraitMediaCount = (medias: FormattedProjectMedia[]) => medias.reduce((acc: number, media) => {
+  return (media.isPortrait ? acc : acc + 1)
+}, 0)
+
 export default async function ProjectPage({ params }: { params: { slug: string } }) {
   const project = await fetchProjectData(params.slug)
 
@@ -71,9 +84,12 @@ export default async function ProjectPage({ params }: { params: { slug: string }
   const mediaUrls = formattedMedias.map(m => m.url);
   // TODO: add slight random variation to each background color of a project
   const colors = await getAverageColors(mediaUrls)
+  const mediasByRatio = sortMediasByRatio(formattedMedias)
 
   const rendererProps = {
     medias: formattedMedias,
+    mediasByRatio,
+    nonPortraitMediaCount: findNonPortraitMediaCount(mediasByRatio),
     coverUrls: mediaUrls,
     colors,
     project,

@@ -1,8 +1,8 @@
 "use client"
 
 import styles from './Gallery.module.sass';
-import breakpoints from "@/utils/breakpoints";
-import { useEffect, useMemo, useState } from "react";
+import { breakpoints } from "@/utils/breakpoints";
+import { useEffect, useState } from "react";
 import { combineClasses } from "@/utils/css";
 import { FormattedProjectMedia } from "@/api/queries/oneProject";
 import { preloadImage } from "@/utils/images";
@@ -14,23 +14,25 @@ const preloadAllImages = async (coverUrls: string[]) => {
 
 interface GalleryProps {
   medias: FormattedProjectMedia[];
+  nonPortraitMediaCount: number;
   activeMediaId: string;
   hide?: boolean;
+  walkGallery: () => void;
 }
 
-
-// TODO: wait for images to load before rendering
 export function Gallery(props: GalleryProps) {
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [ isTablet, setIsTablet ] = useState(false)
+  const [ isMobile, setIsMobile ] = useState(false)
   useEffect(() => {
-    const computeIsTablet = () => {
-      setIsTablet(window.innerWidth <= breakpoints.tablet)
+    const computeBreakpoint = () => {
+      setIsTablet(breakpoints.isTablet())
+      setIsMobile(breakpoints.isMobile())
     }
-    window.addEventListener("resize", computeIsTablet)
-    computeIsTablet()
+    window.addEventListener("resize", computeBreakpoint)
+    computeBreakpoint()
 
-    return () => window.removeEventListener("resize", computeIsTablet)
+    return () => window.removeEventListener("resize", computeBreakpoint)
   }, [])
   useEffect(() => {
     if(!imagesLoaded) {
@@ -39,84 +41,58 @@ export function Gallery(props: GalleryProps) {
   }, [])
   // split landscape and portrait medias
 
-  const [landscapeMedias, portraitMedias, squareMedias] = useMemo(() => {
-    return props.medias
-      .reduce((acc: [FormattedProjectMedia[], FormattedProjectMedia[], FormattedProjectMedia[]], media) => {
-        const landscape = acc[0];
-        const portrait = acc[1];
-        const square = acc[2];
-        if (media.closestRatio > 1) {
-          landscape.push(media);
-        } else if (media.closestRatio < 1) {
-          portrait.push(media)
-        } else {
-          square.push(media)
-        }
-        return [ landscape, portrait, square ]
-      }, [[], [], []])
-      .map((medias) => medias.sort((a, b) => {
-        const comp = 1
-        return a.imgRatio > b.imgRatio ? -comp : comp;
-      }))
-  }, [props.medias])
-
   const mediaProps = (media: FormattedProjectMedia) => {
 
     const active = media.id === props.activeMediaId && imagesLoaded && !props.hide;
     const zIndex = active ? 1 : 2;
     const aspectRatio = String(media.imgRatio);
+    const isPortrait = 1 > media.imgRatio
     return {
       active,
       zIndex,
       aspectRatio,
+      isPortrait,
     }
   }
-  const sidePadding = isTablet ? "9px" : "44px"
-  const spacing = isTablet ? 6 : 12
+  const spacing = isMobile ? 24 : 12
   const columnCount = 10
   const rowCount = isTablet ? 7 : 9;
-  const topPadding = isTablet ? "9px" : "36px"
+  const topPadding = isMobile ? "12px" : isTablet ? "24px" : "36px"
+  const sidePadding = isMobile ? "9px" : isTablet ? "28px" : "44px"
   const containerWidth = `calc((100vw - (${sidePadding} * 2)) / 12 * ${columnCount})`
   const containerHeight = `calc((100vh - (${topPadding} * 2)) / 12 * ${rowCount})`
+
   const frameHeightLandscape = (i: number) => {
-    return `calc(min(calc(${containerWidth} / ${landscapeMedias[0].imgRatio}), ${containerHeight}) - ${i * spacing}px)`
+    return `calc(min(calc(${containerWidth} / ${props.medias[0].imgRatio}), ${containerHeight}) + ${i * spacing}px)`
   }
   const frameHeightPortrait = (i: number) => {
-    return `calc(min(calc(${containerWidth} / ${portraitMedias[0].imgRatio}), ${containerHeight}) - ${i * spacing}px)`
+    return `calc(min(calc(${containerWidth} / ${props.medias[props.medias.length - 1].imgRatio}), ${containerHeight}) - ${(i - props.nonPortraitMediaCount) * spacing}px)`
+  }
+
+  const frameWidthPortrait = (i: number) => {
+    console.log(i)
+    return `calc(min(calc(${containerHeight} * ${props.medias[props.medias.length - 1].imgRatio}), ${containerWidth}) + ${i * spacing}px)`
   }
 
   return (
-    <div className={styles.framesContainer}>
+    <div className={styles.framesContainer} onClick={props.walkGallery}>
 
-      {[...landscapeMedias, ...squareMedias].map((media, index) => {
-
-        const height = frameHeightLandscape(index)
-        const { aspectRatio, zIndex, active } = mediaProps(media);
+      {props.medias.map((media, index) => {
+        const { aspectRatio, zIndex, active, isPortrait } = mediaProps(media);
+        const height = isPortrait ? undefined : frameHeightLandscape(index)
+        const width = isPortrait ? frameWidthPortrait(props.medias.length - 1 - index) : undefined
+        const animationDelay = props.hide ? 100 * index + "ms" : 300 + index * 200 + "ms";
         const style = {
           height,
+          width,
+          aspectRatio,
+          maxWidth: containerWidth,
           maxHeight: containerHeight,
-          aspectRatio,
-          animationDelay: 300 + index * 200 + "ms",
+          animationDelay,
           zIndex,
         }
         return (
-          <div key={media.id} style={style} className={combineClasses(styles.frame, styles.landscape, [styles.visible, active])}>
-            <GalleryMedia media={media} visible={active}/>
-          </div>
-        )
-      })}
-      {portraitMedias.map((media, index) => {
-        const i = index + landscapeMedias.length + squareMedias.length;
-        const height = frameHeightPortrait(i)
-        const { aspectRatio, zIndex, active } = mediaProps(media);
-        const style = {
-          height,
-          aspectRatio,
-          animationDelay: 300 + i * 200 + "ms",
-          zIndex,
-        }
-        return (
-          <div key={media.id} style={style} className={combineClasses(styles.frame, styles.portrait, [styles.visible, active])}>
+          <div key={media.id} style={style} className={combineClasses(styles.frame, isPortrait ? styles.portrait : styles.landscape, [styles.visible, active], [styles.hide, props.hide])}>
             <GalleryMedia media={media} visible={active}/>
           </div>
         )

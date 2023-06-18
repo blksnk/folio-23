@@ -1,7 +1,7 @@
 import styles from "@/app/new-project/[slug]/newProject.module.sass";
 import { TextLine } from "@/components/AnimatedText/TextLine";
 import { formatNumber } from "@/utils/number";
-import { combineClasses, replaceWithSpacesWhenHidden } from "@/utils/css";
+import { combineClasses } from "@/utils/css";
 import { Arrow } from "@/components/Arrow.component";
 import { useState } from "react";
 
@@ -21,7 +21,7 @@ export function MediaSelector(props: MediaSelectorProps) {
   const onLeave = () => setHoveringIndex(undefined)
   return (
     <div className={styles.mediaSelector}>
-      <button className={styles.arrowContainer} onClick={props.goToPrev} title="Previous Media">
+      <button className={combineClasses(styles.arrowContainer, [styles.hide, props.hide])} onClick={props.goToPrev} title="Previous Media">
         <Arrow disabled={props.activeIndex === 0}/>
       </button>
       {props.colors.map((color, index) => {
@@ -38,7 +38,7 @@ export function MediaSelector(props: MediaSelectorProps) {
           </button>
         )
       })}
-      <button className={styles.arrowContainer} onClick={props.goToNext} title="Next media">
+      <button className={combineClasses(styles.arrowContainer, [styles.hide, props.hide])} onClick={props.goToNext} title="Next media">
         <Arrow disabled={props.activeIndex === props.colors.length -1} down/>
       </button>
     </div>

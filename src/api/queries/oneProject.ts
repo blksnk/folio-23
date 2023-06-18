@@ -79,7 +79,9 @@ export interface FormattedProjectMedia {
   closestRatio: number;
   url: string;
   id: string;
+  // TODO: add video support
   isVideo: boolean;
+  isPortrait: boolean;
 }
 
 export interface FormattedProject extends ProjectData {

@@ -25,6 +25,8 @@ import { ArrowDirection, useKeyboardInput } from "@/utils/keyboardInput";
 
 interface ProjectRendererProps {
   medias: FormattedProjectMedia[];
+  mediasByRatio: FormattedProjectMedia[];
+  nonPortraitMediaCount: number;
   coverUrls: string[];
   colors: {
     rgb: string;
@@ -40,6 +42,15 @@ export const ProjectRenderer = (props: ProjectRendererProps) => {
 
   const goToPrev = () => setActiveIndex(Math.max(0, activeIndex - 1))
   const goToNext = () => setActiveIndex(Math.min(props.medias.length - 1, activeIndex + 1))
+
+  const walkGallery = () => {
+    if(activeIndex >= props.medias.length - 1) {
+      setActiveIndex(0)
+    }
+    else {
+      setActiveIndex(activeIndex + 1)
+    }
+  }
 
   const goBack = () => redirectTo('/new')
   const onArrow = (dir: ArrowDirection) => {
@@ -79,10 +90,14 @@ export const ProjectRenderer = (props: ProjectRendererProps) => {
   }
 
   const activeMedia = props.medias[activeIndex]
+  console.log(props.mediasByRatio, props.medias)
 
   const galleryProps = {
-    medias: props.medias,
+    medias: props.mediasByRatio,
     activeMediaId: activeMedia?.id ?? "no id",
+    walkGallery,
+    nonPortraitMediaCount: props.nonPortraitMediaCount,
+    hide: transitionOut,
   }
 
   const descriptionProps = {
@@ -102,7 +117,7 @@ export const ProjectRenderer = (props: ProjectRendererProps) => {
       <BackgroundCover {...backgroundProps} />
       <Gallery { ...galleryProps }/>
       <LeftContent { ...leftContentProps } />
-      <ProjectInfo project={props.project} />
+      <ProjectInfo project={props.project} hide={transitionOut} />
       <RightColumn {...mediaSelectorProps}/>
       <Description { ...descriptionProps }/>
       <ProjectOverlay hide={transitionOut}/>
