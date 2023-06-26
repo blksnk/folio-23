@@ -11,7 +11,7 @@ const preloadAllImages = async (coverUrls: string[]) => {
   return true
 }
 
-interface BackgroundProps {
+export interface BackgroundProps {
   coverUrls: string[];
   colors?: string[];
   singleColor?: string;
@@ -28,12 +28,6 @@ const clearTimeoutSafe = (id: number) => {
   catch(e) {
     // fail silently
   }
-}
-
-const setHTMLBackgroundColor = (color: string) => {
-  if(!document?.documentElement) return;
-
-  document.documentElement.style.backgroundColor = color;
 }
 
 export const BackgroundCover = (props: BackgroundProps) => {

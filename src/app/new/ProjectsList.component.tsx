@@ -27,16 +27,21 @@ interface PageLeftProps {
   hide?: boolean;
   projects: ProjectListItemData[];
   activeIndex: number;
+  redirectOnConfirm: () => void;
 }
 
 export const PageLeft = (props: PageLeftProps) => {
   const { hide } = props
   const [ hoveringIndex, setHoveringIndex ] = useState<number | null>(null)
   const activeProject = props.projects[props.activeIndex]
-  const projectId = activeProject?.id ?? "unknown id"
-  const activeProjectId = hide ? Array(projectId.length).fill(" ").join('') : projectId;
-  const activeProjectColor = hide ? "       " : activeProject?.backgroundColor.hex ?? "#000000"
-  const handleClick = (index: number) => () => props.setActiveIndex(index)
+  const activeProjectId = activeProject?.id ?? "unknown id"
+  const activeProjectColor = activeProject?.backgroundColor.hex ?? "#000000";
+  const handleClick = (index: number) => () => {
+    if(index === props.activeIndex) {
+      props.redirectOnConfirm();
+    }
+    props.setActiveIndex(index);
+  }
   const handleHover = (index: number) => () => setHoveringIndex(index)
 
   const handleLeave = () => setHoveringIndex(null)
@@ -64,7 +69,7 @@ export const PageLeft = (props: PageLeftProps) => {
           <TextLine className={ styles.color } animatedTextProps={ {
             fixedDuration: 600,
             delay: 0
-          } }>{ activeProjectColor }</TextLine>
+          } }>{ replaceWithSpacesWhenHidden(activeProjectColor, hide) }</TextLine>
         </div>
         <div className={ combineClasses(l(styles.indices, hide), styles.table) }>
           { props.projects.map((_, index) =>
@@ -111,7 +116,7 @@ export const PageLeft = (props: PageLeftProps) => {
           <TextLine className={ styles.activeId } animatedTextProps={ {
             fixedDuration: 600,
             delay: 0
-          } }>{ activeProjectId }</TextLine>
+          } }>{ replaceWithSpacesWhenHidden(activeProjectId, hide) }</TextLine>
         </div>
 
         <div className={ l(styles.linesCenterRight, hide) }>

@@ -19,6 +19,7 @@
   text-align: left
   width: 100%
   overflow-x: hidden
+  cursor: pointer
 
   > span
     text-align: left
@@ -311,7 +312,7 @@
       h3
         font-size: 18px
         white-space: initial
-        textalign: center
+        text-align: center
 
   .leftSplit
     display: grid
@@ -378,7 +379,6 @@
       justify-content: flex-end
       padding: variables.$unit variables.$unit / 2
       padding-bottom: 0
-      left-bottom: 0
 
       .color
         transform: rotate(180deg)
@@ -639,7 +639,7 @@
     transition: all 400ms variables.$bezier 200ms
 
     &.overBlur
-    filter: blur(variables.$unit * 3)
+      filter: blur(variables.$unit * 3)
 
     .oldBackgroundImage
       opacity: 1

@@ -10,7 +10,7 @@ import { Weather } from "@/app/new/Weather.component";
 import { Timer } from "@/app/new/Timer.component";
 import { useSetMousePos } from "@/utils/mousePos";
 import {
-  BackgroundCover
+  BackgroundCover, BackgroundProps
 } from "@/components/BackgroundCover/BackgroundCover.component";
 import { useTransition } from "@/utils/transition";
 import { ArrowDirection, useKeyboardInput } from "@/utils/keyboardInput";
@@ -42,13 +42,6 @@ export const Renderer = (props: RendererProps) => {
 
   }, [activeIndex, props.projects])
 
-  const childProps = {
-    projects: props.projects,
-    activeIndex,
-    changeActiveIndex,
-    setActiveIndex,
-    hide: transitionOut
-  }
 
   const activeProjectSlug = props.projects[activeIndex].slug;
 
@@ -70,13 +63,21 @@ export const Renderer = (props: RendererProps) => {
     redirectTo(projectLink)
   }
 
+  const childProps = {
+    projects: props.projects,
+    activeIndex,
+    changeActiveIndex,
+    setActiveIndex,
+    hide: transitionOut,
+    redirectOnConfirm,
+  }
+
   useKeyboardInput({
     onArrow,
     onConfirm: redirectOnConfirm
   })
 
-
-  const backgroundProps = {
+  const backgroundProps: BackgroundProps = {
     coverUrls: allProjectCoverUrls,
     colors: allProjectColors,
     hide: transitionOut,
