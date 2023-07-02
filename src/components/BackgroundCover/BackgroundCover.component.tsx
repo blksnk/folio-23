@@ -72,13 +72,17 @@ export const BackgroundCover = (props: BackgroundProps) => {
 
   return (
     <ClientOnlyPortal selector="#backgroundRoot">
-      <>
-        <div className={backgroundColorKlass} style={{ backgroundColor }}></div>
-        <div className={backgroundKlass} style={{ mixBlendMode: props.blendMode }}>
-          <Image fill src={coverUrl} priority alt="project cover" className={styles.backgroundImage}></Image>
-          <Image fill src={oldCoverUrl} priority alt="project cover" className={styles.oldBackgroundImage}></Image>
+      { activeCover && <>
+        <div className={ backgroundColorKlass }
+             style={ { backgroundColor } }></div>
+        <div className={ backgroundKlass }
+             style={ { mixBlendMode: props.blendMode } }>
+          <Image fill src={ coverUrl } priority alt="project cover"
+                 className={ styles.backgroundImage }></Image>
+          <Image fill src={ oldCoverUrl } priority alt="project cover"
+                 className={ styles.oldBackgroundImage }></Image>
         </div>
-      </>
+      </> }
     </ClientOnlyPortal>
   )
 }
