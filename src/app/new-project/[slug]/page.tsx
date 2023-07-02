@@ -27,19 +27,27 @@ const formatProjectMedias = (medias: ProjectMedia[]): FormattedProjectMedia[] =>
     return title.length > acc ? title.length : acc
   }, 0)
 
-  const formatSingleMedia = (m: ProjectMedia, i: number) => {
-    const imgRatio = m.asset.width / m.asset.height;
+  const formatVideoUrl = (url: string) => {
+    const parts = url.split('/')
+    console.log(parts)
+    return "https://" + parts[2] + "/" + parts[parts.length - 1]
+  }
+
+  const formatSingleMedia = (m: ProjectMedia, i: number): FormattedProjectMedia => {
+    const isVideo = m.asset.mimeType.includes("video")
+    const a = m.videoThumbnail ?? m.asset;
+    const imgRatio = a.width / a.height;
     const title = displayTitles[i];
     const titleDiff = longestMediaTitleLength - title.length
     const displayTitle = title + Array(titleDiff).fill(" ").join("");
     const isPortrait = 1 > imgRatio
     const closestRatio = getClosestRatio(imgRatio);
-    const isVideo = m.asset.mimeType.includes("video")
     return {
       displayTitle,
       imgRatio,
       closestRatio,
-      url: m.asset.url,
+      url: isVideo ? formatVideoUrl(m.asset.url) : m.asset.url,
+      videoThumbnailUrl: m.videoThumbnail?.url,
       id: m.id,
       isVideo,
       isPortrait,
@@ -81,7 +89,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
   }
 
   const formattedMedias = formatProjectMedias(project?.medias ?? []);
-  const mediaUrls = formattedMedias.map(m => m.url);
+  const mediaUrls = formattedMedias.map(m => m.videoThumbnailUrl ?? m.url);
   // TODO: add slight random variation to each background color of a project
   const colors = await getAverageColors(mediaUrls)
   const mediasByRatio = sortMediasByRatio(formattedMedias)

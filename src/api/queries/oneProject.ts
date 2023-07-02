@@ -36,6 +36,14 @@ export const oneProject = `
           )
           mimeType
         }
+        videoThumbnail {
+          height
+          width
+          url(
+            transformation: {image: {resize: {fit: scale, width: $width}}, document: {output: {format: webp}}}
+          )
+          mimeType
+        }
       }
     }
       ${sections}
@@ -51,6 +59,12 @@ export interface ProjectMedia {
     height: number;
     mimeType: string;
   },
+  videoThumbnail: {
+    url: string;
+    width: number;
+    height: number;
+    mimeType: string;
+  } | null;
   title: string;
 }
 
@@ -78,6 +92,7 @@ export interface FormattedProjectMedia {
   imgRatio: number;
   closestRatio: number;
   url: string;
+  videoThumbnailUrl?: string;
   id: string;
   // TODO: add video support
   isVideo: boolean;

@@ -36,7 +36,7 @@ export function Gallery(props: GalleryProps) {
   }, [])
   useEffect(() => {
     if(!imagesLoaded) {
-      preloadAllImages(props.medias.map(({ url }) => url)).then(() => setImagesLoaded(true))
+      preloadAllImages(props.medias.filter(({ isVideo }) => !isVideo).map(({ url }) => url)).then(() => setImagesLoaded(true))
     }
   }, [])
   // split landscape and portrait medias
@@ -63,14 +63,13 @@ export function Gallery(props: GalleryProps) {
   const containerHeight = `calc((100vh - (${topPadding} * 2)) / 12 * ${rowCount})`
 
   const frameHeightLandscape = (i: number) => {
-    return `calc(min(calc(${containerWidth} / ${props.medias[0].imgRatio}), ${containerHeight}) + ${i * spacing}px)`
+    return `calc(min(calc(${containerWidth} / ${props.medias[0].imgRatio}), ${containerHeight}) - ${i * spacing}px)`
   }
   const frameHeightPortrait = (i: number) => {
     return `calc(min(calc(${containerWidth} / ${props.medias[props.medias.length - 1].imgRatio}), ${containerHeight}) - ${(i - props.nonPortraitMediaCount) * spacing}px)`
   }
 
   const frameWidthPortrait = (i: number) => {
-    console.log(i)
     return `calc(min(calc(${containerHeight} * ${props.medias[props.medias.length - 1].imgRatio}), ${containerWidth}) + ${i * spacing}px)`
   }
 
@@ -79,12 +78,12 @@ export function Gallery(props: GalleryProps) {
 
       {props.medias.map((media, index) => {
         const { aspectRatio, zIndex, active, isPortrait } = mediaProps(media);
-        const height = isPortrait ? undefined : frameHeightLandscape(index)
-        const width = isPortrait ? frameWidthPortrait(props.medias.length - 1 - index) : undefined
+        const height = isPortrait ? frameHeightPortrait(index) : frameHeightLandscape(index)
+        // const width = isPortrait ? frameWidthPortrait(props.medias.length - 1 - index) : undefined
         const animationDelay = props.hide ? 100 * index + "ms" : 300 + index * 200 + "ms";
         const style = {
           height,
-          width,
+          // width,
           aspectRatio,
           maxWidth: containerWidth,
           maxHeight: containerHeight,
@@ -108,6 +107,13 @@ interface GalleryMediaProps {
 
 const GalleryMedia = (props: GalleryMediaProps) => {
   const klass = combineClasses(styles.galleryMedia, [styles.visible, props.visible])
+  if(props.media.isVideo) {
+    return (
+      <video autoPlay muted loop className={combineClasses(klass, styles.galleryMediaVideo)}>
+        <source src={props.media.url}/>
+      </video>
+    )
+  }
   return (
     <Image fill src={props.media.url} alt={props.media.displayTitle} sizes="(max-width: 600px) 100vw, 80vw" className={klass}/>
   )
