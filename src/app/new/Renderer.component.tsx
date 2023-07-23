@@ -4,7 +4,7 @@ import styles from "@/app/new/page.module.sass";
 import { Explore } from "@/app/new/Explore.component";
 import { PageLeft } from "@/app/new/ProjectsList.component";
 import { ProjectListItemData } from "@/api/queries/allProjects";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { OverlayLines } from "@/app/new/Overlay.component";
 import { Weather } from "@/app/new/Weather.component";
 import { Timer } from "@/app/new/Timer.component";
@@ -14,6 +14,8 @@ import {
 } from "@/components/BackgroundCover/BackgroundCover.component";
 import { useTransition } from "@/utils/transition";
 import { ArrowDirection, useKeyboardInput } from "@/utils/keyboardInput";
+
+const CAROUSEL_INTERVAL = 6000
 
 export interface RendererProps {
   projects: ProjectListItemData[];
@@ -27,7 +29,9 @@ const createProjectLink = (slug: string) => '/new-project/' + slug
 
 export const Renderer = (props: RendererProps) => {
   const [activeIndex, setActiveIndex] = useState(0)
-  const { transitionOut, redirectTo} = useTransition()
+  const timeoutId = useRef<NodeJS.Timer>();
+  const doCarousel = useRef(true);
+  const { transitionOut, redirectTo } = useTransition()
   useSetMousePos()
 
   const changeActiveIndex = useCallback((n: 1 | -1) => {
@@ -48,6 +52,8 @@ export const Renderer = (props: RendererProps) => {
   const allProjectCoverUrls = props.projects.map(({ cover }) => cover.url)
   const allProjectColors = props.projects.map(({ backgroundColor }) => backgroundColor.hex);
   const onArrow = (dir: ArrowDirection) => {
+    clearCarouselTimeout()
+    doCarousel.current = false;
     switch(dir) {
       case "down":
       case "right":
@@ -58,7 +64,13 @@ export const Renderer = (props: RendererProps) => {
         changeActiveIndex(-1)
     }
   }
+
+  const clearCarouselTimeout = () => clearTimeout(timeoutId.current);
+
+  const onInterval = () => setActiveIndex(Math.min(activeIndex + 1, props.projects.length - 1));
   const redirectOnConfirm = () => {
+    doCarousel.current = false;
+    clearCarouselTimeout();
     const projectLink = createProjectLink(activeProjectSlug)
     redirectTo(projectLink)
   }
@@ -67,7 +79,11 @@ export const Renderer = (props: RendererProps) => {
     projects: props.projects,
     activeIndex,
     changeActiveIndex,
-    setActiveIndex,
+    setActiveIndex: (index: number) => {
+      doCarousel.current = false;
+      clearCarouselTimeout();
+      setActiveIndex(index);
+    },
     hide: transitionOut,
     redirectOnConfirm,
   }
@@ -76,6 +92,20 @@ export const Renderer = (props: RendererProps) => {
     onArrow,
     onConfirm: redirectOnConfirm
   })
+
+  useEffect(() =>{
+    if (timeoutId.current) {
+      clearCarouselTimeout()
+    }
+    if (doCarousel.current) {
+      timeoutId.current = setTimeout(() => changeActiveIndex(1), CAROUSEL_INTERVAL);
+    }
+
+  }, [activeIndex, doCarousel])
+
+  useEffect(() => () => {
+    clearCarouselTimeout()
+  }, []);
 
   const backgroundProps: BackgroundProps = {
     coverUrls: allProjectCoverUrls,
