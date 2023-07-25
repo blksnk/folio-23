@@ -67,7 +67,6 @@ export const Renderer = (props: RendererProps) => {
 
   const clearCarouselTimeout = () => clearTimeout(timeoutId.current);
 
-  const onInterval = () => setActiveIndex(Math.min(activeIndex + 1, props.projects.length - 1));
   const redirectOnConfirm = () => {
     doCarousel.current = false;
     clearCarouselTimeout();
@@ -86,6 +85,7 @@ export const Renderer = (props: RendererProps) => {
     },
     hide: transitionOut,
     redirectOnConfirm,
+    redirectTo,
   }
 
   useKeyboardInput({

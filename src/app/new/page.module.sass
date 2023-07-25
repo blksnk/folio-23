@@ -234,83 +234,61 @@
       transform-origin: top
       opacity: 0
 
-  .profileCta
+  .columnContainer
+    display: flex
+    flex-direction: column
+    gap: variables.$unit
+    justify-content: flex-start
+    align-items: flex-start
+
+  .archive
     grid-column: 1 / span 1
     grid-row: 11 / span 2
-    position: relative
-    width: 50%
-    min-width: max-content
-    padding: variables.$unit
-    @include variables.flex-center
+    background: none
+    border: none
+    font-family: inherit
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    gap: variables.$unit
+    padding: variables.$unit 0
 
-    @media only screen and (max-width: variables.$breakpoint-desktop-small)
-      width: 100%
-
-    @media only screen and (max-width: variables.$breakpoint-mobile)
-      position: fixed
-      left: calc(24px + 12px + 9px + 6px)
-      right: calc((100vw - 18px) / 12 * 5 + 9px)
-      padding: 0
-      top: calc((100% - (variables.$unit * 2)) / 12 * 3 + 12px)
-      height: calc((100% - (variables.$unit * 2)) / 12) // take bottom lines into account
-      width: auto
-
-    h3
-      user-select: none
-      font-size: 24px
-      text-align: right
-      font-weight: 400
+    .archiveTitle
       font-style: italic
       transition: all 400ms variables.$bezier 0s
-      transform: translateY(50%)
-      opacity: 0
-      white-space: nowrap
-      animation: 600ms variables.$bezier 1200ms normal forwards appearText
 
-    &:before
-      position: absolute
-      content: ""
-      top: variables.$unit * 1.5
-      left: variables.$unit * 1.5
-      bottom: variables.$unit * 1.5
-      right: variables.$unit * 1.5
-      background: rgba(255, 255, 255, 0.1)
-      border-radius: 50%
-      transform: scale(0)
-      transition: all 400ms variables.$bezier 0s
-      animation: 600ms variables.$bezier 1200ms normal forwards showBefore
+      span
+        font-weight: 600
 
-    &:hover
-      &:before
-        background: rgba(255, 255, 255, 0.2)
-        top: 0
-        left: 0
-        bottom: 0
-        right: 0
-        border-radius: 0
+    .description, .description span
+      text-align: left
 
-      h3
-        transition: all 600ms variables.$bezier 0s
+    @media only screen and (max-width: variables.$breakpoint-mobile)
+      grid-row: 2 / span 3
+
+  .profileCta, .archiveCta
+    position: relative
+    text-transform: none
+    padding: 0 1.125rem
+    font-size: 1.25rem
+    font-style: italic
+    align-self: end
+    opacity: 0
+    animation: 600ms variables.$bezier 1600ms normal forwards appearText
 
     &.hide
-      &:before
-        animation-name: hideBefore
-        animation-delay: 0ms
-        animation-play-state: running
-
-      h3
-        transform: translateY(0)
-        animation-name: hideText
-        animation-delay: 0ms
-        animation-duration: 300ms
-        animation-play-state: running
+      transform: translateY(0)
+      animation-name: hideText
+      animation-delay: 0ms
+      animation-duration: 300ms
+      animation-play-state: running
 
     @media only screen and (max-width: variables.$breakpoint-mobile)
       grid-row: 5 / 7
       min-width: unset
 
       h3
-        font-size: 18px
+        font-size: 1.125rem
         white-space: initial
         text-align: center
 
@@ -326,10 +304,10 @@
     .profile
       grid-column: 2 / span 1
       grid-row: 11 / span 2
-      padding-top: variables.$unit
-      display: grid
-      grid-template-rows: auto 1fr
-      grid-template-columns: 1fr
+      padding: variables.$unit 0
+      display: flex
+      flex-direction: column
+      justify-content: space-between
       gap: variables.$unit
       background: none
       border: none

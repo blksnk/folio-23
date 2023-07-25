@@ -4,7 +4,7 @@ import styles from './page.module.sass'
 import { TextLine } from "@/components/AnimatedText/TextLine";
 import Link from "next/link";
 import { LineGroup } from "@/components/Lines/LineGroup";
-import { useState } from "react";
+import { MouseEventHandler, useState } from "react";
 import fontRepo from "@/app/fonts";
 import { combineClasses, replaceWithSpacesWhenHidden } from "@/utils/css";
 import { ProjectListItemData } from "@/api/queries/allProjects";
@@ -17,9 +17,11 @@ const l = (lineClass: string, hide?: boolean) => `${ hide ? styles.hideLine : ''
 
 
 const profileDescription = `Creative designer with a focus on 3D,
-branding, UI and all things *experimental*.
-Based in Paris.`
+branding, UI and all things *experimental*.`
 const profileName = "Jean-Nicolas Veigel"
+const archiveTitle = "Archive"
+const archiveDescription = `One-off projects, vectors, graphics.
+Exploring random stuff.`
 
 interface PageLeftProps {
   changeActiveIndex: (n: (1 | -1)) => void;
@@ -28,6 +30,7 @@ interface PageLeftProps {
   projects: ProjectListItemData[];
   activeIndex: number;
   redirectOnConfirm: () => void;
+  redirectTo: (url: string) => void;
 }
 
 export const PageLeft = (props: PageLeftProps) => {
@@ -55,6 +58,11 @@ export const PageLeft = (props: PageLeftProps) => {
     hovering: index === hoveringIndex,
     className: styles.tableCell,
   })
+
+  const redirectToArchive: MouseEventHandler<HTMLAnchorElement> = (e) => {
+    e.preventDefault()
+    props.redirectTo('/archive');
+  }
 
   return (
     <section className={ styles.pageLeft }>
@@ -89,24 +97,24 @@ export const PageLeft = (props: PageLeftProps) => {
 
         <button
           className={ combineClasses(styles.profile, [ styles.hide, hide ]) }>
-          <TextLine
-            animatedTextProps={ { fixedDuration: 600, delay: 0 } }
-            className={ styles.name }
-          >
-            { replaceWithSpacesWhenHidden(profileName, hide) }
-          </TextLine>
-          <TextLine
-            animatedTextProps={ { fixedDuration: 400, delay: 200 } }
-            className={ styles.description }
-          >
-            { replaceWithSpacesWhenHidden(profileDescription, hide) }
-          </TextLine>
+          <div className={styles.columnContainer}>
+            <TextLine
+              animatedTextProps={ { fixedDuration: 600, delay: 0 } }
+              className={ styles.name }
+            >
+              { replaceWithSpacesWhenHidden(profileName, hide) }
+            </TextLine>
+            <TextLine
+              animatedTextProps={ { fixedDuration: 400, delay: 200 } }
+              className={ styles.description }
+            >
+              { replaceWithSpacesWhenHidden(profileDescription, hide) }
+            </TextLine>
+          </div>
+          <span className={combineClasses(styles.profileCta, fontRepo.button.className, [styles.hide, hide])}>Profile ↗</span>
         </button>
       </div>
       <div className={ styles.rightSplit }>
-        <div className={ combineClasses(styles.profileCta, [styles.hide, hide])}>
-          <h3 className={ fontRepo.button.className }>View profile</h3>
-        </div>
         <div className={ l(styles.linesBottomCenter, hide) }>
           <LineGroup count={ 10 } spacing={ 14 } direction="horizontal"/>
         </div>
@@ -157,6 +165,26 @@ export const PageLeft = (props: PageLeftProps) => {
             <Arrow down/>
           </button>
         </div>
+        <Link
+          href="/archive"
+          onClick={redirectToArchive}
+          className={ combineClasses(styles.archive, fontRepo.body.className, [ styles.hide, hide ]) }>
+          <div className={styles.columnContainer}>
+            <TextLine
+              animatedTextProps={ { fixedDuration: 600, delay: 0 } }
+              className={ styles.archiveTitle }
+            >
+              { replaceWithSpacesWhenHidden(archiveTitle, hide) }
+            </TextLine>
+            <TextLine
+              animatedTextProps={ { fixedDuration: 400, delay: 200 } }
+              className={ styles.description }
+            >
+              { replaceWithSpacesWhenHidden(archiveDescription, hide) }
+            </TextLine>
+          </div>
+          <span className={combineClasses(styles.archiveCta, fontRepo.button.className, [styles.hide, hide])}>Archive ↗</span>
+        </Link>
       </div>
     </section>
   )
