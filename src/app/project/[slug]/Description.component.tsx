@@ -1,5 +1,5 @@
 import { combineClasses, replaceWithSpacesWhenHidden } from "@/utils/css";
-import styles from "@/app/new-project/[slug]/newProject.module.sass";
+import styles from "@/app/project/[slug]/newProject.module.sass";
 import { AnimatedTextStaggered } from "@/components/AnimatedText/AnimatedText";
 
 interface DescriptionProps {

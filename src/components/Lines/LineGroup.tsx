@@ -3,7 +3,7 @@ import styles from './lines.module.sass'
 
 interface LineGroupProps {
   count: number;
-  spacing: number | {
+  spacing: number | string | {
     from: number;
     to: number;
   };
@@ -26,7 +26,7 @@ export const LineGroup = (props: LineGroupProps): JSX.Element => {
   return (
     <div className={groupClass}>
       {lines.map((_, index) => {
-        const margin = typeof props.spacing === "number" ? props.spacing : computeMargin(index, props.count, props.spacing.from, props.spacing.to);
+        const margin = typeof props.spacing === "number" || typeof props.spacing === "string" ? props.spacing : computeMargin(index, props.count, props.spacing.from, props.spacing.to);
         return (
           <div key={"line" + index} style={{ [marginProp]: margin }} className={styles.line}></div>
         )

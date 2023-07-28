@@ -12,12 +12,15 @@ export default {
 
 const isServer = typeof window === "undefined"
 
-const w = isServer ? { innerWidth: 1200 } : window;
+const w = isServer ? { innerWidth: 1200, innerHeight: 1200 } : window;
 
 export const isMobile = () => w.innerWidth <= mobile;
 export const isTablet = () => w.innerWidth <= tablet;
 
+export const isVertical = () => w.innerWidth < w.innerHeight;
+
 export const breakpoints = {
   isMobile,
   isTablet,
+  isVertical,
 }

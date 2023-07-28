@@ -1,139 +1,96 @@
-import PageLayout from "@/layouts/PageLayout";
-import AnimatedText, {
-  AnimatedTextStaggered
-} from "@/components/AnimatedText/AnimatedText";
-import TitleGrid from "@/components/TitleGrid";
+import styles from "./newProject.module.sass"
 import { queryClient } from "@/api/client";
-import { oneProject, ProjectDataResponse } from "@/api/queries/oneProject";
-import { contentFixedDuration, pageTextProps } from "@/utils/animations";
-import styles from './page.module.sass'
-import Image from "next/image"
-import GridLayout, { GridItemCenter } from "@/layouts/GridLayout";
-import { SectionList } from "@/api/queries/sections";
-import Carousel from "@/components/sections/Carousel.section";
-import TextOnly from "@/components/sections/TextOnly.section";
-import CenterImage from "@/components/sections/CenterImage.section";
 import {
-  fetchNextProjectData,
-} from "@/api/queries/nextProject";
-import Link from "next/link";
+  FormattedProjectMedia,
+  oneProject,
+  ProjectDataResponse,
+  ProjectMedia
+} from "@/api/queries/oneProject";
+import { getClosestRatio } from "@/components/Gallery/data";
+import {
+  ProjectRenderer
+} from "@/app/project/[slug]/ProjectRenderer.component";
+import { getAverageColors } from "@/utils/averageColor";
 
-const coverSize = 1200
+const coverSize = 2000
 
 const fetchProjectData = async (slug: string) => {
-  const res = await queryClient<ProjectDataResponse, { project: null }>(oneProject, { project: null }, { height: coverSize, slug })
+  const res = await queryClient<ProjectDataResponse, { project: null }>(oneProject, { project: null }, { width: coverSize, slug })
   return res.project
 }
 
-export default async function Project({ params }: { params: { slug: string } }) {
+const formatProjectMedias = (medias: ProjectMedia[]): FormattedProjectMedia[] => {
+  const formatDisplayTitle = (m: ProjectMedia) => m.title.replaceAll(' ', '_') + "." + m.asset.mimeType.split('/')[1];
+  const displayTitles = medias.map(m => formatDisplayTitle(m));
+
+  const longestMediaTitleLength = displayTitles.reduce((acc, title) => {
+    return title.length > acc ? title.length : acc
+  }, 0)
+
+  const formatVideoUrl = (url: string) => {
+    const parts = url.split('/')
+    console.log(parts)
+    return "https://" + parts[2] + "/" + parts[parts.length - 1]
+  }
+
+  const formatSingleMedia = (m: ProjectMedia, i: number): FormattedProjectMedia => {
+    const isVideo = m.asset.mimeType.includes("video")
+    const a = m.videoThumbnail ?? m.asset;
+    const imgRatio = a.width / a.height;
+    const title = displayTitles[i];
+    const titleDiff = longestMediaTitleLength - title.length
+    const displayTitle = title + Array(titleDiff).fill(" ").join("");
+    const isPortrait = 1 > imgRatio
+    const closestRatio = getClosestRatio(imgRatio);
+    return {
+      displayTitle,
+      imgRatio,
+      closestRatio,
+      url: isVideo ? formatVideoUrl(m.asset.url) : m.asset.url,
+      videoThumbnailUrl: m.videoThumbnail?.url,
+      id: m.id,
+      isVideo,
+      isPortrait,
+    }
+  }
+  return medias.map((m, i) => formatSingleMedia(m, i));
+}
+const sortMediasByRatio = (medias: FormattedProjectMedia[]) => {
+  return [...medias].sort((a, b) => {
+    const comp = a.isPortrait && b.isPortrait ? -1 : 1
+    return a.imgRatio > b.imgRatio ? -comp : comp;
+  })
+}
+
+const findNonPortraitMediaCount = (medias: FormattedProjectMedia[]) => medias.reduce((acc: number, media) => {
+  return (media.isPortrait ? acc : acc + 1)
+}, 0)
+
+export default async function ProjectPage({ params }: { params: { slug: string } }) {
   const project = await fetchProjectData(params.slug)
-  console.log(project)
-  const { title, content } = pageTextProps()
-  const projectAnimationDelay = content.delay + content.fixedDuration
 
   if(!project) {
     // TODO: redirect to not found
     return null
   }
 
-  const projectTools = project.tools.length > 0 ? project.tools.join(', ') : ""
-  const projectDate = project.year.replaceAll('-', '/')
-  const projectType = project.type.replaceAll('_', '/')
-  const projectDescription = project.description ?? ""
+  const formattedMedias = formatProjectMedias(project?.medias ?? []);
+  const mediaUrls = formattedMedias.map(m => m.videoThumbnailUrl ?? m.url);
+  // TODO: add slight random variation to each background color of a project
+  const colors = await getAverageColors(mediaUrls)
+  const mediasByRatio = sortMediasByRatio(formattedMedias)
 
+  const rendererProps = {
+    medias: formattedMedias,
+    mediasByRatio,
+    nonPortraitMediaCount: findNonPortraitMediaCount(mediasByRatio),
+    coverUrls: mediaUrls,
+    colors,
+    project,
+  }
   return (
-    <>
-      <Image className={styles.cover} src={project.cover.url} alt={project.title + " cover"} width={coverSize} height={coverSize} />
-      <PageLayout className={styles.page}>
-        <TitleGrid fixedDuration={title.fixedDuration} delay={title.delay} className={styles.titleGrid} title={project.displayTitle}/>
-        <GridLayout className={styles.header}>
-          <GridItemCenter className={styles.client}>
-            <AnimatedText fixedDuration={content.fixedDuration} delay={content.delay}>{project.client}</AnimatedText>
-          </GridItemCenter>
-
-          <GridItemCenter className={styles.description}>
-            <AnimatedTextStaggered fixedDuration={content.fixedDuration} delay={content.delay} staggerDelay={30}>{projectDescription}</AnimatedTextStaggered>
-          </GridItemCenter>
-
-          <GridItemCenter className={styles.year}>
-            <AnimatedText fixedDuration={content.fixedDuration} delay={content.delay}>{projectDate}</AnimatedText>
-          </GridItemCenter>
-        </GridLayout>
-
-        <GridLayout className={styles.info}>
-          <GridItemCenter className={styles.briefTitle}>
-            <AnimatedText fixedDuration={content.fixedDuration} delay={projectAnimationDelay} className={styles.title}>brief</AnimatedText>
-          </GridItemCenter>
-
-          <GridItemCenter className={styles.brief}>
-            <AnimatedText fixedDuration={content.fixedDuration} delay={projectAnimationDelay} >{project.brief}</AnimatedText>
-          </GridItemCenter>
-
-            <GridLayout className={styles.grid2}>
-              <GridItemCenter>
-                <AnimatedText fixedDuration={content.fixedDuration} delay={projectAnimationDelay} className={styles.title}>tools</AnimatedText>
-              </GridItemCenter>
-
-              <GridItemCenter>
-                <AnimatedText fixedDuration={content.fixedDuration} delay={projectAnimationDelay} >{projectTools}</AnimatedText>
-              </GridItemCenter>
-            </GridLayout>
-
-          <GridLayout className={`${styles.grid2} ${styles.type}`}>
-            <GridItemCenter>
-              <AnimatedText fixedDuration={content.fixedDuration} delay={projectAnimationDelay} className={styles.title}>type</AnimatedText>
-            </GridItemCenter>
-
-            <GridItemCenter>
-              <AnimatedText fixedDuration={content.fixedDuration} delay={projectAnimationDelay} >{projectType}</AnimatedText>
-            </GridItemCenter>
-          </GridLayout>
-        </GridLayout>
-        <RenderSections sections={project.sections} delay={projectAnimationDelay}/>
-        <NextButton currentId={project.id}/>
-      </PageLayout>
-    </>
-  )
-}
-
-function RenderSections (props: { sections: SectionList; delay: number }) {
-  return (
-    <>
-      {props.sections.map((section) => {
-        const sectionProps = {
-          section,
-          delay: props.delay,
-        }
-        switch(section.sectionType) {
-          case "Carousel":
-            return <Carousel { ...sectionProps } key={section.id}/>
-          case "TextOnly":
-            return <TextOnly { ...sectionProps } key={section.id}/>
-          case "CenterImage":
-            return <CenterImage { ...sectionProps } key={section.id}/>
-          default:
-            return null
-        }
-      })
-      }
-    </>
-  )
-}
-
-async function NextButton ({ currentId }: { currentId: string }) {
-  const projectData = await fetchNextProjectData(currentId)
-
-  console.log(currentId, projectData.id)
-  
-  const href = `/project/${projectData.slug}`
-  
-  return (
-    <div className={styles.nextProjectContainer}>
-      <Link href={href} className={styles.nextProjectButton}>
-        <AnimatedText whenVisible fixedDuration={contentFixedDuration} >next project</AnimatedText>
-        <AnimatedText className={styles.nextProjectTitle} whenVisible fixedDuration={contentFixedDuration} >{projectData.title}</AnimatedText>
-        <AnimatedText whenVisible fixedDuration={contentFixedDuration} >{projectData.type}</AnimatedText>
-      </Link>
-    </div>
+    <main className={styles.main}>
+      <ProjectRenderer {...rendererProps} />
+    </main>
   )
 }

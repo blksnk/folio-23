@@ -19,7 +19,7 @@ const l = (lineClass: string, hide?: boolean) => `${ hide ? styles.hideLine : ''
 const profileDescription = `Creative designer with a focus on 3D,
 branding, UI and all things *experimental*.`
 const profileName = "Jean-Nicolas Veigel"
-const archiveTitle = "Archive"
+const archiveTitle = "Archives"
 const archiveDescription = `One-off projects, vectors, graphics.
 Exploring random stuff.`
 
@@ -61,7 +61,7 @@ export const PageLeft = (props: PageLeftProps) => {
 
   const redirectToArchive: MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault()
-    props.redirectTo('/archive');
+    props.redirectTo('/archives');
   }
 
   return (
@@ -69,7 +69,7 @@ export const PageLeft = (props: PageLeftProps) => {
       <div className={ styles.leftSplit }>
         <div className={ l(styles.lineLeft, hide) }></div>
         <div className={ l(styles.lineRight, hide) }></div>
-        <Link href="/"
+        <Link href="/new"
               className={ combineClasses(styles.logoContainer, [ styles.hide, hide ]) }>
           <Logo/>
         </Link>
@@ -166,7 +166,7 @@ export const PageLeft = (props: PageLeftProps) => {
           </button>
         </div>
         <Link
-          href="/archive"
+          href="/archives"
           onClick={redirectToArchive}
           className={ combineClasses(styles.archive, fontRepo.body.className, [ styles.hide, hide ]) }>
           <div className={styles.columnContainer}>
@@ -183,7 +183,7 @@ export const PageLeft = (props: PageLeftProps) => {
               { replaceWithSpacesWhenHidden(archiveDescription, hide) }
             </TextLine>
           </div>
-          <span className={combineClasses(styles.archiveCta, fontRepo.button.className, [styles.hide, hide])}>Archive ↗</span>
+          <span className={combineClasses(styles.archiveCta, fontRepo.button.className, [styles.hide, hide])}>Archives ↗</span>
         </Link>
       </div>
     </section>

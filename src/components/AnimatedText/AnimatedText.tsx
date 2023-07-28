@@ -29,9 +29,9 @@ export default function AnimatedText({
   const klass = `${styles.text} ${className ?? ''}`
   const charKlass = `${styles.character} ${className ?? ''}`
 
-  const s = children.toUpperCase();
+  const s = useMemo(() => children.toUpperCase(), [ children ])
 
-  const chars = s.split('')
+  const chars = useMemo(() => s.split(''), [ s ])
   const element = useRef<HTMLSpanElement | null>(null)
   const [ currentIndexes, setCurrentIndexes ] = useState(Array(s.length).fill(0))
   const [ delayElapsed, setDelayElapsed ] = useState(false);
@@ -39,7 +39,17 @@ export default function AnimatedText({
   const targetIndexes = useMemo(() => chars.map(c => characters.indexOf(c)), [ chars ])
   const displayChars = useMemo(() => currentIndexes.map(i => chars[i] === "\n" ? "\n" : characters[i]), [ currentIndexes, chars ])
 
+
   useEffect(() => {
+    if(s.length !== currentIndexes.length) {
+      console.debug('length change', s.length, currentIndexes.length)
+      if(s.length < currentIndexes.length) {
+        setCurrentIndexes(currentIndexes.slice(0, s.length))
+      } else {
+        setCurrentIndexes(Array(s.length).fill(0).map((space, index) => currentIndexes[index] ?? space));
+      }
+    }
+
     setDelayElapsed(false)
   }, [ s ])
 

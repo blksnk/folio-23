@@ -24,10 +24,12 @@ export function Gallery(props: GalleryProps) {
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [ isTablet, setIsTablet ] = useState(false)
   const [ isMobile, setIsMobile ] = useState(false)
+  const [ isVertical, setIsVertical ] = useState(false);
   useEffect(() => {
     const computeBreakpoint = () => {
       setIsTablet(breakpoints.isTablet())
       setIsMobile(breakpoints.isMobile())
+      setIsVertical(breakpoints.isVertical())
     }
     window.addEventListener("resize", computeBreakpoint)
     computeBreakpoint()
@@ -54,7 +56,7 @@ export function Gallery(props: GalleryProps) {
       isPortrait,
     }
   }
-  const spacing = isMobile ? 24 : 12
+  const spacing = isMobile ? 16 : 12
   const columnCount = 10
   const rowCount = isTablet ? 7 : 9;
   const topPadding = isMobile ? "12px" : isTablet ? "24px" : "36px"
@@ -63,7 +65,7 @@ export function Gallery(props: GalleryProps) {
   const containerHeight = `calc((100vh - (${topPadding} * 2)) / 12 * ${rowCount})`
 
   const frameHeightLandscape = (i: number) => {
-    return `calc(min(calc(${containerWidth} / ${props.medias[0].imgRatio}), ${containerHeight}) - ${i * spacing}px)`
+    return `calc(min(calc(${containerWidth} / ${props.medias[0].imgRatio}), ${containerHeight}) ${isVertical ? '+' : '-'} ${i * spacing}px)`
   }
   const frameHeightPortrait = (i: number) => {
     return `calc(min(calc(${containerWidth} / ${props.medias[props.medias.length - 1].imgRatio}), ${containerHeight}) - ${(i - props.nonPortraitMediaCount) * spacing}px)`

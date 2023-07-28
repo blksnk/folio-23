@@ -5,7 +5,7 @@ import Link from "next/link";
 import { combineClasses } from "@/utils/css";
 
 const titleKlass = `${fontRepo.button.className} ${styles.title}`
-const createProjectLink = (slug: string) => '/new-project/' + slug
+const createProjectLink = (slug: string) => '/project/' + slug
 
 interface ExploreProps {
   slug: string;

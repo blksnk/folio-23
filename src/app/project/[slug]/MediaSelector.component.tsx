@@ -1,4 +1,4 @@
-import styles from "@/app/new-project/[slug]/newProject.module.sass";
+import styles from "@/app/project/[slug]/newProject.module.sass";
 import { TextLine } from "@/components/AnimatedText/TextLine";
 import { formatNumber } from "@/utils/number";
 import { combineClasses } from "@/utils/css";
@@ -6,7 +6,7 @@ import { Arrow } from "@/components/Arrow.component";
 import { useState } from "react";
 
 export interface MediaSelectorProps {
-  colors: string[];
+  colors: any[];
   activeIndex: number;
   setActiveIndex: (n: number) => void;
   goToPrev: () => void;

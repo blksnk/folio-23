@@ -3,12 +3,20 @@ $black: #000
 $dark-grey: #2D2D2D
 $off-white: #EFEFEF
 $white: #FFF
+$background: #0B1312
 $w50: rgba(255, 255, 255, 0.5)
 $w30: rgba(255, 255, 255, 0.3)
 $w10: rgba(255, 255, 255, 0.1)
+$w0: rgba(255, 255, 255, 0)
 
 
 $line-color: $dark-grey
+
+// Breakpoints
+$breakpoint-mobile: 650px
+$breakpoint-tablet: 900px
+$breakpoint-desktop-small: 1200px
+$breakpoint-height: 700px
 
 // Sizing
 $unit: 0.75rem
@@ -17,6 +25,13 @@ $side-padding: 7.5rem
 $min-side-padding: 1rem
 
 $lines-padding: 9.5rem
+
+$vertical-padding: $unit * 3
+@media only screen and (max-width: $breakpoint-tablet)
+  $vertical-padding: $unit * 2
+@media only screen and (max-width: $breakpoint-mobile)
+  $vertical-padding: $unit
+
 
 
 $circle-size: 40vw
@@ -27,12 +42,6 @@ $circle-size-mobile: 80vw
 $circle-x-offset-mobile: calc((100vh - $circle-size-mobile) / 2)
 $page-content-x-offset-mobile: calc($circle-size-mobile + $circle-x-offset-mobile + 2 * $unit)
 
-
-// Breakpoints
-$breakpoint-mobile: 650px
-$breakpoint-tablet: 900px
-$breakpoint-desktop-small: 1200px
-$breakpoint-height: 700px
 
 // Timings
 $bezier: cubic-bezier(0.38,0,0.21,0.98)
@@ -90,6 +99,7 @@ $bezier: cubic-bezier(0.38,0,0.21,0.98)
 // Effects
 @mixin glow
   text-shadow: 0 0 9px $white
+
 
 // Fixed Overlay
 @mixin Overlay

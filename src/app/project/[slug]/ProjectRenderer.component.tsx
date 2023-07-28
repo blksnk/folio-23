@@ -8,18 +8,18 @@ import {
 import {
   BackgroundCover
 } from "@/components/BackgroundCover/BackgroundCover.component";
-import { l, LeftContent } from "@/app/new-project/[slug]/LeftContent";
+import { l, LeftContent } from "@/app/project/[slug]/LeftContent";
 import {
   ProjectOverlay
-} from "@/app/new-project/[slug]/ProjectOverlay.component";
-import { ProjectInfo } from "@/app/new-project/[slug]/ProjectInfo.component";
+} from "@/app/project/[slug]/ProjectOverlay.component";
+import { ProjectInfo } from "@/app/project/[slug]/ProjectInfo.component";
 import { useSetMousePos } from "@/utils/mousePos";
 import { useTransition } from "@/utils/transition";
-import styles from "@/app/new-project/[slug]/newProject.module.sass";
+import styles from "@/app/project/[slug]/newProject.module.sass";
 import {
   MediaSelector, MediaSelectorProps
-} from "@/app/new-project/[slug]/MediaSelector.component";
-import { Description } from "@/app/new-project/[slug]/Description.component";
+} from "@/app/project/[slug]/MediaSelector.component";
+import { Description } from "@/app/project/[slug]/Description.component";
 import { ArrowDirection, useKeyboardInput } from "@/utils/keyboardInput";
 
 
@@ -77,7 +77,7 @@ export const ProjectRenderer = (props: ProjectRendererProps) => {
     hide: transitionOut,
     activeIndex,
     overBlur: true,
-    blendMode: "multiply",
+    blendMode: "multiply" as "multiply",
   }
 
   const mediaSelectorProps = {

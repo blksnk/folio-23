@@ -1,5 +1,19 @@
 @use 'variables.module'
 
+:root
+  --unit: 12px
+  --app-height: 100vh
+  --columns: 19
+  --rows: 12
+  --scroll-y: 0px
+  --vertical-padding: variables.$unit * 3
+
+  @media only screen and (max-width: variables.$breakpoint-tablet)
+    --vertical-padding: variables.$unit * 2
+
+  @media only screen and (max-width: variables.$breakpoint-mobile)
+    --vertical-padding: variables.$unit
+
 *
   margin: 0
   padding: 0
@@ -8,7 +22,7 @@
   color: variables.$white
 
 body
-  background: variables.$black
+  background: variables.$background
   overflow: hidden
 
 

@@ -206,8 +206,8 @@ function sqrtAlgorithm(arr: number[], len: number, options: FastAverageColorAlgo
 }
 
 
-function prepareResult(value: number[], error?: Error): FastAverageColorResult {
-  const rgb = value.slice(0, 3);
+function prepareResult(value: [number, number, number, number], error?: Error): FastAverageColorResult {
+  const rgb = value.slice(0, 3) as [number, number, number];
   const rgba = [ value[0], value[1], value[2], value[3] / 255 ];
   const isDarkColor = isDark(value);
   return {
@@ -244,12 +244,13 @@ function getColorFromArray4 (arr: number[] | Uint8Array | Uint8ClampedArray, opt
       algorithm = dominantAlgorithm;
       break;
     default:
-      throw getError("".concat(options.algorithm ?? "", " is unknown algorithm"));
+      throw new Error("".concat(options.algorithm ?? "", " is unknown algorithm"));
   }
-  return algorithm(arr, len, {
+  // @ts-ignore
+  return algorithm(arr as unknown as number[], len, {
     defaultColor: defaultColor,
     step: step
-  });
+  }) as FastAverageColorRgba
 }
 
 
@@ -277,4 +278,16 @@ export async function getAverageColor(resourceUrl: string, options?: FastAverage
   const buffer = await pipe.ensureAlpha().raw().toBuffer();
   const pixelArray = new Uint8Array(buffer.buffer);
   return prepareResult(getColorFromArray4(pixelArray, options));
+}
+
+export const getAverageColors = async (mediaUrls: string[]) => {
+  const colors = await Promise.all(mediaUrls.map((url) => getAverageColor(url, {
+    mode: "speed",
+    algorithm: "sqrt",
+  })));
+  return colors.map(c => ({
+    values: c.value,
+    hex: c.hex,
+    rgb: c.rgb
+  }));
 }

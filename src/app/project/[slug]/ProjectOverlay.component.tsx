@@ -1,6 +1,5 @@
 import s from "./newProject.module.sass"
-import { l } from "@/app/new-project/[slug]/LeftContent";
-import styles from "@/app/new-project/[slug]/newProject.module.sass";
+import { l } from "@/app/project/[slug]/LeftContent";
 
 interface ProjectOverlayProps {
   hide?: boolean

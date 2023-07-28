@@ -25,7 +25,7 @@ export interface RendererProps {
   }
 }
 
-const createProjectLink = (slug: string) => '/new-project/' + slug
+const createProjectLink = (slug: string) => '/project/' + slug
 
 export const Renderer = (props: RendererProps) => {
   const [activeIndex, setActiveIndex] = useState(0)

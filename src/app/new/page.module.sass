@@ -89,12 +89,17 @@
     @media only screen and (max-width: variables.$breakpoint-mobile)
       width: auto
       justify-self: start
+      & > div
+        height: calc(100% / 12 * 10)
+        overflow: hidden
 
   .lineLeft
     grid-row: 1 / -1
     grid-column: 1 / span 1
     border-left: 1px solid variables.$w50
     @include variables.lineY
+
+
 
   .lineThird
     grid-row: 1 / -1
@@ -265,6 +270,7 @@
 
     @media only screen and (max-width: variables.$breakpoint-mobile)
       grid-row: 2 / span 3
+      grid-column-end: span 2
 
   .profileCta, .archiveCta
     position: relative
@@ -275,6 +281,14 @@
     align-self: end
     opacity: 0
     animation: 600ms variables.$bezier 1600ms normal forwards appearText
+    leading-trim: both
+    text-edge: cap
+
+    @media only screen and (max-width: variables.$breakpoint-tablet)
+      padding: 0 variables.$unit * 0.75
+
+    @media only screen and (max-width: variables.$breakpoint-mobile)
+      padding: 0 variables.$unit * 0.5
 
     &.hide
       transform: translateY(0)
@@ -356,7 +370,10 @@
       align-items: flex-start
       justify-content: flex-end
       padding: variables.$unit variables.$unit / 2
-      padding-bottom: 0
+
+      @media only screen and (max-width: variables.$breakpoint-mobile)
+        grid-row: 2 / span 3
+
 
       .color
         transform: rotate(180deg)
@@ -381,9 +398,13 @@
       border: none
       @include variables.lineY
 
+      @media only screen and (max-width: variables.$breakpoint-mobile)
+        grid-row-end: -3
+
     .lineLeft
       border-right: 1px solid variables.$w50
       grid-column: 1 / 2
+
 
     .lineRight
       border-left: 1px solid variables.$w50
@@ -468,7 +489,7 @@
         pointer-events: none
 
       @media only screen and (max-width: variables.$breakpoint-mobile)
-        grid-row-start: 2
+        display: none
 
     .info
       grid-column: 1 / span 1
@@ -564,7 +585,7 @@
     @include variables.lineY
 
     @media only screen and (max-width: variables.$breakpoint-mobile)
-      grid-row-end: -3
+      grid-row: 5 / -3
 
 
 .background, .backgroundImageContainer

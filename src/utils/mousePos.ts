@@ -3,6 +3,8 @@ import { useEffect } from "react";
 export function onPointerMove(e: PointerEvent) {
   const { clientX, clientY } = e;
   setPointerCssVars(clientX, clientY)
+
+  return { clientX, clientY}
 }
 
 function setPointerCssVars(x: number, y: number) {
