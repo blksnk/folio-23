@@ -12,6 +12,7 @@ interface TextLineProps {
   onLeave?: () => void;
   onEnter?: () => void;
   animatedTextProps?: Omit<AnimatedTextProps, "children">;
+  log?: boolean;
 }
 
 export const TextLine = (props: TextLineProps) => {
@@ -20,7 +21,7 @@ export const TextLine = (props: TextLineProps) => {
   if(typeof props.animatedTextProps === "object") {
     return (
       <span className={klass} onClick={props.onClick} onPointerEnter={props.onEnter} onPointerLeave={props.onLeave}>
-        <AnimatedText {...props.animatedTextProps}>{props.children}</AnimatedText>
+        <AnimatedText {...props.animatedTextProps} log={props.log}>{props.children}</AnimatedText>
       </span>
     )
   }

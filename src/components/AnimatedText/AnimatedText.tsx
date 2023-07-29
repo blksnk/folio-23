@@ -15,7 +15,8 @@ export interface AnimatedTextProps {
   fixedDuration?: number;
   className?: string;
   staggerDelay?: number;
-  whenVisible?: boolean
+  whenVisible?: boolean;
+  log?: boolean;
 }
 
 export default function AnimatedText({
@@ -29,7 +30,7 @@ export default function AnimatedText({
   const klass = `${styles.text} ${className ?? ''}`
   const charKlass = `${styles.character} ${className ?? ''}`
 
-  const s = useMemo(() => children.toUpperCase(), [ children ])
+  const s = useMemo(() => children.toUpperCase(), [children])
 
   const chars = useMemo(() => s.split(''), [ s ])
   const element = useRef<HTMLSpanElement | null>(null)
@@ -37,7 +38,7 @@ export default function AnimatedText({
   const [ delayElapsed, setDelayElapsed ] = useState(false);
 
   const targetIndexes = useMemo(() => chars.map(c => characters.indexOf(c)), [ chars ])
-  const displayChars = useMemo(() => currentIndexes.map(i => chars[i] === "\n" ? "\n" : characters[i]), [ currentIndexes, chars ])
+  const displayChars = useMemo(() => currentIndexes.map(i => characters[i]), [ currentIndexes ])
 
 
   useEffect(() => {
@@ -111,7 +112,6 @@ export default function AnimatedText({
     }, intervalDuration)
     return () => clearInterval(intervalId)
   }, [ delayElapsed, duration, fixedDuration ])
-
   return (
     <span className={klass} ref={element}>
       {

@@ -28,12 +28,11 @@ export async function middleware(request: NextRequest) {
   requestHeaders.set('x-request-city', city);
   requestHeaders.set('x-request-weather', weather);
 
-  const response = NextResponse.next({
+  return NextResponse.next({
     request: {
       headers: requestHeaders
     }
   })
-  return response
 }
 
 export const config = {

@@ -20,7 +20,7 @@ const profileDescription = `Creative designer with a focus on 3D,
 branding, UI and all things *experimental*.`
 const profileName = "Jean-Nicolas Veigel"
 const archiveTitle = "Archives"
-const archiveDescription = `One-off projects, vectors, graphics.
+const archiveDescription = `One-off projects, logos, graphics.
 Exploring random stuff.`
 
 interface PageLeftProps {
@@ -179,6 +179,7 @@ export const PageLeft = (props: PageLeftProps) => {
             <TextLine
               animatedTextProps={ { fixedDuration: 400, delay: 200 } }
               className={ styles.description }
+              log
             >
               { replaceWithSpacesWhenHidden(archiveDescription, hide) }
             </TextLine>

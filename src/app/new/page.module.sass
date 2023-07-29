@@ -1,5 +1,42 @@
 @use "../variables.module"
 
+@mixin backgroundHover
+  position: relative
+
+  &:before
+    position: absolute
+    content: ""
+    top: variables.$unit
+    left: variables.$unit
+    right: variables.$unit
+    bottom: variables.$unit
+    height: 0.909375rem // 14.55px, eight of one text line
+    background: variables.$w10
+    transition: all 600ms variables.$bezier 0s
+    transform: scaleX(0)
+    animation: 600ms variables.$bezier 1600ms normal forwards appearBackground
+
+    @media only screen and (max-width: variables.$breakpoint-tablet)
+      left: variables.$unit * 0.75
+      right: variables.$unit * 0.75
+
+    @media only screen and (max-width: variables.$breakpoint-mobile)
+      left: variables.$unit * 0.5
+      right: variables.$unit * 0.5
+
+  &.hide:before
+    transform-origin: right
+    animation: 300ms variables.$bezier 0ms normal forwards hideBackground
+    animation-play-state: running
+
+
+  &:hover:before
+    transition-duration: 400ms
+    height: 100%
+    inset: 0
+
+  &:hover .archiveTitle, &:hover .name
+    letter-spacing: 1px
 
 .line
   user-select: none
@@ -52,7 +89,7 @@
       grid-column-end: span 3
 
     @media only screen and (max-width: variables.$breakpoint-mobile)
-      grid-column: 2 / -2
+      grid-column: 1 / -1
       grid-row: 11 / -1
 
   .list
@@ -199,22 +236,15 @@
       grid-row-start: 5
 
 .pageLeft
-  display: grid
-  grid-template-rows: 1fr
-  grid-template-columns: repeat(2, 1fr)
+  display: flex
   grid-row: 1 / -1
   grid-column: 1 / 9
 
-  @media only screen and (max-width: variables.$breakpoint-desktop-small)
-    grid-template-columns: 5fr 3fr
-
   @media only screen and (max-width: variables.$breakpoint-tablet)
     grid-column-end: 10
-    grid-template-columns: 5fr 4fr
 
   @media only screen and (max-width: variables.$breakpoint-mobile)
     grid-column-end: 12
-    grid-template-columns: 7fr 4fr
 
   .indices, .titles
     display: flex
@@ -257,6 +287,7 @@
     justify-content: space-between
     gap: variables.$unit
     padding: variables.$unit 0
+    @include backgroundHover
 
     .archiveTitle
       font-style: italic
@@ -265,12 +296,17 @@
       span
         font-weight: 600
 
-    .description, .description span
+    .description, .description > span
       text-align: left
+      width: 100%
 
     @media only screen and (max-width: variables.$breakpoint-mobile)
       grid-row: 2 / span 3
       grid-column-end: span 2
+
+    &:hover .archiveCta
+      letter-spacing: 2px
+      transition: all 600ms variables.$bezier 0ms
 
   .profileCta, .archiveCta
     position: relative
@@ -283,6 +319,9 @@
     animation: 600ms variables.$bezier 1600ms normal forwards appearText
     leading-trim: both
     text-edge: cap
+    transition: all 400ms variables.$bezier 0s
+    font-variant-ligatures: none
+
 
     @media only screen and (max-width: variables.$breakpoint-tablet)
       padding: 0 variables.$unit * 0.75
@@ -310,10 +349,18 @@
     display: grid
     grid-template-rows: repeat(12, 1fr)
     grid-template-columns: auto 1fr
-    grid-column: 1 / span 1
-    grid-row: 1 / span 1
+    flex: 1
     grid-column-gap: variables.$unit / 2
     max-width: 100%
+    max-height: 100%
+
+    @media only screen and (max-width: variables.$breakpoint-desktop-small)
+      flex: 5
+    @media only screen and (max-width: variables.$breakpoint-tablet)
+      flex: 5
+    @media only screen and (max-width: variables.$breakpoint-mobile)
+      flex: 7
+
 
     .profile
       grid-column: 2 / span 1
@@ -322,7 +369,6 @@
       display: flex
       flex-direction: column
       justify-content: space-between
-      gap: variables.$unit
       background: none
       border: none
       font-family: inherit
@@ -330,6 +376,7 @@
       position: relative
       cursor: pointer
       overflow-y: hidden
+      @include backgroundHover
 
       @media only screen and (max-width: variables.$breakpoint-mobile)
         grid-row: 2 / span 3
@@ -343,6 +390,10 @@
 
       .description, .description span
         text-align: left
+
+      &:hover .profileCta
+        letter-spacing: 2px
+        transition: all 600ms variables.$bezier 0ms
 
 
     .logoContainer
@@ -414,8 +465,17 @@
     display: grid
     grid-template-columns: 1fr auto
     grid-template-rows: repeat(12, 1fr)
-    grid-column: 2 / span 1
-    grid-row: 1 / span 1
+    //grid-column: 2 / span 1
+    //grid-row: 1 / span 1
+    flex: 1
+    max-height: 100%
+
+    @media only screen and (max-width: variables.$breakpoint-desktop-small)
+      flex: 3
+    @media only screen and (max-width: variables.$breakpoint-tablet)
+      flex: 4
+    @media only screen and (max-width: variables.$breakpoint-mobile)
+      flex: 4
 
     .arrowsContainer
       grid-column: 2 / span 1
@@ -678,6 +738,18 @@
   to
     opacity: 0
     transform: scale(0)
+
+@keyframes appearBackground
+  from
+    transform: scaleX(0)
+  to
+    transform: scaleX(1)
+
+@keyframes hideBackground
+  from
+    transform: scaleX(1)
+  to
+    transform: scaleX(0)
 
 
 
