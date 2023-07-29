@@ -106,6 +106,10 @@ export const cssCellHeight = (multiplier = 1, isPosition?: boolean, b?: Breakpoi
   return `calc( ( var(--app-height) - ${cssGridMarginY(2, b)} ) / ${rows(b)} * ${multiplier} )`
 }
 
+export const cssCellHeightMobile = (multiplier = 1, isPosition?: boolean, b?: Breakpoint) => {
+  return `calc( 100% / ${rows(b)} * ${multiplier} )`
+}
+
 export const responsiveValue = <T = number>(
   values: ResponsiveValueMap<T>,
   breakpoint?: Breakpoint

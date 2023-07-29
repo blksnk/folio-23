@@ -21,12 +21,22 @@ export const archiveItemsSizes = { // [height, width, probability]
     s: [1, 1, 1],
     m: [1, 2, 0.7],
     l: [2, 3, 0.3],
-    xl: [4, 5, 0.2],
+    xl: [3, 4, 0.2],
     xxl: [5, 6, 0.1],
   }
 } as const;
 
-export const archivesToGridItems = (archives: ArchiveListItem[], breakpoint: Breakpoint) => {
+export type Color = {
+  rgb: string;
+  values: number[];
+  hex: string;
+}
+
+export type ArchiveListItemWithColor = ArchiveListItem & {
+  color: Color
+}
+
+export const archivesToGridItems = (archives: ArchiveListItemWithColor[], breakpoint: Breakpoint) => {
   return archives.map((archive) => {
     const sizes = Object.values(archiveItemsSizes[breakpoint])
     let sizeIndex = 0;
@@ -40,6 +50,7 @@ export const archivesToGridItems = (archives: ArchiveListItem[], breakpoint: Bre
 
     const [height, width] = Object.values(archiveItemsSizes[breakpoint])[sizeIndex];
     return {
+      id: archive.id,
       height,
       width,
       extraData: archive,
@@ -47,7 +58,8 @@ export const archivesToGridItems = (archives: ArchiveListItem[], breakpoint: Bre
   }).sort(() => Math.random() > 0.5 ? 1 : -1)
 }
 
-export const archivesToGridLayout = (archives: ArchiveListItem[], breakpoint: Breakpoint): GridLayoutData<ArchiveListItem> => {
+
+export const archivesToGridLayout = (archives: ArchiveListItemWithColor[], breakpoint: Breakpoint): GridLayoutData<ArchiveListItemWithColor> => {
   return generateGridLayout(archivesToGridItems(archives, breakpoint), {
     rows: 12,
     columns: breakpoint === "tablet" ? 11 : 10,

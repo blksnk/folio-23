@@ -11,7 +11,10 @@ import {
 } from "@/utils/responsive";
 import { Vector2 } from "@/utils/gestures";
 import { clamp, debounce } from "lodash";
-import { archivesToGridLayout } from "@/utils/archives";
+import {
+  ArchiveListItemWithColor,
+  archivesToGridLayout, Color
+} from "@/utils/archives";
 import { SideController } from "@/app/archives/SideController.component";
 import {
   BackgroundCover
@@ -25,14 +28,10 @@ import { ArrowDirection, useKeyboardInput } from "@/utils/keyboardInput";
 import { SideNav } from "@/app/archives/SideNav.component";
 
 interface ArchiveRendererProps {
-  archives: ArchiveListItem[];
-  gridLayout: GridLayoutData<ArchiveListItem>
+  archives: ArchiveListItemWithColor[];
+  gridLayout: GridLayoutData<ArchiveListItemWithColor>
   initialBreakpoint: Breakpoint;
-  colors: {
-    rgb: string;
-    values: number[];
-    hex: string;
-  }[];
+  colors: Color[];
   coverUrls: string[];
 }
 
@@ -46,14 +45,11 @@ const preloadAllImages = async (coverUrls: string[]) => {
 export const ArchiveRenderer = (props: ArchiveRendererProps) => {
   // cache SSR props
   const [breakpoint, setBreakpoint] = useState<Breakpoint>(props.initialBreakpoint)
+  const breakpointRef = useRef(breakpoint);
   const [gridLayout, setGridLayout] = useState<GridLayoutData<ArchiveListItem>>(props.gridLayout)
-  const [colors, setColors] = useState(props.colors.map((color, index) => ({
-    ...color,
-    archiveId: gridLayout.items[index].id
-  })))
+  const [colors, setColors] = useState(props.colors)
   const [coverUrls, setCoverUrls] = useState(props.coverUrls);
   const { transitionOut, redirectTo} = useTransition()
-  const scrollY = useRef(0)
   const mouseDown = useRef(false);
   const dragging = useRef(false);
   const listening = useRef(false);
@@ -63,11 +59,14 @@ export const ArchiveRenderer = (props: ArchiveRendererProps) => {
   , [gridLayout, selectedIndex]);
   const doPreview = useMemo(() => selectedId !== null, [selectedId]);
   const doPreviewRef = useRef(doPreview);
+  const scrollY = useRef(0)
   const scrollLimit = useRef(0);
+  const [scrollProgress, setScrollProgress] = useState(0.5)
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const currentMousePos = useRef<Vector2>({x: 0, y: 0})
   const dragStartMousePos = useRef<Vector2>({x: 0, y: 0})
   const dragEndMousePos = useRef<Vector2>({x: 0, y: 0})
+  const indicatorProgress = useMemo(() => (doPreview && selectedIndex !== null ? (selectedIndex / Math.max(props.archives.length - 1)) : scrollProgress), [scrollProgress, doPreview, props.archives, selectedIndex])
 
   useEffect(() => {
     if(!imagesLoaded) {
@@ -114,21 +113,20 @@ export const ArchiveRenderer = (props: ArchiveRendererProps) => {
   useKeyboardInput({ onArrow, onBack })
 
   const onResize = useCallback(debounce(() => {
-    setBreakpoint(currentBreakPoint())
-    const layout = archivesToGridLayout(props.archives, currentBreakPoint())
+    const b = currentBreakPoint()
+    if(b === breakpointRef.current) return;
+    // exit preview mode
+    breakpointRef.current = b;
+    if (doPreviewRef.current) {
+      clearSelection()
+    }
+    const layout = archivesToGridLayout(props.archives, b)
     const archiveUrls = layout.items.map(({ extraData }) => extraData?.media.asset.url ?? "");
-    setColors(layout.items.map(({id}) => ({
-      ...colors.find((color) => color.archiveId === id) as {
-        rgb: string;
-        values: number[];
-        hex: string;
-        archiveId: string;
-      },
-      archiveId: id,
-    })))
-    setCoverUrls(archiveUrls)
+    setColors(layout.items.map(({extraData}) => (extraData?.color ?? colors[0])))
+    setCoverUrls(layout.items.map((item, index) => item.extraData?.media.asset.url ?? archiveUrls[index]))
     setGridLayout(layout);
-  }, 500), [props.archives, colors]);
+    setBreakpoint(b)
+  }, 500), [props.archives, colors, breakpointRef, doPreviewRef]);
 
   const changeActiveIndexOnScroll = useCallback(debounce((n: 1 | -1) => {
     changeActiveIndex(n)
@@ -142,6 +140,7 @@ export const ArchiveRenderer = (props: ArchiveRendererProps) => {
     document.documentElement.style.setProperty('--scroll-y', -scrollY.current + "px")
     if(scrollLimit.current !== 0) {
       document.documentElement.classList.toggle(styles.scrolling, true)
+      setScrollProgress(scrollY.current / Math.max(scrollLimit.current, 1))
     }
     else if (Math.abs(deltaY) > 20) {
       changeActiveIndexOnScroll(deltaY > 0 ?  1 : -1)
@@ -196,7 +195,12 @@ export const ArchiveRenderer = (props: ArchiveRendererProps) => {
   useEffect(() => {
 
     if(typeof window !== "undefined" && !listening.current) {
-      scrollLimit.current = Math.max(gridLayout.matrixSize.height * cellHeight2() - cellHeight2() * 10, 0)
+      const limit = Math.max(gridLayout.matrixSize.height * cellHeight2() - cellHeight2() * 10, 0)
+      scrollLimit.current = limit
+      breakpointRef.current = breakpoint
+      if(limit !== 0) {
+        setScrollProgress(0)
+      }
       listening.current = true;
       window.addEventListener("wheel", onScroll,{ passive: true })
       window.addEventListener('pointermove', onMove, { passive: true })
@@ -205,7 +209,7 @@ export const ArchiveRenderer = (props: ArchiveRendererProps) => {
       window.addEventListener("resize", onResize, { passive: true })
     }
 
-  }, [listening, onResize, onScroll, onDragStart, onDragEnd, onMove, gridLayout])
+  }, [listening, onResize, onScroll, onDragStart, onDragEnd, onMove, gridLayout, breakpoint])
 
   useEffect(() => {
     return () => {
@@ -265,6 +269,7 @@ export const ArchiveRenderer = (props: ArchiveRendererProps) => {
         selectFirst={selectFirst}
         hide={transitionOut}
         breakpoint={breakpoint}
+        progress={indicatorProgress}
       />
       <SideNav
         hide={transitionOut}

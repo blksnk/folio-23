@@ -2,7 +2,7 @@
 // TODO: increase limit to 100
 export const allArchives = `
   query AllArchive($height: Int!) {
-    archives(first: 2) {
+    archives(first: 100) {
       id
       media {
         id

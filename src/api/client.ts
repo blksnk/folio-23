@@ -15,7 +15,7 @@ export const clientConfig: ClientOptions = {
     headers: {
       authorization: `Bearer ${ token }`
     },
-    cache: "no-cache"
+    // cache: "no-cache"
   },
   requestPolicy: "network-only",
   exchanges: [ dedupExchange, ssrExchange(), fetchExchange ],

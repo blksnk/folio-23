@@ -4,31 +4,30 @@ import {
   allArchives,
   AllArchivesResponse,
 } from "@/api/queries/allArchives";
-import { ArchiveRenderer } from "@/app/archives/ArchiveRenderer";
 import { archivesToGridLayout } from "@/utils/archives";
-import { useUserAgent } from "@/utils/userAgent";
-import { Breakpoint } from "@/utils/responsive";
 import { getAverageColors } from "@/utils/averageColor";
+import UserAgentWrappedRenderer
+  from "@/app/archives/UserAgentWrapper.component";
 
 const fetchArchives = async () => {
-  const { archives } = await queryClient<AllArchivesResponse, { archives: never[] }>(allArchives, { archives: [] }, { height: 2000 })
+  const { archives } = await queryClient<AllArchivesResponse, { archives: never[] }>(allArchives, { archives: [] }, { height: 1024 })
   return archives;
 }
 
 
 export default async function Archive() {
-  // get device type on server side
-  const userAgent = useUserAgent()
-  const breakpoint: Breakpoint = userAgent.current.isMobile ? "mobile" : userAgent.current.isTablet ? "tablet" : "default"
   const archives = await fetchArchives()
-  const gridLayout = archivesToGridLayout(archives, breakpoint);
-  const archiveUrls = gridLayout.items.map(({ extraData }) => extraData?.media.asset.url ?? "");
+  const archiveUrls = archives.map(({ media }) => media.asset.url ?? "");
   const colors = await getAverageColors(archiveUrls)
+  const archivesWithColors = archives.map((archive, index) => ({...archive, color: colors[index]}))
+  const gridLayout = archivesToGridLayout(archivesWithColors, "default");
+  const orderedCoverUrls = gridLayout.items.map((item, index) => item.extraData?.media.asset.url ?? archiveUrls[index])
+  const orderedColors = gridLayout.items.map((item, index) => item.extraData?.color ?? colors[index])
 
 
   return (
     <main className={styles.main}>
-      <ArchiveRenderer archives={archives} gridLayout={gridLayout} initialBreakpoint={breakpoint} colors={colors} coverUrls={archiveUrls}/>
+      <UserAgentWrappedRenderer archives={archivesWithColors} gridLayout={gridLayout} colors={orderedColors} coverUrls={orderedCoverUrls}/>
     </main>
   )
 }

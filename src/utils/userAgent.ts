@@ -20,6 +20,7 @@ export const userAgentBreakPoint = () => {
 export const useUserAgent = () => {
   const headersList = headers()
   const userAgent = headersList.get('user-agent') ?? "SSR"
+  // const userAgent = ''
   const isAndroid = () => Boolean(userAgent.match(/Android/i))
   const isIos = () => Boolean(userAgent.match(/iPhone|iPad|iPod/i))
   const isTablet = () => Boolean(userAgent.match(/iPad/i));

@@ -1,4 +1,6 @@
-import { Breakpoint, cssCellHeight } from "@/utils/responsive";
+import {
+  Breakpoint,
+} from "@/utils/responsive";
 import { GridLayoutData, identifier } from "@/utils/grid/types";
 import { ArchiveListItem } from "@/api/queries/allArchives";
 import styles from "@/app/archives/page.module.sass";
@@ -18,14 +20,13 @@ interface ArchivesGridProps {
 }
 
 export const ArchivesGrid = ({ gridLayout, breakpoint, doPreview, selectedId, selectedIndex, selectArchive, hide }: ArchivesGridProps) => {
-  const style = {
-    height: gridLayout.layoutDimensions.height,
-    minHeight: gridLayout.layoutDimensions.height,
-    gridAutoRows: cssCellHeight(1, false, breakpoint),
-  }
+  // const style = {
+  //   height: gridLayout.layoutDimensions.height,
+  //   minHeight: gridLayout.layoutDimensions.height,
+  // }
 
   return (
-    <div className={styles.archivesGridContainer} style={style}>
+    <div className={styles.archivesGridContainer}>
     {gridLayout.items.map((item, index) =>
         <ArchiveGridItem
           doPreview={doPreview}

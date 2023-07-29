@@ -10,7 +10,7 @@ export default {
   mobile,
 }
 
-const isServer = typeof window === "undefined"
+export const isServer = typeof window === "undefined"
 
 const w = isServer ? { innerWidth: 1200, innerHeight: 1200 } : window;
 
