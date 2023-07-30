@@ -86,11 +86,11 @@
       height: calc(100% - variables.$unit) !important
 
   &.hide
-    border-color: variables.$w0
+    border-color: variables.$w0 !important
     pointer-events: none
 
     img
-      transform: scale(0) !important
+      transform: scale(0)
 
   @for $i from 0 through 100
     &:not(.hide)[data-index="#{$i}"]
@@ -136,11 +136,19 @@
 
   &.selectedPreview
     border-color: variables.$white
-    background: none
+    background: variables.$w0
     cursor: default
 
     img
       cursor: default
+
+  &.hide
+    transition-duration: 400ms
+    border-color: variables.$w0
+    background: variables.$w0
+
+    img
+      transform: scale(0)
 
 
 
@@ -215,6 +223,9 @@
     border: none
     position: relative
     cursor: pointer
+    transform: scale(0)
+
+    animation: 600ms variables.$bezier 1200ms 1 normal forwards running imageAppear
 
     &:before
       content: ""
@@ -228,6 +239,9 @@
 
     &:hover:before, &.active:before
       transform: scale(1)
+
+    &.hide
+      animation: 400ms variables.$bezier 0ms 1 normal forwards running imageHide
 
 
     span
@@ -310,6 +324,7 @@
   top: variables.$unit * -3
   overflow: visible
   margin-right: -20vw
+  transition: transform 600ms variables.$bezier 0s
 
   @media screen and (max-width: variables.$breakpoint-tablet)
     top: variables.$unit * -2
@@ -317,6 +332,10 @@
 
   @media screen and (max-width: variables.$breakpoint-mobile)
     top: variables.$unit * -1
+
+  &.hideLine
+    transform: scaleY(0)
+    transform-origin: bottom
 
 .sideNav
   grid-column: 1 / span 2
@@ -451,6 +470,13 @@
     transform: scale(0)
   to
     transform: scale(1)
+
+@keyframes imageHide
+  from
+    transform: scale(1)
+  to
+    transform: scale(0)
+
 
 @keyframes imageFrameAppear
    from

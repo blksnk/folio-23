@@ -253,7 +253,7 @@ export const ArchiveRenderer = (props: ArchiveRendererProps) => {
         overBlur
         colors={colors.map(({rgb}) => rgb)}
       />
-      <BackgroundLines breakpoint={breakpoint}/>
+      <BackgroundLines breakpoint={breakpoint} hide={transitionOut}/>
       <ArchivesGrid
         gridLayout={gridLayout}
         breakpoint={breakpoint}

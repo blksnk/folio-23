@@ -22,7 +22,7 @@ export const SideController = ({ hide, doPreview, selectFirst, clearSelection, b
   return (
     <section className={combineClasses(styles.sideController, [styles.hide, hide])}>
       <button
-        className={combineClasses(fontRepo.button.className, styles.controllerButton, styles.gridButton, [styles.active, !doPreview])}
+        className={combineClasses(fontRepo.button.className, styles.controllerButton, styles.gridButton, [styles.active, !doPreview], [styles.hide, hide])}
         onClick={clearSelection}
       >
         <span>Grid</span>
@@ -31,7 +31,7 @@ export const SideController = ({ hide, doPreview, selectFirst, clearSelection, b
       <Indicator {...{ doPreview, hide, progress, breakpoint }}/>
 
       <button
-        className={combineClasses(fontRepo.button.className, styles.controllerButton, styles.listButton, [styles.active, doPreview])}
+        className={combineClasses(fontRepo.button.className, styles.controllerButton, styles.listButton, [styles.active, doPreview], [styles.hide, hide])}
         onClick={selectFirst}
       >
         <span>List</span>
