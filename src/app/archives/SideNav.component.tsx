@@ -37,7 +37,7 @@ export const SideNav = ({ hide, redirectToHome, doPreview, totalCount, selectedI
   return (
     <nav className={styles.sideNav}>
       <Link
-        href="/new"
+        href="/"
         onClick={onLinkClick}
         className={ combineClasses(styles.logoContainer, [ styles.hide, hide ]) }
       >

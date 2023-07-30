@@ -1,13 +1,13 @@
 "use client"
 
-import styles from "@/app/new/page.module.sass";
-import { Explore } from "@/app/new/Explore.component";
-import { PageLeft } from "@/app/new/ProjectsList.component";
+import styles from "@/app/page.module.sass";
+import { Explore } from "@/app/Explore.component";
+import { PageLeft } from "@/app/ProjectsList.component";
 import { ProjectListItemData } from "@/api/queries/allProjects";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { OverlayLines } from "@/app/new/Overlay.component";
-import { Weather } from "@/app/new/Weather.component";
-import { Timer } from "@/app/new/Timer.component";
+import { OverlayLines } from "@/app/Overlay.component";
+import { Weather } from "@/app/Weather.component";
+import { Timer } from "@/app/Timer.component";
 import { useSetMousePos } from "@/utils/mousePos";
 import {
   BackgroundCover, BackgroundProps

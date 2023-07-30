@@ -69,7 +69,7 @@ export const PageLeft = (props: PageLeftProps) => {
       <div className={ styles.leftSplit }>
         <div className={ l(styles.lineLeft, hide) }></div>
         <div className={ l(styles.lineRight, hide) }></div>
-        <Link href="/new"
+        <Link href="/"
               className={ combineClasses(styles.logoContainer, [ styles.hide, hide ]) }>
           <Logo/>
         </Link>

@@ -27,7 +27,7 @@ export const LeftContent = ({ media, color, hide, redirect }: LeftContentProps) 
     <>
       <section className={styles.leftContent}>
         <div className={styles.leftColumn}>
-          <Link href="/new" className={combineClasses(styles.logoContainer, hideClass as [string, boolean])} onClick={onRedirect}>
+          <Link href="/" className={combineClasses(styles.logoContainer, hideClass as [string, boolean])} onClick={onRedirect}>
             <Logo outline/>
           </Link>
           <div className={styles.leftColumnSpacerContainer}>

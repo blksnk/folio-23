@@ -2,7 +2,7 @@ import { preloadImage } from "@/utils/images";
 import { useEffect, useState } from "react";
 import { clearTimeout } from "timers";
 import { combineClasses } from "@/utils/css";
-import styles from "@/app/new/page.module.sass";
+import styles from "@/app/page.module.sass";
 import ClientOnlyPortal from "@/components/ClientOnlyPortal.component";
 import Image from "next/image";
 

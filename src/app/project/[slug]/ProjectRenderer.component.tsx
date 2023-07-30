@@ -52,7 +52,7 @@ export const ProjectRenderer = (props: ProjectRendererProps) => {
     }
   }
 
-  const goBack = () => redirectTo('/new')
+  const goBack = () => redirectTo('/')
   const onArrow = (dir: ArrowDirection) => {
     switch(dir) {
       case "down":

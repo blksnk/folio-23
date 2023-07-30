@@ -1,4 +1,4 @@
-import styles from "@/app/new/page.module.sass";
+import styles from "@/app/page.module.sass";
 import { LineGroup } from "@/components/Lines/LineGroup";
 
 const l = (lineClass: string, hide?: boolean) => `${styles.line} ${hide ? styles.hideLine : ''} ${lineClass}`

@@ -106,7 +106,7 @@ export const ArchiveRenderer = (props: ArchiveRendererProps) => {
     if(doPreview) {
       clearSelection()
     } else {
-      redirectTo('/new')
+      redirectTo('/')
     }
   }
 
@@ -240,7 +240,7 @@ export const ArchiveRenderer = (props: ArchiveRendererProps) => {
     }
   }
 
-  const redirectToHome = () => redirectTo('/new')
+  const redirectToHome = () => redirectTo('/')
 
   return (
     <>

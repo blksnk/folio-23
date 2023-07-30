@@ -65,15 +65,11 @@
   &:not(.doPreview) img
     transition-duration: 400ms
 
-  &:hover:not(.imageSelected):not(.doPreview)
-    border-color: variables.$white !important
+  &:hover:not(.imageSelected):not(.doPreview) img
+    inset: variables.$unit / 2 !important
+    width: calc(100% - variables.$unit) !important
+    height: calc(100% - variables.$unit) !important
     transition-duration: 200ms
-
-    img
-      inset: variables.$unit / 2 !important
-      width: calc(100% - variables.$unit) !important
-      height: calc(100% - variables.$unit) !important
-      transition-duration: 200ms
 
 
   &.imageSelected

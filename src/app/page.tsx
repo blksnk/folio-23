@@ -1,77 +1,32 @@
-import PageLayout from "@/layouts/PageLayout";
-import GridLayout, { GridItemCenter } from "@/layouts/GridLayout";
-import { AnimatedCharacter } from "@/components/AnimatedText/AnimatedCharacter";
-import AnimatedText, {
-  AnimatedTextStaggered
-} from "@/components/AnimatedText/AnimatedText";
-import { titleCharKlass } from "@/app/fonts";
 import styles from './page.module.sass'
-import { pageTextProps } from "@/utils/animations";
+import {
+  allProjects,
+  AllProjectsResponse,
+} from "@/api/queries/allProjects";
+import { Renderer } from "@/app/Renderer.component";
+import { queryClient } from "@/api/client";
+import { headers } from "next/headers"
 
-const description = 'Jean-nicolas veigel is a french multi-disciplinary designer.\nHe creates for and with individuals, artists, start-ups\n& well established companies around the world.'
 
-export default function Home() {
+const fetchProjects = async () => {
+  const res = await queryClient<AllProjectsResponse, { projects: never[]} >(allProjects, {projects: []}, { height: 2700 })
+  return res.projects
+}
 
-  const titleKlass = titleCharKlass()
-  const titleSmall = titleCharKlass(true)
 
-  const { title, content } = pageTextProps()
+export default async function Home() {
+  const headersList = headers()
+  const city = headersList.get('x-request-city') ?? ""
+  const weather = headersList.get('x-request-weather') ?? ""
+  const projects = await fetchProjects()
+  const weatherProps = {
+    city,
+    weather
+  }
   return (
-    <PageLayout className={styles.page}>
-      <GridLayout className={styles.titleContainer}>
-        <GridItemCenter>
-          <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>g</AnimatedCharacter>
-        </GridItemCenter>
-        <GridItemCenter>
-          <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>e</AnimatedCharacter>
-        </GridItemCenter>
-        <GridItemCenter>
-          <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>n</AnimatedCharacter>
-        </GridItemCenter>
-        <GridItemCenter>
-        </GridItemCenter>
-        <GridItemCenter>
-        </GridItemCenter>
-        <GridItemCenter>
-        <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>m</AnimatedCharacter>
-        </GridItemCenter>
-        <GridItemCenter>
-          <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>e</AnimatedCharacter>
-        </GridItemCenter>
-        <GridItemCenter>
-          <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>t</AnimatedCharacter>
-        </GridItemCenter>
-        <GridItemCenter>
-          <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>s</AnimatedCharacter>
-        </GridItemCenter>
-        <GridItemCenter>
-          <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>u</AnimatedCharacter>
-        </GridItemCenter>
-        <GridItemCenter></GridItemCenter>
-        <GridItemCenter>
-        <AnimatedText delay={title.delay} fixedDuration={title.fixedDuration} className={titleSmall}>dot</AnimatedText>
-        </GridItemCenter>
-        <GridItemCenter>
-          <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>a</AnimatedCharacter>
-        </GridItemCenter>
-        <GridItemCenter>
-          <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>r</AnimatedCharacter>
-        </GridItemCenter>
-        <GridItemCenter>
-          <AnimatedCharacter delay={title.delay} fixedDuration={title.fixedDuration} className={titleKlass}>t</AnimatedCharacter>
-        </GridItemCenter>
-      </GridLayout>
-      <GridLayout className={styles.infoRow}>
-        <GridItemCenter>
-          <AnimatedText fixedDuration={content.fixedDuration} delay={content.delay}>2018-present</AnimatedText>
-        </GridItemCenter>
-      <GridItemCenter className={styles.description}>
-        <AnimatedTextStaggered fixedDuration={content.fixedDuration} delay={content.delay} staggerDelay={30}>{description}</AnimatedTextStaggered>
-      </GridItemCenter>
-        <GridItemCenter>
-          <AnimatedText fixedDuration={content.fixedDuration} delay={content.delay}>available mid-2023</AnimatedText>
-        </GridItemCenter>
-      </GridLayout>
-    </PageLayout>
+    <main className={styles.main}>
+      <Renderer projects={projects} weatherProps={weatherProps}></Renderer>
+    </main>
   )
 }
+

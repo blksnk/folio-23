@@ -1,4 +1,4 @@
-import styles from "@/app/new/page.module.sass";
+import styles from "@/app/page.module.sass";
 import Image from "next/image";
 
 interface ArrowProps {
