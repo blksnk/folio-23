@@ -9,7 +9,7 @@ import { isDefined } from '@/utils/math';
 import { setPinnedItemPosition } from '@/utils/grid/position/pinned';
 import { placeItem } from '@/utils/grid/position/autoPlace';
 import { fillMatrix } from '@/utils/grid/matrix';
-import { GridItemWithPosition } from '@/utils/grid';
+import { GridItemWithPosition } from '@/utils/grid/types';
 
 const getItemPosition = (
   matrix: GridMatrix,
@@ -40,12 +40,12 @@ const getItemPosition = (
   return undefined;
 };
 
-export const placeAllItems = (
+export const placeAllItems = <TData = unknown>(
   matrix: GridMatrix,
   matrixSize: Size,
-  items: NormalizedGridItem[],
+  items: NormalizedGridItem<TData>[],
   options: GridLayoutOptions
-): GridItemWithPosition[] => {
+): GridItemWithPosition<TData>[] => {
   return items
     .map((item) => {
       const position = getItemPosition(matrix, matrixSize, item, options);
@@ -58,5 +58,5 @@ export const placeAllItems = (
         extraData: item.extraData,
       };
     })
-    .filter((item) => isDefined(item)) as GridItemWithPosition[];
+    .filter((item) => isDefined(item)) as GridItemWithPosition<TData>[];
 };

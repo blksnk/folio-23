@@ -17,9 +17,9 @@ const getFixedPositionWeight = (pos: Nullish<Vector2>) =>
     0
   ) ?? 0;
 
-export const normalizeGridItems = (
-  items: Partial<GridItem>[]
-): NormalizedGridItem[] =>
+export const normalizeGridItems = <TData = unknown>(
+  items: Partial<GridItem<TData>>[]
+): NormalizedGridItem<TData>[] =>
   items
     .map((item, index) => ({
       ...item,

@@ -27,7 +27,7 @@ const randomFloat = (min: number, max: number): number => {
 const randomPosition = (containerSize: number): Vec2 => {
   const x = randomCoord(containerSize)
   const y = randomCoord(containerSize)
-  const args = [ 0 , containerSize, -containerSize, containerSize / 2 ]
+  const args: [number, number, number, number] = [ 0 , containerSize, -containerSize, containerSize / 2 ]
   const pos = {
     x: mapRange(x, ...args),
     y: mapRange(y, ...args),

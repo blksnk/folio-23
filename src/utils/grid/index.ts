@@ -4,7 +4,7 @@ import {
   GridLayoutData,
   GridMatrix,
   Size,
-  Dimensions,
+  Dimensions, GridItemWithPosition,
 } from '@/utils/grid/types';
 import { columns, rows } from '@/utils/responsive';
 import { normalizeGridItems } from '@/utils/grid/items';

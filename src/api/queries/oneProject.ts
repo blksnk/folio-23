@@ -1,4 +1,3 @@
-import { SectionList, sections } from "@/api/queries/sections";
 import { ProjectListItemData } from "@/api/queries/allProjects";
 
 export const oneProject = `
@@ -25,28 +24,27 @@ export const oneProject = `
         css
       }
       medias {
-      ... on GalleryMedia {
-        id
-        title
-        asset {
-          width
-          height
-          url(
-            transformation: {image: {resize: {fit: scale, width: $width}}, document: {output: {format: webp}}}
-          )
-          mimeType
-        }
-        videoThumbnail {
-          height
-          width
-          url(
-            transformation: {image: {resize: {fit: scale, width: $width}}, document: {output: {format: webp}}}
-          )
-          mimeType
+        ... on GalleryMedia {
+          id
+          title
+          asset {
+            width
+            height
+            url(
+              transformation: {image: {resize: {fit: scale, width: $width}}, document: {output: {format: webp}}}
+            )
+            mimeType
+          }
+          videoThumbnail {
+            height
+            width
+            url(
+              transformation: {image: {resize: {fit: scale, width: $width}}, document: {output: {format: webp}}}
+            )
+            mimeType
+          }
         }
       }
-    }
-      ${sections}
     }
   }
 `
@@ -76,7 +74,6 @@ export interface ProjectData extends ProjectListItemData {
   client: string;
   brief: string;
   medias: ProjectMedia[];
-  sections: SectionList;
   backgroundColor: {
     hex: string;
     css: string;
