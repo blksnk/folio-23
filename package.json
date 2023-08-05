@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node prebuild.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -28,6 +29,7 @@
     "urql": "^3.0.4"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs": "^4.39.3",
     "@types/lodash": "^4.14.196",
     "sass": "^1.60.0",
     "sass-loader": "^13.2.1"
