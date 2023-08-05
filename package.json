@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "slicemachine": "start-slicemachine"
   },
   "dependencies": {
     "@types/node": "18.15.9",
@@ -27,6 +28,7 @@
     "urql": "^3.0.4"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.196",
     "sass": "^1.60.0",
     "sass-loader": "^13.2.1"
   }
