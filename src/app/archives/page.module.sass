@@ -223,11 +223,15 @@
       height: 1px
       min-height: 1px
       background: variables.$w50
-      @include variables.lineX
+      @include variables.lineX(1200ms)
+      transform-origin: right
       transition: all 600ms variables.$bezier 0s, width 0ms variables.$bezier 0s
 
     &.doPreview .indicatorLine
       transition: all 600ms variables.$bezier 0s
+
+    &.hide .indicatorLine
+      animation-delay: 0s
 
 
   .controllerButton
