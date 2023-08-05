@@ -2,8 +2,8 @@ import styles from "./page.module.sass"
 import { combineClasses } from "@/utils/css";
 import { TextLine } from "@/components/AnimatedText/TextLine";
 import fontRepo from "@/app/fonts";
-import { Breakpoint } from "@/utils/responsive";
-import { useMemo } from "react";
+import { Breakpoint, cellHeight } from "@/utils/responsive";
+import { useEffect, useMemo, useState } from "react";
 import { clamp } from "lodash";
 
 interface SideControllerProps {
@@ -51,13 +51,22 @@ function easeInOutQuad (t: number, b: number, c: number, d: number): number {
   return -c / 2 * ((--t) * (t - 2) - 1) + b;
 }
 
-type IndicatorProps = Pick<SideControllerProps, "doPreview" | "hide" | "progress">
+type IndicatorProps = Pick<SideControllerProps, "doPreview" | "hide" | "progress" | "breakpoint">
 
-const Indicator = ({ hide, doPreview, progress }: IndicatorProps) => {
+const Indicator = ({ hide, doPreview, progress, breakpoint }: IndicatorProps) => {
+  const [count, setCount] = useState(30)
+  useEffect(() => {
+    const onResize = () => {
+      setCount(Math.round(cellHeight(breakpoint) * (breakpoint === "mobile" ? 9 : 10) / (breakpoint === "mobile" ? 13 : 25)))
+    }
+    window.addEventListener("resize", onResize)
+    onResize()
+
+    return () => window.removeEventListener("resize", onResize)
+  }, [breakpoint])
   const hideIndicator = hide
   const minPercent = 0.2
-  const count = 30
-  const spread = doPreview ? 3 : 7
+  const spread = doPreview ? 3 : breakpoint === "mobile" ? 5 : 7
   const minWidth = minPercent * 100 + "%"
   const maxWidth = "100%";
   const middleIndex = clamp(count * progress, 0, count)
