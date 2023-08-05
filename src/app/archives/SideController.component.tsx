@@ -57,10 +57,10 @@ const Indicator = ({ hide, doPreview, progress }: IndicatorProps) => {
   const hideIndicator = hide
   const minPercent = 0.2
   const count = 30
-  const spread = 7
+  const spread = doPreview ? 3 : 7
   const minWidth = minPercent * 100 + "%"
   const maxWidth = "100%";
-  const middleIndex = clamp(Math.round(count * progress), 0, count)
+  const middleIndex = clamp(count * progress, 0, count)
   const lineWidths = useMemo(() => Array(count + spread).fill('').map((_, index) => {
     const absoluteDiff = Math.abs(middleIndex - (index - 1) + (spread / 4))
     if(absoluteDiff > spread) return minWidth

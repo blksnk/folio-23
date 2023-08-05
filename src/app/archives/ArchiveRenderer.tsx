@@ -60,6 +60,8 @@ export const ArchiveRenderer = (props: ArchiveRendererProps) => {
   const doPreview = useMemo(() => selectedId !== null, [selectedId]);
   const doPreviewRef = useRef(doPreview);
   const scrollY = useRef(0)
+  const scrollYTarget = useRef(0);
+  const prevScrollYTarget = useRef(0);
   const scrollLimit = useRef(0);
   const [scrollProgress, setScrollProgress] = useState(0.5)
   const [imagesLoaded, setImagesLoaded] = useState(false);
@@ -67,6 +69,7 @@ export const ArchiveRenderer = (props: ArchiveRendererProps) => {
   const dragStartMousePos = useRef<Vector2>({x: 0, y: 0})
   const dragEndMousePos = useRef<Vector2>({x: 0, y: 0})
   const indicatorProgress = useMemo(() => (doPreview && selectedIndex !== null ? (selectedIndex / Math.max(props.archives.length - 1)) : scrollProgress), [scrollProgress, doPreview, props.archives, selectedIndex])
+  const animationId = useRef(0)
 
   useEffect(() => {
     if(!imagesLoaded) {
@@ -99,6 +102,7 @@ export const ArchiveRenderer = (props: ArchiveRendererProps) => {
   const clearSelection = () => {
     setSelectedIndex(null)
     scrollLimit.current = Math.max(gridLayout.matrixSize.height * cellHeight2() - cellHeight2() * 10, 0)
+    scrollYTarget.current = prevScrollYTarget.current;
     document.documentElement.style.setProperty('--scroll-y', -scrollY.current + "px")
   }
 
@@ -109,6 +113,28 @@ export const ArchiveRenderer = (props: ArchiveRendererProps) => {
       redirectTo('/')
     }
   }
+
+  useEffect(() => {
+    const animate = () => {
+      const multiplier = breakpoint === "mobile" ? 0.15 : 0.09
+      const value = scrollY.current + (scrollYTarget.current - scrollY.current) * multiplier
+      const diff = scrollY.current - value;
+      if (Math.abs(diff) > 0.00001) {
+        console.debug(value, multiplier)
+        scrollY.current = value;
+        document.documentElement.style.setProperty('--scroll-y', -value + "px")
+        if(scrollLimit.current !== 0) {
+          document.documentElement.classList.toggle(styles.scrolling, true)
+          setScrollProgress(value / Math.max(scrollLimit.current, 1))
+        }
+      }
+      animationId.current = window.requestAnimationFrame(animate)
+    }
+
+    animationId.current = window.requestAnimationFrame(animate)
+
+    return () => window.cancelAnimationFrame(animationId.current)
+  }, [breakpoint])
 
   useKeyboardInput({ onArrow, onBack })
 
@@ -135,16 +161,15 @@ export const ArchiveRenderer = (props: ArchiveRendererProps) => {
     trailing: false,
   }), [])
 
-  const onScroll = useCallback(({ deltaY }: WheelEvent | { deltaY: number}) => {
-    scrollY.current = clamp(scrollY.current + deltaY, 0, scrollLimit.current)
-    document.documentElement.style.setProperty('--scroll-y', -scrollY.current + "px")
-    if(scrollLimit.current !== 0) {
-      document.documentElement.classList.toggle(styles.scrolling, true)
-      setScrollProgress(scrollY.current / Math.max(scrollLimit.current, 1))
-    }
-    else if (Math.abs(deltaY) > 20) {
-      changeActiveIndexOnScroll(deltaY > 0 ?  1 : -1)
-    }
+  const onScroll = useCallback(({ deltaY, ...e }: WheelEvent | { deltaY: number}) => {
+    console.log(e, deltaY)
+
+    scrollYTarget.current = clamp(scrollYTarget.current + deltaY, 0, scrollLimit.current)
+    // document.documentElement.style.setProperty('--scroll-y', -scrollY.current + "px")
+  if (scrollLimit.current === 0 && Math.abs(deltaY) > 20) {
+    changeActiveIndexOnScroll(deltaY > 0 ?  1 : -1)
+  }
+
 
   }, [scrollY, scrollLimit, changeActiveIndex])
 
@@ -182,7 +207,7 @@ export const ArchiveRenderer = (props: ArchiveRendererProps) => {
     if(dragging.current) {
 
       if(!doPreviewRef.current) {
-        onScroll({ deltaY })
+        onScroll({ deltaY: deltaY * 1.5 })
       } else if (Math.abs(deltaY) > 40) {
         changeActiveIndexOnScroll(deltaY > 0 ?  1 : -1)
       }
@@ -225,18 +250,22 @@ export const ArchiveRenderer = (props: ArchiveRendererProps) => {
     doPreviewRef.current = doPreview
   }, [doPreview])
 
-  const selectArchive = (index: number) => {
-    document.documentElement.classList.toggle(styles.scrolling, false)
-    scrollLimit.current = 0;
-    document.documentElement.style.setProperty('--scroll-y', 0 + "px")
-    if(!isNaN(index)) {
+  const selectArchive = (index: number, force?: boolean) => {
+    // document.documentElement.classList.toggle(styles.scrolling, false)
+    const doSelect = force || !dragging.current
+    if(!isNaN(index) && doSelect) {
+      scrollLimit.current = 0;
+      prevScrollYTarget.current = scrollYTarget.current;
+      scrollYTarget.current = 0;
+      console.log('------ select ------')
+      document.documentElement.style.setProperty('--scroll-y', 0 + "px")
       setSelectedIndex(index);
     }
   }
 
   const selectFirst = () => {
     if(!doPreview) {
-      selectArchive(0);
+      selectArchive(0, true);
     }
   }
 

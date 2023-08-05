@@ -8,6 +8,9 @@
   grid-template-rows: repeat(12, calc(100% / 12))
   max-height: 100%
 
+  *
+    user-select: none
+
 .archivesGridContainer
   grid-column: 2 / -2
   grid-row: 1 / -1
@@ -71,6 +74,12 @@
     height: calc(100% - variables.$unit) !important
     transition-duration: 200ms
 
+  &:hover:not(.imageSelected).doPreview img
+    inset: variables.$unit / 2 !important
+    width: calc(100% - variables.$unit) !important
+    height: calc(100% - variables.$unit) !important
+    transition-duration: 400ms
+
 
   &.imageSelected
     border-color: variables.$white !important
@@ -93,7 +102,7 @@
       animation: 400ms variables.$bezier 300ms + $i * 100ms 1 normal forwards running imageFrameAppear
 
       img
-        animation: 600ms variables.$bezier 300ms + $i * 200ms 1 normal forwards running imageAppear
+        animation: 600ms variables.$bezier 400ms + $i * 100ms 1 normal forwards running imageAppear
 
 .imageBackground
   z-index: 1
@@ -110,13 +119,17 @@
     transition-duration: 300ms
     opacity: 0 !important
 
+
+  @media only screen and (max-width: variables.$breakpoint-mobile)
+    display: none
+
 .imagePreview
   border: 1px solid variables.$w50
   z-index: 1
   filter: blur(36px)
   cursor: pointer
   pointer-events: none
-  transition-duration: 750ms
+  transition-duration: 600ms
   background: variables.$w10
 
   img
@@ -130,10 +143,16 @@
     pointer-events: all
     filter: blur(0)
 
+  &.doPreview:not(.selectedPreview):hover
+    background: variables.$w30
+
+
   &.selectedPreview
     border-color: variables.$white
     background: variables.$w0
     cursor: default
+    transition-duration: 750ms
+
 
     img
       cursor: default
@@ -205,7 +224,7 @@
       min-height: 1px
       background: variables.$w50
       @include variables.lineX
-      transition: all 600ms variables.$bezier 0s, width 100ms variables.$bezier 0s
+      transition: all 600ms variables.$bezier 0s, width 0ms variables.$bezier 0s
 
     &.doPreview .indicatorLine
       transition: all 600ms variables.$bezier 0s
