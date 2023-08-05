@@ -3,8 +3,8 @@ import './variables.module.sass'
 import fontRepo from "@/app/fonts";
 
 export const metadata = {
-  title: 'Genmetsu',
-  description: "Jean-Nicolas Veigel's design folio",
+  title: 'Veigel.Studio',
+  description: "A multi-disciplinary designer experimental portfolio",
 }
 
 export default function RootLayout({
