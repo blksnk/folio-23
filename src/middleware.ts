@@ -5,7 +5,7 @@ const paris: [string, string] = ["48.864716", "2.349014"]
 const apiKey = "f115ead50198e684178b9d2eeef664fd"
 
 const fetchWeather = async ([lat, lon]: [string, string]) => {
-  return "unknown" // save on api calls during dev
+  // return "unknown" // save on api calls during dev
   try {
     const req = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&exclude=minutely,hourly,daily,alerts`
     const res = await fetch(req)
