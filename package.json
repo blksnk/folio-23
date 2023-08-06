@@ -7,8 +7,7 @@
     "prebuild": "node prebuild.js",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "slicemachine": "start-slicemachine"
+    "lint": "next lint"
   },
   "dependencies": {
     "@types/node": "18.15.9",
