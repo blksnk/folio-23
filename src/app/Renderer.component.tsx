@@ -30,7 +30,7 @@ const createProjectLink = (slug: string) => '/project/' + slug
 export const Renderer = (props: RendererProps) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const timeoutId = useRef<NodeJS.Timer>();
-  const doCarousel = useRef(false);
+  const doCarousel = useRef(true);
   const { transitionOut, redirectTo } = useTransition()
   useSetMousePos()
 

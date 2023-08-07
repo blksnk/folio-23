@@ -110,6 +110,7 @@ export const ArchiveGridItemPreview = ({ item, select, isSelected, doPreview, se
   const previewPosition = itemPreviewPositionMobile(isMobile ? isSelected ? 0 : 1 : 3, (isDesktop ? 0 : isMobile ? 2 : 1) - ((selectedIndex ?? index) - index) * (isDesktop ? 12 : isMobile ? 7 : 10), isSelected, isMobile, breakpoint)
   const imagePosition = itemPositionMobile(item.x, item.y, true, false, breakpoint)
 
+  // TODO: add +1 column width to tablet preview images
   const previewStyle = {
     opacity: 1,
     height: `calc(${cssCellHeightMobile(isDesktop ? 12 : isMobile ? 7 : 10, false, breakpoint)} - ${cssUnit(isSelected ? 0 : 2, breakpoint)})`,
