@@ -23,7 +23,7 @@ export const oneProject = `
         hex
         css
       }
-      medias {
+      medias(first: 100) {
         ... on GalleryMedia {
           id
           title
