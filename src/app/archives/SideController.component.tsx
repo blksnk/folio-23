@@ -54,10 +54,10 @@ function easeInOutQuad (t: number, b: number, c: number, d: number): number {
 type IndicatorProps = Pick<SideControllerProps, "doPreview" | "hide" | "progress" | "breakpoint">
 
 const Indicator = ({ hide, doPreview, progress, breakpoint }: IndicatorProps) => {
-  const [count, setCount] = useState(30)
+  const [count, setCount] = useState(Math.round(cellHeight(breakpoint) * (breakpoint === "mobile" ? 9 : 10) / (breakpoint === "mobile" ? 13 : 17)))
   useEffect(() => {
     const onResize = () => {
-      setCount(Math.round(cellHeight(breakpoint) * (breakpoint === "mobile" ? 9 : 10) / (breakpoint === "mobile" ? 13 : 25)))
+      setCount(Math.round(cellHeight(breakpoint) * (breakpoint === "mobile" ? 9 : 10) / (breakpoint === "mobile" ? 13 : 17)))
     }
     window.addEventListener("resize", onResize)
     onResize()
