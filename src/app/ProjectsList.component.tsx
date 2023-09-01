@@ -64,6 +64,12 @@ export const PageLeft = (props: PageLeftProps) => {
     props.redirectTo('/archives');
   }
 
+  const redirectToProfile: MouseEventHandler<HTMLAnchorElement> = (e) => {
+    e.preventDefault()
+    props.redirectTo('/profile');
+  }
+
+
   return (
     <section className={ styles.pageLeft }>
       <div className={ styles.leftSplit }>
@@ -95,7 +101,9 @@ export const PageLeft = (props: PageLeftProps) => {
           ) }
         </div>
 
-        <button
+        <Link
+          href="/profile"
+          onClick={redirectToProfile}
           className={ combineClasses(styles.profile, [ styles.hide, hide ]) }>
           <div className={styles.columnContainer}>
             <TextLine
@@ -112,7 +120,7 @@ export const PageLeft = (props: PageLeftProps) => {
             </TextLine>
           </div>
           <span className={combineClasses(styles.profileCta, fontRepo.button.className, [styles.hide, hide])}>Profile ↗</span>
-        </button>
+        </Link>
       </div>
       <div className={ styles.rightSplit }>
         <div className={ l(styles.linesBottomCenter, hide) }>

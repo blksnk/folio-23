@@ -56,7 +56,7 @@ export function Gallery(props: GalleryProps) {
       isPortrait,
     }
   }
-  const spacing = isMobile ? 16 : 12
+  const spacing = isMobile ? 6 : 12
   const columnCount = 10
   const rowCount = isTablet ? 7 : 9;
   const topPadding = isMobile ? "12px" : isTablet ? "24px" : "36px"
@@ -65,7 +65,7 @@ export function Gallery(props: GalleryProps) {
   const containerHeight = `calc((100vh - (${topPadding} * 2)) / 12 * ${rowCount})`
 
   const frameHeightLandscape = (i: number) => {
-    return `calc(min(calc(${containerWidth} / ${props.medias[0].imgRatio}), ${containerHeight}) ${isVertical ? '+' : '-'} ${i * spacing}px)`
+    return `calc(min(calc(${containerWidth} / ${props.medias[0].imgRatio}), ${containerHeight}) ${isVertical ? '-' : '-'} ${i * spacing}px)`
   }
   const frameHeightPortrait = (i: number) => {
     return `calc(min(calc(${containerWidth} / ${props.medias[props.medias.length - 1].imgRatio}), ${containerHeight}) - ${(i - props.nonPortraitMediaCount) * spacing}px)`
@@ -81,6 +81,7 @@ export function Gallery(props: GalleryProps) {
       {props.medias.map((media, index) => {
         const { aspectRatio, zIndex, active, isPortrait } = mediaProps(media);
         const height = isPortrait ? frameHeightPortrait(index) : frameHeightLandscape(index)
+        console.log(height)
         // const width = isPortrait ? frameWidthPortrait(props.medias.length - 1 - index) : undefined
         const animationDelay = props.hide ? 100 * index + "ms" : 300 + index * 200 + "ms";
         const style = {
@@ -94,7 +95,7 @@ export function Gallery(props: GalleryProps) {
         }
         return (
           <div key={media.id} style={style} className={combineClasses(styles.frame, isPortrait ? styles.portrait : styles.landscape, [styles.visible, active], [styles.hide, props.hide])}>
-            <GalleryMedia media={media} visible={active}/>
+            <GalleryMedia media={media} visible={active} priority={index === 0}/>
           </div>
         )
       })}
@@ -103,20 +104,22 @@ export function Gallery(props: GalleryProps) {
 }
 
 interface GalleryMediaProps {
+  priority?: boolean;
   media: FormattedProjectMedia;
   visible?: boolean;
 }
 
 const GalleryMedia = (props: GalleryMediaProps) => {
   const klass = combineClasses(styles.galleryMedia, [styles.visible, props.visible])
-  if(props.media.isVideo) {
+  if (props.media.isVideo) {
     return (
       <video autoPlay muted loop className={combineClasses(klass, styles.galleryMediaVideo)}>
         <source src={props.media.url}/>
       </video>
     )
   }
+  console.log('test')
   return (
-    <Image fill src={props.media.url} alt={props.media.displayTitle} sizes="(max-width: 600px) 100vw, 80vw" className={klass}/>
+    <Image fill src={props.media.url} alt={props.media.displayTitle} priority={props.priority} sizes="(max-width: 600px) 100vw, 80vw" className={klass}/>
   )
 }

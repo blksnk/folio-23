@@ -21,16 +21,24 @@
   transition: clip-path 0.6s ease-out 0s
   //isolation: isolate
   mix-blend-mode: hard-light
-  animation: 3s variables.$bezier 900ms 1 normal forwards running expandCircle
-  position: fixed
+  animation: 1200ms variables.$bezier 600ms 1 normal forwards running expandCircle
+  position: absolute
   top: 50%
   right: 50%
   transform: translate(50%,-50%) skew(0.001deg)
+  z-index: 5
+
+  &.hide
+    animation-name: hideCircle
+    animation-duration: 600ms
+    animation-delay: 0s
+    animation-play-state: running
 
 .blobContainer
   @include variables.flex-center
   @include variables.full-fixed
   background: rgba(1, 0, 0, 0.001)
+
 
 @keyframes expandCircle
   0%
@@ -38,3 +46,10 @@
 
   100%
     clip-path: circle(50%)
+
+@keyframes hideCircle
+  0%
+    clip-path: circle(50%)
+
+  100%
+    clip-path: circle(0%)

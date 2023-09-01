@@ -40,6 +40,11 @@
   &:hover .archiveTitle, &:hover .name
     letter-spacing: 1px
 
+  &:hover .archiveCta:after, &:hover .profileCta:after
+    transform-origin: center right
+    transition: transform 400ms variables.$bezier
+    transform: scaleX(0)
+
 .line
   user-select: none
   pointer-events: none
@@ -295,6 +300,7 @@
       font-style: italic
       transition: all 400ms variables.$bezier 0s
 
+
       span
         font-weight: 600
 
@@ -305,6 +311,7 @@
     @media only screen and (max-width: variables.$breakpoint-mobile)
       grid-row: 2 / span 3
       grid-column-end: span 2
+
 
     &:hover .archiveCta
       letter-spacing: 2px
@@ -324,6 +331,26 @@
     transition: all 400ms variables.$bezier 0s
     font-variant-ligatures: none
 
+    &:after
+      position: absolute
+      bottom: -1px
+      left: 1.5 * variables.$unit
+      right: 1.5 * variables.$unit
+      content: ""
+      height: 1px
+      background: variables.$white
+
+      transform-origin: center left
+      transition: transform 600ms variables.$bezier
+      transform: scaleX(1)
+
+      @media only screen and (max-width: variables.$breakpoint-tablet)
+        left: variables.$unit * 0.75
+        right: variables.$unit * 0.75
+
+      @media only screen and (max-width: variables.$breakpoint-mobile)
+        left: variables.$unit * 0.375
+        right: variables.$unit * 0.375
 
     @media only screen and (max-width: variables.$breakpoint-tablet)
       padding: 0 variables.$unit * 0.75
