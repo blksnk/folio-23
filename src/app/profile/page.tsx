@@ -19,10 +19,10 @@ export default function ProfilePage() {
         <ManifestoNew />
         <Skills />
         <LogoContainer />
-        <Contacts />
-        <Lines />
         <Branding />
+        <Contacts />
         <Experience />
+        <Lines />
       </main>
     </>
   );
