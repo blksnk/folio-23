@@ -1,5 +1,5 @@
-import styles from "./page.module.sass"
-import { combineClasses, replaceWithSpacesWhenHidden } from "@/utils/css";
+import styles from "./page.module.sass";
+import { cn, replaceWithSpacesWhenHidden } from "@/utils/css";
 import { Logo } from "@/components/Logo.component";
 import Link from "next/link";
 import { TextLine } from "@/components/AnimatedText/TextLine";
@@ -18,41 +18,60 @@ interface SideNavProps {
 
 const animatedTextProps = {
   fixedDuration: 600,
-  delay: 0
+  delay: 0,
 };
 
-const l = (lineClass: string, hide?: boolean) => `${ hide ? styles.hideLine : '' } ${ lineClass }`
+const l = (lineClass: string, hide?: boolean) =>
+  `${hide ? styles.hideLine : ""} ${lineClass}`;
 
-export const SideNav = ({ hide, redirectToHome, doPreview, totalCount, selectedIndex, breakpoint } : SideNavProps) => {
-
+export const SideNav = ({
+  hide,
+  redirectToHome,
+  doPreview,
+  totalCount,
+  selectedIndex,
+  breakpoint,
+}: SideNavProps) => {
   const onLinkClick: MouseEventHandler<HTMLAnchorElement> = (e) => {
-    e.preventDefault()
-    redirectToHome()
-  }
+    e.preventDefault();
+    redirectToHome();
+  };
 
-  const hideCount = hide || !doPreview || breakpoint === "mobile"
-  const currentIndexText = replaceWithSpacesWhenHidden(numberToString(selectedIndex + 1), hideCount);
-  const totalCountText = replaceWithSpacesWhenHidden(String(totalCount), hideCount)
+  const hideCount = hide || !doPreview || breakpoint === "mobile";
+  const currentIndexText = replaceWithSpacesWhenHidden(
+    numberToString(selectedIndex + 1),
+    hideCount
+  );
+  const totalCountText = replaceWithSpacesWhenHidden(
+    String(totalCount),
+    hideCount
+  );
 
   return (
     <nav className={styles.sideNav}>
       <Link
         href="/"
         onClick={onLinkClick}
-        className={ combineClasses(styles.logoContainer, [ styles.hide, hide ]) }
+        className={cn(styles.logoContainer, [styles.hide, hide])}
       >
-        <Logo outline/>
+        <Logo outline />
       </Link>
       <TextLine className={styles.spacer}>01</TextLine>
       <div className={styles.countContainer}>
-        <TextLine animatedTextProps={animatedTextProps} className={styles.count}>
-          { currentIndexText }
+        <TextLine
+          animatedTextProps={animatedTextProps}
+          className={styles.count}
+        >
+          {currentIndexText}
         </TextLine>
         <TextLine animatedTextProps={animatedTextProps} className={styles.of}>
-          { replaceWithSpacesWhenHidden('of', hideCount) }
+          {replaceWithSpacesWhenHidden("of", hideCount)}
         </TextLine>
-        <TextLine animatedTextProps={animatedTextProps} className={styles.totalCount}>
-          { totalCountText }
+        <TextLine
+          animatedTextProps={animatedTextProps}
+          className={styles.totalCount}
+        >
+          {totalCountText}
         </TextLine>
       </div>
 
@@ -61,7 +80,10 @@ export const SideNav = ({ hide, redirectToHome, doPreview, totalCount, selectedI
           animatedTextProps={animatedTextProps}
           className={styles.pageTitle}
         >
-          {replaceWithSpacesWhenHidden('Archives', hide || breakpoint === "mobile")}
+          {replaceWithSpacesWhenHidden(
+            "Archives",
+            hide || breakpoint === "mobile"
+          )}
         </TextLine>
       </div>
       <div className={l(styles.lineLeft, hide)}></div>
@@ -71,5 +93,5 @@ export const SideNav = ({ hide, redirectToHome, doPreview, totalCount, selectedI
       <div className={l(styles.lineLogoBottom, hide)}></div>
       <div className={l(styles.lineBottom, hide)}></div>
     </nav>
-  )
-}
+  );
+};

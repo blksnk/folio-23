@@ -1,12 +1,13 @@
-"use client"
+"use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   AnimatedCharacter,
-  characters
+  characters,
 } from "@/components/AnimatedText/AnimatedCharacter";
-import styles from './AnimatedText.module.sass'
+import styles from "./AnimatedText.module.sass";
 import { observe } from "@/utils/intersectionObserver";
+import { useTextTransition } from "./AnimatedText.utils";
 
 export interface AnimatedTextProps {
   children: string;
@@ -16,130 +17,155 @@ export interface AnimatedTextProps {
   className?: string;
   staggerDelay?: number;
   whenVisible?: boolean;
+  onAnimationEnd?: () => void;
   log?: boolean;
 }
 
-export default function AnimatedText({
-  children,
-  delay,
-  duration = 20,
-  fixedDuration,
-  className,
-  whenVisible,
-}: AnimatedTextProps) {
-  const klass = `${styles.text} ${className ?? ''}`
-  const charKlass = `${styles.character} ${className ?? ''}`
+export default function AnimatedText(props: AnimatedTextProps) {
+  const {
+    children,
+    delay,
+    duration = 20,
+    fixedDuration,
+    className,
+    whenVisible,
+    onAnimationEnd,
+  } = useTextTransition(props);
 
-  const s = useMemo(() => children.toUpperCase(), [children])
+  const klass = `${styles.text} ${className ?? ""}`;
+  const charKlass = `${styles.character} ${className ?? ""}`;
 
-  const chars = useMemo(() => s.split(''), [ s ])
-  const element = useRef<HTMLSpanElement | null>(null)
-  const [ currentIndexes, setCurrentIndexes ] = useState(Array(s.length).fill(0))
-  const [ delayElapsed, setDelayElapsed ] = useState(false);
+  const s = useMemo(() => children.toUpperCase(), [children]);
 
-  const targetIndexes = useMemo(() => chars.map(c => characters.indexOf(c)), [ chars ])
-  const displayChars = useMemo(() => currentIndexes.map(i => characters[i]), [ currentIndexes ])
+  const chars = useMemo(() => s.split(""), [s]);
+  const element = useRef<HTMLSpanElement | null>(null);
+  const [currentIndexes, setCurrentIndexes] = useState(Array(s.length).fill(0));
+  const [delayElapsed, setDelayElapsed] = useState(false);
 
+  const targetIndexes = useMemo(
+    () => chars.map((c) => characters.indexOf(c)),
+    [chars]
+  );
+  const displayChars = useMemo(
+    () => currentIndexes.map((i) => characters[i]),
+    [currentIndexes]
+  );
 
   useEffect(() => {
-    if(s.length !== currentIndexes.length) {
-      console.debug('length change', s.length, currentIndexes.length)
-      if(s.length < currentIndexes.length) {
-        setCurrentIndexes(currentIndexes.slice(0, s.length))
+    if (s.length !== currentIndexes.length) {
+      if (s.length < currentIndexes.length) {
+        setCurrentIndexes(currentIndexes.slice(0, s.length));
       } else {
-        setCurrentIndexes(Array(s.length).fill(0).map((space, index) => currentIndexes[index] ?? space));
+        setCurrentIndexes(
+          Array(s.length)
+            .fill(0)
+            .map((space, index) => currentIndexes[index] ?? space)
+        );
       }
     }
 
-    setDelayElapsed(false)
-  }, [ s ])
+    setDelayElapsed(false);
+  }, [s, props.children]);
 
   useEffect(() => {
-    const startTimeout = () => {
-      if (delay && delay > 0 && !delayElapsed) {
+    const startTimeout = (noDelay?: boolean) => {
+      if (delay && delay > 0 && !delayElapsed && !noDelay) {
         setTimeout(() => {
-          setDelayElapsed(true)
-        }, delay)
+          setDelayElapsed(true);
+        }, delay);
       } else {
-        setDelayElapsed(true)
+        setDelayElapsed(true);
       }
-    }
+    };
 
     const startWhenVisible = (entries: IntersectionObserverEntry[]) => {
-      console.log(entries);
-      if(entries.every(entry => entry.isIntersecting)) {
-        startTimeout()
+      if (entries.every((entry) => entry.isIntersecting)) {
+        startTimeout(true);
       }
-    }
+    };
 
-    if(whenVisible) {
-      if(element.current !== null) {
-        observe(element.current as HTMLSpanElement, startWhenVisible)
-      }
+    if (whenVisible && element.current) {
+      observe(element.current as HTMLSpanElement, startWhenVisible);
     } else {
-      startTimeout()
+      startTimeout();
     }
-
-  }, [ delay, delayElapsed, whenVisible, element ])
+  }, [delay, delayElapsed, whenVisible, element]);
 
   useEffect(() => {
     if (!delayElapsed || s === "\n") return;
 
     const diffsAndOffsetPolarities = currentIndexes.map((currentIndex, i) => {
-      const targetIndex = targetIndexes[i]
-      const offsetPolarity = targetIndex >= currentIndex ? 1 : -1
-      return [Math.abs(targetIndexes[i] - currentIndex), offsetPolarity]
-    })
-    const maxDiff = diffsAndOffsetPolarities.reduce((acc, [ diff ]) => Math.max(acc, diff), 0)
+      const targetIndex = targetIndexes[i];
+      const offsetPolarity = targetIndex >= currentIndex ? 1 : -1;
+      return [Math.abs(targetIndexes[i] - currentIndex), offsetPolarity];
+    });
+    const maxDiff = diffsAndOffsetPolarities.reduce(
+      (acc, [diff]) => Math.max(acc, diff),
+      0
+    );
     let count = 1;
 
-    const intervalDuration = fixedDuration ? Math.round(fixedDuration / maxDiff) : duration ?? 20;
+    const intervalDuration = fixedDuration
+      ? Math.round(fixedDuration / maxDiff)
+      : duration ?? 20;
     // break early if all indexes match
-    if (currentIndexes.every((currentIndex, index) => currentIndex === targetIndexes[index])) return;
-    let intervalId = setInterval(() => {
-
+    if (
+      currentIndexes.every(
+        (currentIndex, index) => currentIndex === targetIndexes[index]
+      )
+    ) {
+      return;
+    }
+    const intervalId = setInterval(() => {
       if (count > maxDiff) {
-        clearInterval(intervalId)
+        if (onAnimationEnd) onAnimationEnd();
+        clearInterval(intervalId);
       } else {
-        const newIndexes = currentIndexes.map((currentIndex, index) =>{
-          const targetIndex = targetIndexes[index]
-          const [diff, offsetPolarity] = diffsAndOffsetPolarities[index]
-          return count > diff ? targetIndex : (currentIndex + count * offsetPolarity)
-        })
-        setCurrentIndexes(newIndexes)
-        count++
+        const newIndexes = currentIndexes.map((currentIndex, index) => {
+          const targetIndex = targetIndexes[index];
+          const [diff, offsetPolarity] = diffsAndOffsetPolarities[index];
+          return count > diff
+            ? targetIndex
+            : currentIndex + count * offsetPolarity;
+        });
+        setCurrentIndexes(newIndexes);
+        count++;
       }
-    }, intervalDuration)
-    return () => clearInterval(intervalId)
-  }, [ delayElapsed, duration, fixedDuration ])
+    }, intervalDuration);
+    return () => clearInterval(intervalId);
+  }, [delayElapsed, duration, fixedDuration, targetIndexes]);
+
   return (
     <span className={klass} ref={element}>
-      {
-         chars.map((_, index) =>
-        <span className={ charKlass } key={"char" + index} >{ displayChars[index] }</span>
-      )}
+      {chars.map((_, index) => (
+        <span className={charKlass} key={"char" + index}>
+          {displayChars[index]}
+        </span>
+      ))}
     </span>
-  )
+  );
 }
 
 export function AnimatedTextStaggered(props: AnimatedTextProps) {
-  const klass = `${styles.text} ${props.className ?? ''}`
+  const klass = `${styles.text} ${props.className ?? ""}`;
+
+  const p = useTextTransition(props);
 
   return (
     <span className={klass}>
-      {
-        props.children.split('').map((char, index) =>
-          <AnimatedCharacter
-            delay={props.staggerDelay ? (props.delay ?? 0) + props.staggerDelay * index : props.delay}
-            duration={props.duration}
-            fixedDuration={props.fixedDuration}
-            className={props.className}
-            key={'char' + index}
-          >
-            {char}
-          </AnimatedCharacter>
-        )}
+      {p.children.split("").map((char, index) => (
+        <AnimatedCharacter
+          delay={
+            p.staggerDelay ? (p.delay ?? 0) + p.staggerDelay * index : p.delay
+          }
+          duration={p.duration}
+          fixedDuration={p.fixedDuration}
+          className={p.className}
+          key={"char" + index}
+        >
+          {char}
+        </AnimatedCharacter>
+      ))}
     </span>
-  )
+  );
 }
-

@@ -1,11 +1,9 @@
-@use "../../app/variables.module"
-
 .lineGroup
   height: 100%
   width: 100%
 
   .line
-    background: variables.$white
+    background: v.$white
     opacity: 0.5
 
   &.vertical .line
@@ -17,7 +15,7 @@
 
     @for $i from 1 through 20
       &:nth-child(#{$i})
-        animation: 600ms + $i * 100ms variables.$bezier 300ms + $i * 50ms 1 normal forwards running appearY
+        animation: 600ms + $i * 100ms v.$bezier 300ms + $i * 50ms 1 normal forwards running appearY
 
   &.horizontal .line
     height: 1px
@@ -26,10 +24,9 @@
     transform: scaleX(0)
     transform-origin: left center
 
-
     @for $i from 1 through 20
       &:nth-child(#{$i})
-        animation: 600ms + $i * 100ms variables.$bezier 300ms + $i * 50ms 1 normal forwards running appearX
+        animation: 600ms + $i * 100ms v.$bezier 300ms + $i * 50ms 1 normal forwards running appearX
 
 @keyframes appearX
   from

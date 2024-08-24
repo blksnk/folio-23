@@ -1,0 +1,33 @@
+
+// ---------------------------------------------------
+// Manifesto
+// ---------------------------------------------------
+
+.manifesto
+  grid-column: 1 / -1
+  grid-row: -3 / -1
+  @include v.Grid(4, 1)
+  padding: v.$unit 0
+  mix-blend-mode: difference
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    @include v.Grid(2, 2)
+    grid-template-rows: auto auto
+    grid-row-start: -4
+    padding: v.$unit / 3 0
+    padding-bottom: 0
+
+.manifestoBlock
+  @include v.text-line-sizing
+  height: 100%
+  width: 100%
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    margin-bottom: v.$unit / 2
+
+    &:nth-child(3), &:nth-child(4)
+      margin: 0
+
+.manifestoText
+  height: 100%
+  width: 100%

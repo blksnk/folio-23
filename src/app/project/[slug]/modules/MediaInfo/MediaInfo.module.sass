@@ -1,0 +1,59 @@
+.mediaInfo
+  grid-row: 1 / -1
+  grid-column: 1 / 2
+  grid: grid
+  grid-template-columns: 1fr
+  grid-template-row: subgrid
+  width: var(--side-banner-width)
+  mix-blend-mode: difference
+
+.mediaTitleContainer
+  width: var(--side-banner-width)
+  grid-column: 1 / span 2
+  grid-row: 2 / span 5
+  display: flex
+  align-items: flex-end
+  justify-content: flex-end
+  padding: v.$unit v.$unit / 2
+  margin-bottom: calc(100vh / -24)
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    align-items: flex-end
+    justify-content: flex-start
+    grid-row: 7 / span 4
+    padding-bottom: v.$unit * 1.5
+    margin-bottom: 0
+
+  & > *
+    transform: rotate(180deg)
+    opacity: 0.5
+
+  span
+    writing-mode: vertical-lr
+    padding: 0
+    user-select: none
+
+.mediaColorContainer
+  width: var(--side-banner-width)
+  grid-column: 1 / span 2
+  grid-row: -3 / span 2
+  display: flex
+  align-items: flex-start
+  justify-content: flex-end
+  padding: v.$unit v.$unit / 2
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    grid-row-start: 2
+    align-items: flex-start
+    justify-content: flex-start
+
+  & > *
+    transform: rotate(180deg)
+    opacity: 0.5
+
+  span
+    writing-mode: vertical-lr
+    padding: 0
+    user-select: none
+    max-width: max-content
+    max-height: max-content

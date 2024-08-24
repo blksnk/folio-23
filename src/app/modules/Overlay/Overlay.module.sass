@@ -1,0 +1,201 @@
+$arrow-width: v.$unit * 4
+
+// ---------------------------------------------------
+// Lines
+// ---------------------------------------------------
+
+.lineBannerLeft
+  grid-row: 1 / -1
+  grid-column: 1 / span 2
+  border-right: 1px solid v.$w50
+  width: var(--side-banner-width)
+  @include v.lineY
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    grid-row-end: -3
+
+.lineBannerRight
+  grid-row: 1 / -1
+  grid-column: 1 / span 2
+  border-right: 1px solid v.$w50
+  width: calc(var(--side-banner-width) + var(--unit) / 2)
+  @include v.lineY
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    grid-row-end: -3
+
+.lineBannerTop
+  grid-row: 1 / span 1
+  grid-column: 1 / span 2
+  border-top: 1px solid v.$w50
+  width: calc(var(--side-banner-width) + var(--unit) / 2)
+  @include v.lineX
+
+.lineListEnd
+  grid-column: 7 / span 2
+  grid-row: 1 / -1
+  border-left: 1px solid v.$w50
+  justify-self: end
+  width: $arrow-width
+  @include v.lineY
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    grid-column-start: 8
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    display: none
+
+.linesCenter
+  grid-row: 1 / -1
+  grid-column: 9 / span 1
+  overflow: hidden
+  border-right: 1px solid v.$w50
+  @include v.lineY
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    width: 1px
+    justify-self: end
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    display: none
+
+.linesRight
+  grid-row: 1 / -1
+  grid-column: 12 / span 1
+  overflow: hidden
+  border-right: 1px solid v.$w50
+  @include v.lineY
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    width: 1px
+    justify-self: end
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    width: auto
+    justify-self: start
+    & > div
+      height: calc(100% / 12 * 10)
+      overflow: hidden
+
+.lineLeft
+  grid-row: 1 / -1
+  grid-column: 1 / span 1
+  border-left: 1px solid v.$w50
+  @include v.lineY
+
+.lineThird
+  grid-row: 1 / -1
+  grid-column: 5 / span 1
+  border-left: 1px solid v.$w50
+  @include v.lineY
+
+  @media only screen and (max-width: v.$breakpoint-desktop-small)
+    grid-column-start: 6
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    grid-row-end: 11
+    grid-column-start: 8
+
+.linesTop
+  grid-row: 6 / span 1
+  grid-column: 9 / -1
+  align-self: end
+  margin-bottom: v.$unit
+  border-bottom: 1px solid v.$w50
+  @include v.lineX
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    grid-column-start: 10
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    grid-column-start: 1
+    grid-row-start: 4
+    margin-bottom: 0
+
+.lineTop
+  grid-column: 1 / -1
+  grid-row: 1 / span 1
+  border-bottom: 1px solid v.$w50
+  @include v.lineX
+
+.lineBottom
+  grid-column: 1 / -1
+  grid-row: 10 / 11
+  border-bottom: 1px solid v.$w50
+  @include v.lineX
+
+.lineAcross
+  grid-column: 1 / -1
+  grid-row: 6 / span 1
+  border-bottom: 1px solid v.$w50
+  @include v.lineX
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    grid-row-start: 5
+
+.linesBottomLeft
+  grid-column: 1 / 5
+  grid-row: 10 / 11
+  padding-top: 16px
+  overflow: hidden
+  @include v.lineX
+
+  @media only screen and (max-width: v.$breakpoint-desktop-small)
+    grid-column-end: 6
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    grid-column-end: 8
+
+.lineTopCenter
+  grid-row: 3 / 4
+  grid-column: 5 / -1
+  border-bottom: 1px solid v.$w50
+  @include v.lineX
+
+  @media only screen and (max-width: v.$breakpoint-desktop-small)
+    grid-column-start: 6
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    grid-column: 1 / 8
+    grid-row: 4 / 5
+    display: none
+
+.lineBottomRight
+  grid-column: 1 / -1
+  grid-row: 10 / -1
+  border-top: 1px solid v.$w50
+  @include v.lineX
+
+.linesCenterLeft
+  grid-column: 1 / 9
+  grid-row: 6 / span 1
+  align-self: end
+  margin-bottom: v.$unit / 2
+  margin-right: $arrow-width
+  @include v.lineX
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    grid-column-end: 10
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    grid-column-end: 8
+    grid-row-start: 5
+    margin-right: 0
+
+// ---------------------------------------------------
+// LOGO
+// ---------------------------------------------------
+
+.logoContainer
+  @include v.flex-center
+  grid-row: 1 / 1
+  grid-column: 1 / 2
+  width: var(--side-banner-width)
+
+  img
+    // transition: scale 300ms v.$bezier 0s, opacity 300ms v.$bezier 0s
+    animation: fade-in 600ms v.$bezier 0s forwards
+
+  &.hide img
+    animation: fade-out 300ms v.$bezier 0s forwards
+    animation-play-state: running

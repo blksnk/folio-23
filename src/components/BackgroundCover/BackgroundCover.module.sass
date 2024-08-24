@@ -1,0 +1,61 @@
+.backgroundColor, .backgroundImageContainer
+  position: fixed
+  inset: v.$unit * -4
+  opacity: 1
+  filter: blur(0)
+  transition: all 1200ms v.$bezier 200ms
+
+.backgroundLoading
+  opacity: 0
+  filter: blur(24px)
+
+  &.overBlur
+    filter: blur(v.$unit * 3)
+
+.backgroundImageContainer
+  transition: all 600ms v.$bezier 0ms
+  filter: brightness(0.8)
+
+  &.overBlur
+    filter: blur(v.$unit) brightness(0.8)
+
+  .backgroundImage
+    mix-blend-mode: color-burn
+    object-fit: cover
+    transition: all 600ms v.$bezier 600ms, translate 0s linear 0s
+    position: fixed
+    inset: v.$unit * -2 !important
+    opacity: 0
+    transition-delay: 600ms
+    translate: calc(var(--mouse-normalized-x) * v.$unit * -2) calc(var(--mouse-normalized-y) * v.$unit * -2)
+
+    &.backgroundImageActive
+      transition: opacity 600ms v.$bezier 300ms, translate 0s linear 0s
+      opacity: 1
+
+  &.backgroundTransition
+    filter: brightness(0.8) blur(24px)
+    transition: all 600ms v.$bezier 0ms
+
+    &.overBlur
+      filter: brightness(0.8) blur(v.$unit * 3)
+
+// ---------------------------------------------------
+// BLOBS Overlay
+// ---------------------------------------------------
+
+.overlayBlobs
+  mix-blend-mode: color-dodge
+  translate: var(--mouse-x) var(--mouse-y)
+  pointer-events: none
+  height: 1px
+  width: 1px
+  overflow: visible
+  position: fixed
+  filter: blur(4px)
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    display: none
+
+  .overlayBlobsBlobs
+    filter: blur(4px)

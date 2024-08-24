@@ -1,14 +1,13 @@
-@use '../app/variables.module'
 
 .textContainer
-  @include variables.flex-center
-  @include variables.full-fixed
+  @include v.flex-center
+  @include v.full-fixed
 
   img
     transform: translateZ(1px)
     isolation: isolate
-    height: calc(variables.$circle-size * 0.65) !important
+    height: calc(v.$circle-size * 0.65) !important
     width: auto !important
 
-    @media only screen and (max-width: variables.$breakpoint-mobile)
-      height: calc(variables.$circle-size-mobile * 0.65) !important
+    @media only screen and (max-width: v.$breakpoint-mobile)
+      height: calc(v.$circle-size-mobile * 0.65) !important

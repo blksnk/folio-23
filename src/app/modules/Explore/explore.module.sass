@@ -1,0 +1,108 @@
+
+.explore
+  grid-row: 7 / span 3
+  grid-column: 10 / span 2
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    grid-column-end: span 3
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    grid-column: 1 / -1
+    grid-row: 11 / -1
+
+.container
+  background: rgba(255, 255, 255, 0)
+  border: none
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: space-between
+  grid-template-columns: 1fr
+  cursor: pointer
+  width: 100%
+  height: 100%
+  max-width: 100%
+  margin: 0
+  padding: v.$unit 0
+  font-family: inherit
+  position: relative
+  z-index: 10
+
+  &:before
+    position: absolute
+    content: ""
+    top: v.$unit * 3
+    bottom: v.$unit * 3
+    left: v.$unit * 1.5
+    right: v.$unit * 1.5
+    background: v.$w10
+    backdrop-filter: blur(4px)
+    border-radius: 50%
+    transition: all 400ms v.$bezier 0s
+    transform: scale(1)
+    animation: 1200ms v.$bezier 0ms 1 normal explore-grow
+
+    @media only screen and (max-width: v.$breakpoint-mobile)
+      inset: v.$unit
+
+  .title
+    align-self: center
+    text-align: center
+    font-style: italic
+    font-weight: 400
+    font-size: 44px
+    line-height: 67px
+    letter-spacing: 0
+    filter: blur(0)
+    opacity: 1
+    transition: all 400ms v.$bezier 0s
+    animation: 1200ms v.$bezier 0ms 1 normal explore-unblur
+    leading-trim: both
+    text-edge: cap
+
+  .topText
+    text-align: left
+    align-self: flex-start
+
+  .bottomText
+    text-align: right
+    align-self: flex-end
+
+  .topText, .bottomText
+    opacity: 0.5
+    transition: all 400ms v.$bezier 0s
+    animation: 1200ms v.$bezier 0ms 1 normal explore-show
+
+  &:hover
+
+    &:before
+      background: v.$w15
+      transition: all 200ms v.$bezier 0s
+      inset: 0
+      border-radius: 0
+
+    .title
+      letter-spacing: v.$unit / 2
+      transition: all 600ms v.$bezier 0ms
+
+    .topText, .bottomText
+      opacity: 0.7
+      letter-spacing: 1px
+      transition: all 200ms v.$bezier 0s
+
+  &.hide
+
+    &:before
+      transform: scale(0)
+      animation: none
+      transition-duration: 600ms
+
+    .title
+      opacity: 0
+      filter: blur(v.$unit * 2)
+      letter-spacing: v.$unit * 2 !important
+      transition-duration: 600ms
+
+    .topText, .bottomText
+      opacity: 0
+      transition-duration: 600ms

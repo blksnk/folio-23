@@ -1,0 +1,11 @@
+.descriptionContainer
+  grid-column: 2 / -2
+  grid-row: -2 / span 1
+  @include v.flex-center
+  align-items: flex-end
+  padding-bottom: v.$unit
+  text-align: center
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    grid-row-start: -4
+    padding-bottom: v.$unit * 1.25

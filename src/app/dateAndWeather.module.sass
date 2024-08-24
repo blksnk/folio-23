@@ -1,13 +1,11 @@
-@use "variables.module"
-
 .container
   display: grid
   grid-template-columns: repeat(2, 1fr)
   grid-template-rows: auto auto
-  padding: variables.$unit 0
-  row-gap: variables.$unit
+  padding: v.$unit 0
+  row-gap: v.$unit
 
-  @media only screen and (max-width: variables.$breakpoint-mobile)
+  @media only screen and (max-width: v.$breakpoint-mobile)
     display: none
 
   .city
@@ -18,8 +16,8 @@
   display: grid
   grid-template-columns: 1fr
   grid-template-rows: repeat(2, 1fr)
-  padding-bottom: variables.$unit
+  padding-bottom: v.$unit
   opacity: 0.5
 
-  @media only screen and (max-width: variables.$breakpoint-mobile)
+  @media only screen and (max-width: v.$breakpoint-mobile)
     display: none

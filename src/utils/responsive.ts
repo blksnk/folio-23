@@ -1,4 +1,4 @@
-export type Breakpoint = 'mobile' | 'tablet' | 'default';
+export type Breakpoint = "mobile" | "tablet" | "default";
 
 export const breakpoints: { [key in Breakpoint]: number } = {
   mobile: 650,
@@ -54,15 +54,15 @@ interface ResponsiveValueMap<T = number> {
 }
 
 export const currentBreakPoint = (): Breakpoint => {
-  if(typeof window === "undefined") {
+  if (typeof window === "undefined" || !window) {
     return "default";
   }
   const w = window.innerWidth;
   return w <= breakpoints.mobile
-    ? 'mobile'
+    ? "mobile"
     : w <= breakpoints.tablet
-      ? 'tablet'
-      : 'default';
+    ? "tablet"
+    : "default";
 };
 
 export const unit = (b?: Breakpoint) =>
@@ -78,37 +78,56 @@ const gridMarginX = (b?: Breakpoint) =>
 export const gridMarginY = (b?: Breakpoint) =>
   responsiveMap.gridMarginY[b ?? currentBreakPoint()];
 
-
 export const cellWidth = (b?: Breakpoint) =>
   (window.innerWidth - gridMarginX(b)) / columns(b) - gridMarginX(b);
-export const cellHeight = (b?: Breakpoint) => (window.innerHeight - gridMarginY(b)) / rows(b) - gridMarginY(b);
-export const cssUnit = (multiplier = 1, b?: Breakpoint) => `calc(${unit(b)}px * ${multiplier})`;
+export const cellHeight = (b?: Breakpoint) =>
+  (window.innerHeight - gridMarginY(b)) / rows(b) - gridMarginY(b);
+export const cssUnit = (multiplier = 1, b?: Breakpoint) =>
+  `calc(${unit(b)}px * ${multiplier})`;
 
-export const cssGridMarginX = (multiplier = 1, b?: Breakpoint) => `calc(${gridMarginX(b)}px * ${multiplier})`;
-export const cssGridMarginY = (multiplier = 1, b?: Breakpoint) => `calc(${gridMarginY(b)}px * ${multiplier})`;
+export const cssGridMarginX = (multiplier = 1, b?: Breakpoint) =>
+  `calc(${gridMarginX(b)}px * ${multiplier})`;
+export const cssGridMarginY = (multiplier = 1, b?: Breakpoint) =>
+  `calc(${gridMarginY(b)}px * ${multiplier})`;
 
 export const cssCellWidthOld = (multiplier = 1, isPosition?: boolean) =>
   `calc(((100vw - ${cssGridMarginX()}) / ${columns()} - ${cssGridMarginX()}) * ${multiplier} + ${cssGridMarginX()} * ${Math.max(
     multiplier - 1,
     0
-  )} ${isPosition && multiplier > 0 ? ` + ${cssGridMarginX()}` : ''})`;
+  )} ${isPosition && multiplier > 0 ? ` + ${cssGridMarginX()}` : ""})`;
 export const cssCellHeightOld = (multiplier = 1, isPosition?: boolean) =>
   `calc(((var(--app-height) - ${cssGridMarginY()}) / ${rows()} - ${cssGridMarginY()}) * ${multiplier} + ${cssGridMarginY()} * ${Math.max(
     multiplier - 1,
     0
-  )} ${isPosition && multiplier > 0 ? ` + ${cssGridMarginY()}` : ''})`;
+  )} ${isPosition && multiplier > 0 ? ` + ${cssGridMarginY()}` : ""})`;
 
-export const cssCellWidth = (multiplier = 1, isPosition?: boolean, b?: Breakpoint) => {
-  return `calc( ( 100vw - ${cssGridMarginX(2, b)} ) / ${columns(b)} * ${multiplier} )`
-}
+export const cssCellWidth = (
+  multiplier = 1,
+  isPosition?: boolean,
+  b?: Breakpoint
+) => {
+  return `calc( ( 100vw - ${cssGridMarginX(2, b)} ) / ${columns(
+    b
+  )} * ${multiplier} )`;
+};
 
-export const cssCellHeight = (multiplier = 1, isPosition?: boolean, b?: Breakpoint) => {
-  return `calc( ( var(--app-height) - ${cssGridMarginY(2, b)} ) / ${rows(b)} * ${multiplier} )`
-}
+export const cssCellHeight = (
+  multiplier = 1,
+  isPosition?: boolean,
+  b?: Breakpoint
+) => {
+  return `calc( ( var(--app-height) - ${cssGridMarginY(2, b)} ) / ${rows(
+    b
+  )} * ${multiplier} )`;
+};
 
-export const cssCellHeightMobile = (multiplier = 1, isPosition?: boolean, b?: Breakpoint) => {
-  return `calc( 100% / ${rows(b)} * ${multiplier} )`
-}
+export const cssCellHeightMobile = (
+  multiplier = 1,
+  isPosition?: boolean,
+  b?: Breakpoint
+) => {
+  return `calc( 100% / ${rows(b)} * ${multiplier} )`;
+};
 
 export const responsiveValue = <T = number>(
   values: ResponsiveValueMap<T>,

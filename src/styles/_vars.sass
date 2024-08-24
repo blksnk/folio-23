@@ -1,0 +1,224 @@
+// Colors
+$black: #000
+$dark-grey: #2D2D2D
+$off-white: #ECECE9
+$white: #FFF
+$background: #0B1312
+$w50: rgba(255, 255, 255, 0.5)
+$w30: rgba(255, 255, 255, 0.3)
+$w15: rgba(255, 255, 255, 0.15)
+$w10: rgba(255, 255, 255, 0.1)
+$w05: rgba(255, 255, 255, 0.06)
+$w0: rgba(255, 255, 255, 0)
+
+$line-color: $dark-grey
+
+// Breakpoints
+$breakpoint-mobile: 650px
+$breakpoint-tablet: 900px
+$breakpoint-desktop-small: 1200px
+$breakpoint-height: 700px
+
+// Sizing
+$unit: 0.75rem
+
+$side-padding: 7.5rem
+$min-side-padding: 1rem
+
+$lines-padding: 9.5rem
+
+$vertical-padding: $unit * 3
+@media only screen and (max-width: $breakpoint-tablet)
+  $vertical-padding: $unit * 2
+@media only screen and (max-width: $breakpoint-mobile)
+  $vertical-padding: $unit
+
+$side-banner-width: $unit * 5.5
+
+$circle-size: 40vw
+$circle-x-offset: calc((100vh - $circle-size) / 2)
+$page-content-x-offset: calc($circle-size + $circle-x-offset + 3 * $unit)
+
+$circle-size-mobile: 80vw
+$circle-x-offset-mobile: calc((100vh - $circle-size-mobile) / 2)
+$page-content-x-offset-mobile: calc($circle-size-mobile + $circle-x-offset-mobile + 2 * $unit)
+
+// Timings
+$bezier: cubic-bezier(0.38,0,0.21,0.98)
+
+// Fonts
+@mixin body
+  font-size: 0.75rem
+  font-weight: 400
+  line-height: 123%
+  text-transform: uppercase
+  font-feature-settings: 'case' on, 'ss03' on, 'ss04' on
+
+  @media only screen and (max-width: $breakpoint-mobile)
+    font-size: 0.625rem
+
+  @media only screen and (max-height: $breakpoint-height)
+    font-size: 0.625rem
+
+@mixin body-super
+  @include body
+  vertical-align: super
+  font-size: 0.5rem
+  transform: translateY($unit * 0.4)
+  letter-spacing: 3px
+
+@mixin body-bold
+  @include body
+  font-weight: 600
+
+@mixin title
+  font-weight: 600
+  font-size: 6rem
+  color: $white
+  text-align: center
+  font-family: "__neueBit_9e67b5"
+
+@mixin title-small
+  @include title
+  box-shadow: none
+  font-size: 2.5rem
+
+@mixin text-line-sizing
+  min-height: $unit + ($unit / 4)
+  text-align: left
+  padding: 0 1.125rem
+
+  @media only screen and (max-width: $breakpoint-desktop-small)
+    padding: 0 $unit
+
+  @media only screen and (max-width: $breakpoint-tablet)
+    padding: 0 $unit * 0.75
+
+  @media only screen and (max-width: $breakpoint-mobile)
+    padding: 0 $unit * 0.5
+    min-height: $unit
+
+// Layout
+@mixin flex-center
+  display: flex
+  align-items: center
+  justify-content: center
+
+@mixin full-fixed
+  position: fixed
+  top: 0
+  left: 0
+  height: 100%
+  width: 100%
+
+// Effects
+@mixin glow
+  text-shadow: 0 0 9px $white
+
+@mixin Grid($columns: 12, $rows: 12)
+  display: grid
+  grid-template-columns: repeat($columns, 1fr)
+  grid-template-rows: repeat($rows, 1fr)
+
+// Fixed Overlay
+@mixin Overlay
+  position: fixed
+  top: $unit * 3
+  bottom: $unit * 3
+  left: 2.75rem
+  right: 2.75rem
+  @include Grid(12, 12)
+
+  @media screen and (max-width: $breakpoint-tablet)
+    top: $unit * 2
+    bottom: $unit * 2
+    left: $unit * 2 + $unit / 3
+    right: $unit * 2 + $unit / 3
+
+  @media screen and (max-width: $breakpoint-mobile)
+    top: $unit
+    bottom: $unit
+    left: $unit * 0.75
+    right: $unit * 0.75
+
+// Lines
+@mixin lineY($delay: 300ms, $hideDelay: 300ms)
+  transform: scaleY(0)
+  transform-origin: top
+  animation: 600ms $bezier $delay 1 normal forwards appearY
+  pointer-events: none
+  user-select: none
+  transition: all 600ms $bezier 0s
+  opacity: 0.5
+
+  &.hideLine
+    transform: scaleY(1)
+    transform-origin: bottom
+    animation-name: hideY
+    animation-delay: $hideDelay
+    animation-play-state: running
+
+@mixin lineX($delay: 300ms, $hideDelay: 300ms)
+  transform: scaleX(0)
+  transform-origin: left center
+  animation: 600ms $bezier $delay 1 normal forwards appearX
+  pointer-events: none
+  user-select: none
+  transition: all 600ms $bezier 0s
+  opacity: 0.5
+
+  &.hideLine
+    transform: scaleX(1)
+    transform-origin: right
+    animation-name: hideX
+    animation-delay: $hideDelay
+    animation-play-state: running
+
+@mixin hide-scrollbar
+  scrollbar-width: none
+
+  &::-webkit-scrollbar
+    display: none
+
+@keyframes appearX
+  from
+    transform: scaleX(0)
+
+  to
+    transform: scaleX(1)
+
+@keyframes appearY
+  from
+    transform: scaleY(0)
+
+  to
+    transform: scaleY(1)
+
+@keyframes hideX
+  from
+    transform: scaleX(1)
+
+  to
+    transform: scaleX(0)
+
+@keyframes hideY
+  from
+    transform: scaleY(1)
+
+  to
+    transform: scaleY(0)
+
+// JS Exports
+:export
+  black: $black
+  darkGrey: $dark-grey
+  offWhite: $off-white
+  white: $white
+  background: $background
+  sidePadding: $side-padding
+  minSidePadding: $min-side-padding
+  linesPadding: $lines-padding
+  bezier: $bezier
+  breakpointMobile: $breakpoint-mobile
+  breakpointTablet: $breakpoint-tablet
+  breakpointDesktopSmall: $breakpoint-desktop-small

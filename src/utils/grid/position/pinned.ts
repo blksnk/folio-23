@@ -3,10 +3,10 @@ import {
   GridLayoutOptions,
   GridMatrix,
   Size,
-} from '@/utils/grid/types';
-import { fillMatrix } from '@/utils/grid/matrix';
-import { placeItem } from '@/utils/grid/position/autoPlace';
-import { isDefined } from '@/utils/math';
+} from "@/utils/grid/types";
+import { fillMatrix } from "@/utils/grid/matrix";
+import { placeItem } from "@/utils/grid/position/autoPlace";
+import { isDefined } from "@/utils/math";
 
 export const setPinnedItemPosition = (
   matrix: GridMatrix,
@@ -25,7 +25,6 @@ export const setPinnedItemPosition = (
       pinnedItem,
       options
     );
-    console.log('overflow');
     if (isDefined(autoPlacedPosition)) {
       fillMatrix(
         matrix,

@@ -1,0 +1,14 @@
+.logoContainer
+  @include v.flex-center
+  grid-row: 1 / 1
+  grid-column: 1 / 2
+  width: var(--side-banner-width)
+  mix-blend-mode: difference
+
+  img
+    // transition: scale 300ms v.$bezier 0s, opacity 300ms v.$bezier 0s
+    animation: fade-in 600ms v.$bezier 0s forwards
+
+  &.hide img
+    animation: fade-out 300ms v.$bezier 0s forwards
+    animation-play-state: running

@@ -1,0 +1,177 @@
+
+$arrow-width: v.$unit * 4
+
+@mixin backgroundHover
+  position: relative
+
+  &:before
+    position: absolute
+    content: ""
+    top: v.$unit
+    left: v.$unit
+    right: v.$unit
+    bottom: v.$unit
+    height: 0.909375rem // 14.55px, eight of one text line
+    background: v.$w10
+    backdrop-filter: blur(4px)
+    z-index: 0
+    transition: all 600ms v.$bezier 0s
+    transform: scaleX(0)
+    transform-origin: left
+    animation: 600ms v.$bezier 1600ms normal forwards appearBackground
+
+    @media only screen and (max-width: v.$breakpoint-tablet)
+      left: v.$unit * 0.75
+      right: v.$unit * 0.75
+
+    @media only screen and (max-width: v.$breakpoint-mobile)
+      left: v.$unit * 0.5
+      right: v.$unit * 0.5
+
+  &.hide:before
+    transform-origin: right
+    animation: 300ms v.$bezier 0ms normal forwards hideBackground
+    animation-play-state: running
+
+  &:hover:before
+    transition-duration: 400ms
+    height: 100%
+    inset: 0
+    background: v.$w15
+
+  &:hover .linkBlockTitle
+    letter-spacing: 1px
+
+  &:hover .linkBlockCta:after
+    transform-origin: center right
+    transition: transform 400ms v.$bezier
+    transform: scaleX(0)
+
+// ---------------------------------------------------
+// Links new
+// ---------------------------------------------------
+
+.linkBlock
+  padding: v.$unit 0
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+  background: none
+  border: none
+  font-family: inherit
+  pointer-events: all
+  position: relative
+  cursor: pointer
+  overflow-y: hidden
+  @include backgroundHover
+
+  .linkBlockContent
+    display: flex
+    flex-direction: column
+    gap: v.$unit
+    justify-content: flex-start
+    align-items: flex-start
+
+    &, & *
+      z-index: 10
+
+  .linkBlockTitle
+    font-style: italic
+    transition: all 400ms v.$bezier 0s
+
+    span
+      font-weight: 600
+
+  .linkBlockDescription
+    &, & span
+      text-align: left
+
+  .linkBlockCta
+    position: relative
+    text-transform: none
+    padding: 0 1.125rem
+    font-size: 1.25rem
+    font-style: italic
+    align-self: end
+    opacity: 0
+    animation: 600ms v.$bezier 1600ms normal forwards appearText
+    leading-trim: both
+    text-edge: cap
+    transition: all 400ms v.$bezier 0s
+    font-variant-ligatures: none
+    letter-spacing: 1px
+
+    &:after
+      position: absolute
+      bottom: -1px
+      left: 1.5 * v.$unit
+      right: 1.5 * v.$unit
+      content: ""
+      height: 1px
+      background: v.$white
+
+      transform-origin: center left
+      transition: transform 600ms v.$bezier
+      transform: scaleX(1)
+
+      @media only screen and (max-width: v.$breakpoint-tablet)
+        left: v.$unit * 0.75
+        right: v.$unit * 0.75
+
+      @media only screen and (max-width: v.$breakpoint-mobile)
+        left: v.$unit * 0.375
+        right: v.$unit * 0.375
+
+    @media only screen and (max-width: v.$breakpoint-tablet)
+      padding: 0 v.$unit * 0.75
+
+    @media only screen and (max-width: v.$breakpoint-mobile)
+      padding: 0 v.$unit * 0.5
+
+    &.hide
+      transform: translateY(0)
+      animation-name: hideText
+      animation-delay: 0ms
+      animation-duration: 300ms
+      animation-play-state: running
+
+    @media only screen and (max-width: v.$breakpoint-mobile)
+      grid-row: 5 / 7
+      min-width: unset
+
+      h3
+        font-size: 1.125rem
+        white-space: initial
+        text-align: center
+
+  &:hover .linkBlockCta
+    letter-spacing: 2px
+    transition: all 600ms v.$bezier 0ms
+
+.profileLinkBlock
+  grid-column: 1 / span 4
+  grid-row: 11 / span 2
+  margin-left: calc(var(--side-banner-width) + var(--unit) / 2)
+
+  @media only screen and (max-width: v.$breakpoint-desktop-small)
+    grid-column-end: span 5
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    grid-column: 1 / 8
+    grid-row: 2 / 5
+
+.archiveLinkBlock
+  grid-column: 5 / span 4
+  grid-row: 11 / span 2
+  margin-right: $arrow-width
+
+  @media only screen and (max-width: v.$breakpoint-desktop-small)
+    grid-column: 6 / span 3
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    grid-column: 6 / span 4
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    grid-column: 8 / -2
+    grid-row: 2 / 5
+    margin-right: 0

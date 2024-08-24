@@ -1,0 +1,62 @@
+
+:root
+  --unit: 0.75rem
+  --app-height: 100vh
+  --columns: 19
+  --rows: 12
+  --scroll-y: 0px
+  --mouse-x: 50vw
+  --mouse-y: 50vh
+  --mouse-normalized-x: 0
+  --mouse-normalized-y: 0
+  --vertical-padding: 0.75rem * 3
+  --side-banner-width: calc(var(--unit) * 5.5)
+  --side-cell-padding: calc(var(--unit) * 0.5)
+
+  --cell-height: calc((100vh - var(--unit) * 6) / 12)
+
+  @media only screen and (max-width: v.$breakpoint-desktop-small)
+    --side-banner-width: calc(var(--unit) * 5)
+    --side-cell-padding: calc(var(--unit) * 0.25)
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    --side-banner-width: calc(var(--unit) * 4.5)
+    --cell-height: calc((100vh - var(--unit) * 4) / 12 )
+    --vertical-padding: 0.75rem * 2
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    --side-banner-width: calc(var(--unit) * 3)
+    --vertical-padding: 0.75rem
+    --cell-height: calc((100vh - var(--unit) * 2) / 12 )
+
+*
+  margin: 0
+  padding: 0
+  box-sizing: border-box
+  text-decoration: none
+  color: v.$white
+
+body, html
+  background: v.$background
+  overflow: hidden
+
+::-webkit-scrollbar
+  width: 6px
+  height: 6px
+  background: none
+
+  &:horizontal
+    display: none
+
+p, span
+  @include v.body
+
+::-webkit-scrollbar-track
+  background: none
+  display: none
+
+::-webkit-scrollbar-track-piece
+  background: none
+
+::-webkit-scrollbar-thumb
+  background-color: v.$dark-grey
