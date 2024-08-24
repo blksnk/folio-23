@@ -1,0 +1,145 @@
+@use "./_vars" as v
+
+// ---------------------------------------------------
+// Fades
+// ---------------------------------------------------
+
+@keyframes fade-in
+  from
+    scale: 0.8
+    opacity: 0
+
+  to
+    scale: 1
+    opacity: 0.8
+
+@keyframes fade-out
+  from
+    scale: 1
+    opacity: 0.8
+
+  to
+    scale: 0
+    opacity: 0
+
+@keyframes fade-in-background
+  from
+    background: v.$background
+
+  to
+    background: v.$off-white
+
+@keyframes fade-out-background
+  from
+    background: v.$off-white
+
+  to
+    background: v.$background
+
+@keyframes fade-in-loading
+  from
+    scale: 0.8
+    opacity: 0
+
+  to
+    scale: 1
+    opacity: 0.5
+
+@keyframes fade-in-branding
+  from
+    scale: 0.8
+    opacity: 0
+
+  to
+    scale: 1
+    opacity: 0.8
+
+@keyframes fade-out-branding
+  from
+    scale: 1
+    opacity: 0.8
+
+  to
+    scale: 0
+    opacity: 0
+
+// ---------------------------------------------------
+// Explore button
+// ---------------------------------------------------
+
+@keyframes explore-grow
+  from
+    transform: scale(0)
+  to
+    transform: scale(1)
+
+@keyframes explore-show
+  from
+    opacity: 0
+  to
+    opacity: 0.5
+
+@keyframes explore-unblur
+  from
+    opacity: 0
+    filter: blur(24px)
+  to
+    opacity: 1
+    filter: blur(0)
+
+// ---------------------------------------------------
+// Home 
+// ---------------------------------------------------
+
+@keyframes appearText
+  from
+    transform: translateY(50%)
+    opacity: 0
+
+  to
+    transform: translateY(0)
+    opacity: 1
+
+@keyframes hideText
+  from
+    transform: translateY(0)
+    opacity: 1
+
+  to
+    transform: translateY(50%)
+    opacity: 0
+
+@keyframes showBefore
+  from
+    opacity: 0
+    transform: scale(0)
+  to
+    opacity: 1
+    transform: scale(1)
+
+@keyframes hideBefore
+  from
+    opacity: 1
+    transform: scale(1)
+  to
+    opacity: 0
+    transform: scale(0)
+
+@keyframes appearBackground
+  from
+    transform: scaleX(0)
+  to
+    transform: scaleX(1)
+
+@keyframes hideBackground
+  from
+    transform: scaleX(1)
+  to
+    transform: scaleX(0)
+
+@keyframes fade-in-branding-blobs
+  from:
+    opacity: 0
+
+  to
+    opacity: 1

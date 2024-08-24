@@ -1,0 +1,109 @@
+
+// ---------------------------------------------------
+// Contact links
+// ---------------------------------------------------
+
+.contacts
+  @include v.Grid(1, 1)
+  grid-column: 4 / 10
+  grid-row: 2 / -3
+  mix-blend-mode: difference
+  overflow: hidden
+
+  @media screen and (max-width: v.$breakpoint-tablet)
+    grid-row: 2 / 8
+    grid-column-start: 1
+    margin-left: calc(var(--side-banner-width) + var(--unit) / 2)
+
+  @media screen and (max-width: v.$breakpoint-mobile)
+    grid-row: 1 / 7
+    grid-column: 1 / -1
+    padding-right: calc(var(--side-banner-width) + var(--unit) / 2)
+
+  .contactLink
+    color: v.$white
+    font-size: 1.25rem
+    line-height: 123.1%
+    @include v.flex-center
+    width: 100%
+    gap: v.$unit / 2
+    position: relative
+    font-style: italic
+    width: max-content
+    max-width: 100%
+    grid-column: 1 / span 1
+    grid-row: 1 / span 1
+
+    margin: v.$unit
+    scale: 0.8
+    opacity: 0
+    cursor: pointer
+    transform-origin: center center
+
+    &:after
+      position: absolute
+      bottom: -1px
+      left: 0
+      right: 0
+      content: ""
+      height: 1px
+      background: v.$white
+      transform-origin: center right
+      transition: transform 600ms v.$bezier
+      transform: scaleX(0)
+
+    &:hover:after
+      transform-origin: center left
+      transition: transform 400ms v.$bezier
+      transform: scaleX(1)
+
+    *
+      text-transform: capitalize
+      font-size: 1.25rem
+      line-height: 123.1%
+      transition: all 600ms v.$bezier 0s
+
+    &:hover *
+      letter-spacing: 2px
+      transition-duration: 400ms
+
+    &:nth-child(1)
+      align-self: start
+      justify-self: start
+
+    &:nth-child(2)
+      align-self: start
+      justify-self: end
+
+    &:nth-child(3)
+      align-self: end
+      justify-self: start
+
+    &:nth-child(4)
+      align-self: end
+      justify-self: end
+
+    @for $i from 1 through 4
+      &:nth-child(#{$i})
+        animation: 600ms v.$bezier 1500ms + 300ms + $i forwards running fade-in
+
+    &.hide
+      animation: 600ms v.$bezier 0s forwards running fade-out !important
+
+@keyframes fade-in
+  from
+    scale: 0.8
+    opacity: 0
+
+  to
+    scale: 1
+    opacity: 0.8
+
+@keyframes fade-out
+  from
+    scale: 1
+    opacity: 0.8
+
+  to
+    scale: 0
+    opacity: 0

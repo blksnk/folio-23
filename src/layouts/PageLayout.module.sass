@@ -1,17 +1,16 @@
-@use '../app/variables.module'
 
 .page
-  padding: variables.$unit * 5 0
+  padding: v.$unit * 5 0
   min-height: 100vh
   width: 100%
   transform: translateZ(0)
   z-index: 2
 
-  @media only screen and (max-width: variables.$breakpoint-tablet)
-    padding-bottom: variables.$unit * 10
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    padding-bottom: v.$unit * 10
 
   &.paddingTop
-    padding-top: variables.$unit * 8
+    padding-top: v.$unit * 8
 
-    @media only screen and (max-width: variables.$breakpoint-mobile)
-      padding-top: variables.$unit * 4
+    @media only screen and (max-width: v.$breakpoint-mobile)
+      padding-top: v.$unit * 4

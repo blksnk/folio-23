@@ -1,5 +1,3 @@
-@use "../../app/variables.module"
-
 .character
   display: inline
   white-space: pre-wrap
@@ -9,29 +7,22 @@
 
 .textLine
   display: inline-block
-  padding: 0 1.125rem
-  text-align: left
   user-select: none
-
-  @media only screen and (max-width: variables.$breakpoint-desktop-small)
-
-    padding: 0 variables.$unit
-
-  @media only screen and (max-width: variables.$breakpoint-tablet)
-    padding: 0 variables.$unit * 0.75
-
-  @media only screen and (max-width: variables.$breakpoint-mobile)
-    padding: 0 variables.$unit * 0.5
+  overflow: hidden
+  transition: all 300ms v.$bezier 0s
+  @include v.text-line-sizing
+  background: v.$w0
+  border: 1px solid v.$w0
+  // outline-offset: -1px
 
   &.textLineActive
-    background: variables.$white
-    color: variables.$black
+    background: v.$white
+    color: v.$black
     white-space: pre
 
     *
-      color: variables.$black
+      color: v.$black
       white-space: pre
 
   &.textLineHovering
-    outline: 1px solid rgba(255, 255, 255, 0.5)
-    outline-offset: -1px
+    border-color: v.$w50

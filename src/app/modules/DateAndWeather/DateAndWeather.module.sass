@@ -1,0 +1,36 @@
+.weather
+  display: grid
+  grid-template-columns: repeat(2, 1fr)
+  grid-template-rows: auto auto
+  padding: v.$unit 0
+  row-gap: v.$unit
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    display: none
+
+  .city
+    text-align: center
+    margin-right: 1.125rem
+
+.dateTime
+  display: grid
+  grid-template-columns: 1fr
+  grid-template-rows: repeat(2, 1fr)
+  padding-bottom: v.$unit
+  opacity: 0.5
+
+  &.hide
+    background: red
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    display: none
+
+.dateAndWeather
+  grid-row: 2 / span 2
+  grid-column: 10 / span 2
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    grid-column-end: span 3

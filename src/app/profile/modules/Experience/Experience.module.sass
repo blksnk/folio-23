@@ -1,0 +1,103 @@
+
+// ---------------------------------------------------
+// Experience timeline
+// ---------------------------------------------------
+
+.experience
+  grid-column: 1 / span 3
+  grid-row: 2 / -3
+  display: grid
+  grid-template-columns: var(--side-banner-width) 1fr
+  overflow-y: auto
+  mix-blend-mode: difference
+  --wrapper-rows: 9
+  --item-rows: 2
+  --item-height: calc((100% / var(--wrapper-rows)) * var(--item-rows))
+  grid-template-rows: repeat(auto-fill, var(--item-height))
+  grid-auto-rows: var(--item-height)
+
+  @include v.hide-scrollbar
+
+  @media only screen and (max-height: v.$breakpoint-height)
+    --item-rows: 4
+
+  @media screen and (max-width: v.$breakpoint-desktop-small)
+    --item-rows: 3
+
+  @media screen and (max-width: v.$breakpoint-tablet)
+    grid-row: 8 / -3
+    grid-column: 1 / 10
+    --wrapper-rows: 3
+    --item-rows: 2
+
+  @media screen and (max-width: v.$breakpoint-mobile)
+    grid-row: 7 / -4
+
+.year
+  grid-column: 1 / span 1
+  height: max-content
+  margin: v.$unit 0
+  width: 100%
+  max-width: 100%
+  padding: 0 var(--side-cell-padding)
+  text-align: center
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    margin-top: calc(var(--unit) / 2)
+
+  .yearText
+    width: 100%
+    max-width: 100%
+    text-align: center
+
+.job
+  grid-column: 2 / span 1
+  padding: var(--unit) var(--side-cell-padding)
+  padding-left: calc(var(--unit) * 0.5 + var(--side-cell-padding))
+  position: relative
+  height: 100%
+  width: 100%
+  max-width: 100%
+  display: grid
+  grid-template-columns: 1fr
+  grid-template-rows: auto 1fr
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    padding-top: calc(var(--unit) / 2)
+
+  .jobHeader
+    display: flex
+    align-items: baseline
+    justify-content: space-between
+    flex-wrap: wrap
+    gap: v.$unit /2
+
+    .title
+      padding: 0 !important
+      font-weight: bold
+
+    .employer
+      padding: 0 !important
+      font-style: italic
+
+  .description
+    margin-top: v.$unit * 0.5
+    opacity: 0.5
+    text-overflow: ellipsis
+    height: 100%
+    width: 100%
+    overflow: hidden
+
+.lineJobBottom
+  position: absolute
+  inset: 0
+  top: unset
+  pointer-events: none
+  border-bottom: 1px solid v.$w50
+
+  &.lineYear
+    left: calc(var(--side-banner-width) * -1)
+
+@for $i from 1 through 20
+  .job:nth-of-type(#{$i}):has(.lineJobBottom) .lineJobBottom
+    @include v.lineX(#{1800 + $i * 300}ms)

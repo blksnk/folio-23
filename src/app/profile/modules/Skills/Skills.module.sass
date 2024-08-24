@@ -1,0 +1,117 @@
+
+// ---------------------------------------------------
+// Skills
+// ---------------------------------------------------
+
+.skills
+  grid-column: 10 / -2
+  grid-row: 2 / -3
+  display: grid
+  grid-template-columns: 1fr
+  --wrapper-rows: 9
+  --item-rows: 2
+  --item-height: calc((100% / var(--wrapper-rows)) * var(--item-rows))
+  grid-template-rows: repeat(auto-fill, var(--item-height))
+  grid-auto-rows: var(--item-height)
+  overflow-y: auto
+  overflow-x: hidden
+  @include v.hide-scrollbar
+  mix-blend-mode: difference
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    grid-column-end: -1
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    grid-row: 7 / 10
+    // --item-rows: 1
+    --wrapper-rows: 3
+
+  @media only screen and (max-height: v.$breakpoint-height)
+    --item-rows: 4
+
+.skillCard
+  background: v.$w0
+  @include v.flex-center
+  flex-direction: column
+  gap: var(--unit)
+  grid-row-end: span 1
+  transition: all 400ms v.$bezier 0s
+  align-items: center
+  position: relative
+
+  .lineSkillBottom
+    position: absolute
+    inset: 0
+    top: unset
+    mix-blend-mode: difference
+    height: 100%
+    width: 100%
+    border-bottom: 1px solid v.$w50
+    pointer-events: none
+    @include v.lineX
+
+  &:last-child .lineSkillBottom
+    display: none
+
+  @for $i from 1 through 10
+    &:nth-child(#{$i})
+      img
+        animation: fade-in 600ms v.$bezier #{$i * 300 + 1200}ms forwards
+
+      .lineSkillBottom
+        @include v.lineX(#{$i * 300 + 1200}ms)
+
+  .skillLogoContainer
+    @include v.flex-center
+    @include v.text-line-sizing
+    padding-top: v.$unit !important
+    flex: 1
+
+    img
+      object-fit: contain
+      height: v.$unit * 4
+      width: unset
+      scale: 0.8
+      opacity: 0
+
+      @media only screen and (max-width: v.$breakpoint-tablet)
+        height: v.$unit * 3
+
+      @media only screen and (max-width: v.$breakpoint-mobile)
+        height: v.$unit * 2
+
+    &.hide img
+      animation: fade-out 300ms v.$bezier 0s forwards
+      animation-play-state: running
+
+  .skillName
+    grid-column: 1 / span 1
+    grid-row: 2 / span 1
+    @include v.text-line-sizing
+    text-align: center
+    align-self: start
+    word-break: break-word
+    margin-bottom: var(--unit)
+
+    @media only screen and (max-width: v.$breakpoint-mobile)
+      margin-bottom: v.$unit / 2
+      padding: 0 v.$unit / 2 !important
+
+@keyframes fade-in
+  from
+    scale: 0.8
+    opacity: 0
+
+  to
+    scale: 1
+    opacity: 0.8
+
+@keyframes fade-out
+  from
+    scale: 1
+    opacity: 0.8
+
+  to
+
+    scale: 0
+    opacity: 0

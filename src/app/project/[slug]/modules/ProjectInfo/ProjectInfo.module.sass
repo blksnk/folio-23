@@ -1,0 +1,107 @@
+// .projectInfo
+//   grid-column: 1 / -2
+//   grid-row: 1 / span 1
+//   margin-left: calc(var(--side-banner-width) + var(--unit))
+//   padding-left: var(--unit)
+//   display: grid
+//   grid-template-columns: subgrid
+//   // padding: v.$unit 0
+//   padding: 0
+//   padding-bottom: v.$unit
+//   align-items: flex-start
+//   justify-content: space-between
+//   flex-direction: column
+
+.projectTitle
+  padding-top: v.$unit
+  grid-column: 2 / -2
+  grid-row: 1 / span 1
+  justify-self: start
+  align-self: start
+  width: 100%
+  color: v.$white
+  font-size: 1.25rem
+  line-height: 123.1%
+  font-style: italic
+  text-transform: capitalize
+  font-weight: normal
+  opacity: 0
+  scale: 0.8
+  transition: opacity 600ms v.$bezier 0s
+  animation: fade-in 600ms v.$bezier 0s forwards
+  transform-origin: left center
+
+  @media only screen and (max-width: v.$breakpoint-mobile)
+    padding-left: v.$unit / 2
+
+  &.hide
+    animation: fade-out 600ms v.$bezier 0s forwards
+
+.projectInfo
+  height: 100%
+  width: 100%
+  grid-column: 2 / -2
+  grid-row: 1 / span 1
+  display: grid
+  grid-template-columns: subgrid
+  grid-template-rows: 1fr
+  align-items: end
+  padding-bottom: v.$unit
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    grid-column: 2 / -1
+
+  .info
+    display: grid
+    grid-template-rows: 1fr
+    grid-template-columns: subgrid
+    align-items: center
+
+    .infoTitle, .infoData
+      grid-row: 1 / span 1
+      text-align: center
+
+    &:not(:last-child) .infoData
+      border-right-width: 0
+
+    .infoData
+      grid-column: 2 / -1
+      // margin-right: v.$unit
+      // width: calc(100% - v.$unit)
+
+      // @media only screen and (max-width: v.$breakpoint-tablet)
+      //   width: calc(100% - v.$unit / 2)
+
+    .infoTitle
+      // padding-left: 0
+
+    &.client
+      grid-column: 1 / span 6
+
+      @media only screen and (max-width: v.$breakpoint-tablet)
+        grid-column-end: span 5
+
+        .infoTitle
+          padding-left: var(--unit)
+          grid-column-end: span 2
+
+        .infoData
+          grid-column-start: 3
+
+      @media only screen and (max-width: v.$breakpoint-mobile)
+        .infoTitle
+          display: none
+
+        .infoData
+          grid-column-start: 1
+          margin-left: v.$unit / 2
+          // width: calc(100% - v.$unit)
+
+    &.year, &.type
+      grid-column-end: span 2
+      @media only screen and (max-width: v.$breakpoint-tablet)
+        grid-column-end: span 3
+
+    @media only screen and (max-width: v.$breakpoint-tablet)
+      &.year
+        margin-right: var(--unit)

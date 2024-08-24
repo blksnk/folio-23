@@ -47,7 +47,7 @@ export const oneProject = `
       }
     }
   }
-`
+`;
 
 export interface ProjectMedia {
   id: string;
@@ -56,7 +56,7 @@ export interface ProjectMedia {
     width: number;
     height: number;
     mimeType: string;
-  },
+  };
   videoThumbnail: {
     url: string;
     width: number;
@@ -77,12 +77,12 @@ export interface ProjectData extends ProjectListItemData {
   backgroundColor: {
     hex: string;
     css: string;
-  }
+  };
 }
 
 export type ProjectDataResponse = {
   project: ProjectData;
-}
+};
 
 export interface FormattedProjectMedia {
   displayTitle: string;
@@ -94,6 +94,8 @@ export interface FormattedProjectMedia {
   // TODO: add video support
   isVideo: boolean;
   isPortrait: boolean;
+  width: number;
+  height: number;
 }
 
 export interface FormattedProject extends ProjectData {

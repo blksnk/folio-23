@@ -5,9 +5,9 @@ interface LogoProps {
 }
 
 export const Logo = ({ outline }: LogoProps): JSX.Element => {
-  const url = outline ? '/genmetsuLogoOutline.svg' : "/genmetsuLogo.svg"
-  const width = outline ? 34 : 32
-  const height = outline ? 38 : 36
+  const url = outline ? "/genmetsuLogoOutline.svg" : "/genmetsuLogo.svg";
+  const width = outline ? 34 : 32;
+  const height = outline ? 38 : 36;
   return (
     <Image
       src={url}
@@ -16,5 +16,5 @@ export const Logo = ({ outline }: LogoProps): JSX.Element => {
       height={height}
       priority
     />
-  )
-}
+  );
+};

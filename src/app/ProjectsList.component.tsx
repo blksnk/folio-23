@@ -1,30 +1,36 @@
-"use client"
+"use client";
 
-import styles from './page.module.sass'
-import { TextLine } from "@/components/AnimatedText/TextLine";
+import styles from "./page.module.sass";
+import {
+  TextLine,
+  type TextLineProps,
+} from "@/components/AnimatedText/TextLine";
 import Link from "next/link";
-import { LineGroup } from "@/components/Lines/LineGroup";
-import { MouseEventHandler, useState } from "react";
+import {
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
 import fontRepo from "@/app/fonts";
-import { combineClasses, replaceWithSpacesWhenHidden } from "@/utils/css";
+import { cn, replaceWithSpacesWhenHidden, type ClassDef } from "@/utils/css";
 import { ProjectListItemData } from "@/api/queries/allProjects";
-import { Logo } from "@/components/Logo.component";
-import { Arrow } from "@/components/Arrow.component";
+import { Arrow, type ArrowProps } from "@/components/Arrow.component";
 
-export const formatNumber = (n: number): string => n < 10 ? "0" + n : String(n);
-const extractYear = (date: string) => date.split('-')[0];
-const l = (lineClass: string, hide?: boolean) => `${ hide ? styles.hideLine : '' } ${ lineClass }`
-
+export const formatNumber = (n: number): string =>
+  n < 10 ? "0" + n : String(n);
+const extractYear = (date: string) => date.split("-")[0];
 
 const profileDescription = `Creative designer with a focus on 3D,
-branding, UI and all things *experimental*.`
-const profileName = "Jean-Nicolas Veigel"
-const archiveTitle = "Archives"
+branding, UI and all things *experimental*.`;
+const profileName = "Jean-Nicolas Veigel";
+const archiveTitle = "Archives repository";
 const archiveDescription = `One-off projects, logos, graphics.
-Exploring random stuff.`
+Exploring random stuff.`;
 
 interface PageLeftProps {
-  changeActiveIndex: (n: (1 | -1)) => void;
+  changeActiveIndex: (n: 1 | -1) => void;
   setActiveIndex: (n: number) => void;
   hide?: boolean;
   projects: ProjectListItemData[];
@@ -34,167 +40,197 @@ interface PageLeftProps {
 }
 
 export const PageLeft = (props: PageLeftProps) => {
-  const { hide } = props
-  const [ hoveringIndex, setHoveringIndex ] = useState<number | null>(null)
-  const activeProject = props.projects[props.activeIndex]
-  const activeProjectId = activeProject?.id ?? "unknown id"
-  const activeProjectColor = activeProject?.backgroundColor.hex ?? "#000000";
-  const handleClick = (index: number) => () => {
-    if(index === props.activeIndex) {
-      props.redirectOnConfirm();
-    }
-    props.setActiveIndex(index);
-  }
-  const handleHover = (index: number) => () => setHoveringIndex(index)
-
-  const handleLeave = () => setHoveringIndex(null)
-
-  const cellProps = (index: number) => ({
-    onClick: handleClick(index),
-    onEnter: handleHover(index),
-    onLeave: handleLeave,
-    animatedTextProps: { fixedDuration: 600, delay: index * 300 },
-    active: index === props.activeIndex,
-    hovering: index === hoveringIndex,
-    className: styles.tableCell,
-  })
-
-  const redirectToArchive: MouseEventHandler<HTMLAnchorElement> = (e) => {
-    e.preventDefault()
-    props.redirectTo('/archives');
-  }
-
-  const redirectToProfile: MouseEventHandler<HTMLAnchorElement> = (e) => {
-    e.preventDefault()
-    props.redirectTo('/profile');
-  }
-
+  const { hide } = props;
+  const activeProject = useMemo(() => {
+    return (
+      props.projects[props.activeIndex] ?? {
+        id: "unknown id",
+        backgroundColor: { hex: "#000000" },
+      }
+    );
+  }, [props.projects, props.activeIndex]);
 
   return (
-    <section className={ styles.pageLeft }>
-      <div className={ styles.leftSplit }>
-        <div className={ l(styles.lineLeft, hide) }></div>
-        <div className={ l(styles.lineRight, hide) }></div>
-        <Link href="/"
-              className={ combineClasses(styles.logoContainer, [ styles.hide, hide ]) }>
-          <Logo/>
-        </Link>
-        <div className={ styles.colorContainer }>
-          <TextLine className={ styles.color } animatedTextProps={ {
-            fixedDuration: 600,
-            delay: 0
-          } }>{ replaceWithSpacesWhenHidden(activeProjectColor, hide) }</TextLine>
-        </div>
-        <div className={ combineClasses(l(styles.indices, hide), styles.table) }>
-          { props.projects.map((_, index) =>
-            <TextLine {...cellProps(index)} key={index}>
-              { formatNumber(index + 1) }
-            </TextLine>
-          ) }
-        </div>
+    <>
+      <ListNew {...props} />
+      <ActiveProjectOverlays activeProject={activeProject} hide={hide} />
+    </>
+  );
+};
 
-        <div className={ combineClasses(l(styles.titles, hide), styles.table) }>
-          { props.projects.map(({ title }, index) =>
-            <TextLine {...cellProps(index)} key={index}>
-              { title }
-            </TextLine>
-          ) }
-        </div>
+type ListNewProps = PageLeftProps;
 
-        <Link
-          href="/profile"
-          onClick={redirectToProfile}
-          className={ combineClasses(styles.profile, [ styles.hide, hide ]) }>
-          <div className={styles.columnContainer}>
-            <TextLine
-              animatedTextProps={ { fixedDuration: 600, delay: 0 } }
-              className={ styles.name }
-            >
-              { replaceWithSpacesWhenHidden(profileName, hide) }
-            </TextLine>
-            <TextLine
-              animatedTextProps={ { fixedDuration: 400, delay: 200 } }
-              className={ styles.description }
-            >
-              { replaceWithSpacesWhenHidden(profileDescription, hide) }
-            </TextLine>
-          </div>
-          <span className={combineClasses(styles.profileCta, fontRepo.button.className, [styles.hide, hide])}>Profile ↗</span>
-        </Link>
-      </div>
-      <div className={ styles.rightSplit }>
-        <div className={ l(styles.linesBottomCenter, hide) }>
-          <LineGroup count={ 10 } spacing={ 14 } direction="horizontal"/>
-        </div>
-        <div className={ l(styles.lineVerticalTop, hide) }></div>
-
-        <div className={ styles.activeIdContainer }>
-          <TextLine className={ styles.activeId } animatedTextProps={ {
-            fixedDuration: 600,
-            delay: 0
-          } }>{ replaceWithSpacesWhenHidden(activeProjectId, hide) }</TextLine>
-        </div>
-
-        <div className={ l(styles.linesCenterRight, hide) }>
-          <LineGroup count={ 3 } spacing={ 6 } direction="horizontal"/>
-        </div>
-
-        <div className={ l(styles.info, hide) }>
-          <div className={ combineClasses(styles.type, styles.table) }>
-            { props.projects.map(({ type }, index) =>
-              <TextLine {...cellProps(index)} key={index} >
-                { type }
-              </TextLine>
-            ) }
-          </div>
-          <div className={ combineClasses(styles.client, styles.table) }>
-            { props.projects.map(({ client }, index) =>
-              <TextLine {...cellProps(index)} key={index} >
-                { client }
-              </TextLine>
-            ) }
-          </div>
-          <div className={ combineClasses(styles.year, styles.table) }>
-            { props.projects.map(({ year }, index) =>
-              <TextLine {...cellProps(index)} key={index} >
-                { extractYear(year) }
-              </TextLine>
-            ) }
-          </div>
-        </div>
-        <div
-          className={ combineClasses(styles.arrowsContainer, [ styles.hide, hide ]) }>
-          <button className={ styles.arrowButton }
-                  onClick={ () => props.changeActiveIndex(-1) }>
-            <Arrow/>
-          </button>
-          <button className={ styles.arrowButton }
-                  onClick={ () => props.changeActiveIndex(1) }>
-            <Arrow down/>
-          </button>
-        </div>
-        <Link
-          href="/archives"
-          onClick={redirectToArchive}
-          className={ combineClasses(styles.archive, fontRepo.body.className, [ styles.hide, hide ]) }>
-          <div className={styles.columnContainer}>
-            <TextLine
-              animatedTextProps={ { fixedDuration: 600, delay: 0 } }
-              className={ styles.archiveTitle }
-            >
-              { replaceWithSpacesWhenHidden(archiveTitle, hide) }
-            </TextLine>
-            <TextLine
-              animatedTextProps={ { fixedDuration: 400, delay: 200 } }
-              className={ styles.description }
-              log
-            >
-              { replaceWithSpacesWhenHidden(archiveDescription, hide) }
-            </TextLine>
-          </div>
-          <span className={combineClasses(styles.archiveCta, fontRepo.button.className, [styles.hide, hide])}>Archives ↗</span>
-        </Link>
-      </div>
+const ListNew = (props: PageLeftProps) => {
+  return (
+    <section className={styles.listNewContainer}>
+      <ul className={styles.listNew}>
+        {props.projects.map((project, index) => (
+          <ListNewItem
+            {...props}
+            project={project}
+            index={index}
+            key={project.id}
+          />
+        ))}
+      </ul>
+      <ListArrows
+        hide={props.hide}
+        changeActiveIndex={props.changeActiveIndex}
+      />
     </section>
-  )
-}
+  );
+};
+
+type ListNewItemProps = Pick<
+  ListNewProps,
+  "activeIndex" | "setActiveIndex" | "redirectOnConfirm" | "hide"
+> & {
+  index: number;
+  project: ListNewProps["projects"][number];
+};
+
+const ListNewItem = (props: ListNewItemProps) => {
+  const isActive = useMemo(() => props.index === props.activeIndex, [props]);
+  const elementRef = useRef<HTMLLIElement | null>(null);
+
+  useEffect(() => {
+    if (isActive && elementRef.current) {
+      elementRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [isActive, elementRef]);
+
+  const handleClick = useCallback(() => {
+    if (isActive) {
+      props.redirectOnConfirm();
+    }
+    props.setActiveIndex(props.index);
+  }, [isActive, props.index, props.redirectOnConfirm, props.setActiveIndex]);
+
+  const klass = cn(
+    styles.listNewItem,
+    [styles.hide, props.hide],
+    [styles.active, isActive]
+  );
+
+  const cellProps = useCallback(
+    (children: string, ...classes: ClassDef[]): TextLineProps => ({
+      animatedTextProps: {
+        fixedDuration: props.hide ? 300 : 600,
+        delay: props.hide ? 0 : props.index * 300,
+      },
+      active: isActive && !props.hide,
+      className: cn(styles.listNewItemCell, ...classes),
+      children: replaceWithSpacesWhenHidden(children, props.hide),
+    }),
+    [isActive, props.index, handleClick]
+  );
+
+  return (
+    <li
+      className={klass}
+      ref={elementRef}
+      onClick={handleClick}
+      tabIndex={props.index}
+      title={props.project.title}
+      role="article"
+    >
+      <div className={cn(styles.listNewItemCellContainer, styles.index)}>
+        <TextLine {...cellProps(formatNumber(props.index + 1))} />
+      </div>
+
+      <div className={cn(styles.listNewItemCellContainer, styles.title)}>
+        <TextLine {...cellProps(props.project.title)} />
+        <TextLine
+          {...cellProps(`[${extractYear(props.project.year)}]`, styles.year)}
+        />
+      </div>
+
+      <div className={cn(styles.listNewItemCellContainer, styles.type)}>
+        <TextLine {...cellProps(props.project.type)} />
+      </div>
+
+      <div className={cn(styles.listNewItemCellContainer, styles.client)}>
+        <TextLine {...cellProps(props.project.client)} />
+      </div>
+    </li>
+  );
+};
+
+type ListArrowsProps = Pick<PageLeftProps, "hide" | "changeActiveIndex">;
+
+const ListArrows = (props: ListArrowsProps) => {
+  return (
+    <>
+      <ArrowButton
+        hide={props.hide}
+        onClick={() => props.changeActiveIndex(-1)}
+      />
+      <ArrowButton
+        hide={props.hide}
+        down
+        onClick={() => props.changeActiveIndex(1)}
+      />
+    </>
+  );
+};
+
+type ArrowButtonProps = ArrowProps & {
+  onClick?: () => void;
+  hide?: boolean;
+};
+const ArrowButton = (props: ArrowButtonProps) => {
+  const klass = cn(
+    styles.listArrowButton,
+    [styles.hide, props.hide],
+    [styles.down, props.down],
+    [styles.up, !props.down]
+  );
+  return (
+    <button className={klass} onClick={props.onClick}>
+      <Arrow down={props.down} />
+    </button>
+  );
+};
+
+type ActiveProjectIdProps = {
+  activeProject: Pick<ProjectListItemData, "backgroundColor" | "id">;
+  hide?: boolean;
+};
+
+const ActiveProjectOverlays = ({
+  activeProject: {
+    backgroundColor: { hex },
+    id,
+  },
+  hide,
+}: ActiveProjectIdProps) => {
+  return (
+    <>
+      <div className={styles.activeProjectId}>
+        <TextLine
+          className={styles.activeId}
+          animatedTextProps={{
+            fixedDuration: 600,
+            delay: 0,
+          }}
+        >
+          {replaceWithSpacesWhenHidden(id, hide)}
+        </TextLine>
+      </div>
+      <div className={styles.activeProjectColor}>
+        <TextLine
+          className={styles.color}
+          animatedTextProps={{
+            fixedDuration: 600,
+            delay: 0,
+          }}
+        >
+          {replaceWithSpacesWhenHidden(hex, hide)}
+        </TextLine>
+      </div>
+    </>
+  );
+};

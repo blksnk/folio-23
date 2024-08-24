@@ -1,72 +1,68 @@
-@use '../app/variables.module'
 
 .nav
   position: fixed
   top: 0
   left: 0
   width: 100%
-  height: variables.$unit * 5
+  height: v.$unit * 5
   display: flex
   justify-content: space-between
   align-items: center
   z-index: 30
-  background: variables.$black
+  background: v.$black
   transforme: translateZ(0)
-
 
   .sideContainer
     min-width: 10vw
     width: 10vw
-    @include variables.flex-center
-    height: variables.$unit * 5
+    @include v.flex-center
+    height: v.$unit * 5
     z-index: 30
 
   .linkContainer
-    @include variables.flex-center
+    @include v.flex-center
     width: 20vw
-    padding: 0 variables.$min-side-padding
+    padding: 0 v.$min-side-padding
     height: 100%
     position: relative
     border-width: 1px
     border-style: solid
     border-color: transparent
     border-radius: 0
-    transition: border-radius 300ms variables.$bezier 0s, border-color 200ms linear 0s
+    transition: border-radius 300ms v.$bezier 0s, border-color 200ms linear 0s
     z-index: 30
 
     &:after
       position: absolute
       content: ""
-      bottom: variables.$unit
-      height: variables.$unit / 2
-      width: variables.$unit / 2
+      bottom: v.$unit
+      height: v.$unit / 2
+      width: v.$unit / 2
       border-radius: 50%
       right: 50%
       transform: translate(50%,-50%) scale(0)
-      transition: transform 300ms variables.$bezier 0s
-      background: variables.$off-white
+      transition: transform 300ms v.$bezier 0s
+      background: v.$off-white
 
     span
-      @include variables.body
-      color: variables.$off-white
+      @include v.body
+      color: v.$off-white
 
     &.linkActive
-      border-color: variables.$dark-grey
-      border-radius: variables.$unit * 2.5
-      transition: border-radius 600ms variables.$bezier 0s, border-color 300ms linear 0s
-
+      border-color: v.$dark-grey
+      border-radius: v.$unit * 2.5
+      transition: border-radius 600ms v.$bezier 0s, border-color 300ms linear 0s
 
       span
-        @include variables.body-bold
-        color: variables.$white
+        @include v.body-bold
+        color: v.$white
         font-style: italic
 
       &:after
         transform: translate(50%,-50%) scale(1)
 
-@media only screen and (max-width: variables.$breakpoint-tablet)
+@media only screen and (max-width: v.$breakpoint-tablet)
   .nav
     top: unset
     bottom: 0
     align-items: flex-end
-

@@ -1,13 +1,11 @@
-@use '../app/variables.module'
 
 .lineX, .lineY
-  background: variables.$line-color
+  background: v.$line-color
 
 .lineY
   width: 1px
   height: 100%
   transform-origin: top
-
 
 .lineX
   height: 1px
@@ -36,14 +34,14 @@
 
     .lineX
       transform: scaleX(0)
-      animation: 3s variables.$bezier 300ms 1 normal forwards running expandX
+      animation: 3s v.$bezier 300ms 1 normal forwards running expandX
 
     .lineY
       transform: scaleY(0)
 
     @for $i from 1 through 6
       .lineContainerY:nth-child(#{$i}) > .lineY
-          animation: 300ms + $i * 600ms variables.$bezier 300ms 1 normal forwards running expandY
+        animation: 300ms + $i * 600ms v.$bezier 300ms 1 normal forwards running expandY
 
 @keyframes expandY
   0%
@@ -61,29 +59,28 @@
 
 .lineNav
   position: fixed
-  top: variables.$unit * 5
+  top: v.$unit * 5
   left: 0
   z-index: 20
 
-  @media only screen and (max-width: variables.$breakpoint-tablet)
+  @media only screen and (max-width: v.$breakpoint-tablet)
     display: none
 
 nav
   .lineX
-    top: variables.$unit * 5
+    top: v.$unit * 5
     bottom: unset
 
   .lineContainer
     top: 0
-    height: variables.$unit * 5
+    height: v.$unit * 5
 
-
-@media only screen and (max-width: variables.$breakpoint-tablet)
+@media only screen and (max-width: v.$breakpoint-tablet)
   nav
     .lineX
       display: block
       top: unset
-      bottom: variables.$unit * 5
+      bottom: v.$unit * 5
 
     .lineContainer
       top: unset

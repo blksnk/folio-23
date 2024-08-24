@@ -1,23 +1,21 @@
-"use client"
+"use client";
 
 import { useEffect, useRef } from "react";
 import GestureHandler, { GestureHandlerOptions } from "@/utils/gestures";
 
 export const useGestures = (options: GestureHandlerOptions) => {
-  const gestureHandler = useRef<GestureHandler>()
+  const gestureHandler = useRef<GestureHandler>();
 
   useEffect(() => {
-    if(typeof window !== "undefined" && !gestureHandler.current) {
-      console.log('runs')
-      gestureHandler.current  = new GestureHandler(options);
+    if (typeof window !== "undefined" && !gestureHandler.current) {
+      gestureHandler.current = new GestureHandler(options);
     }
     return () => {
-      if(gestureHandler.current) {
-        gestureHandler.current?.destroy()
+      if (gestureHandler.current) {
+        gestureHandler.current?.destroy();
       }
-    }
-  }, [options])
-
+    };
+  }, [options]);
 
   return gestureHandler.current;
-}
+};

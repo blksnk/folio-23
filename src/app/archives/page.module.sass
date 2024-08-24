@@ -1,8 +1,6 @@
-@use "../variables.module"
-
 
 .main
-  @include variables.Overlay
+  @include v.Overlay
   overflow: visible
   touch-action: none
   grid-template-rows: repeat(12, calc(100% / 12))
@@ -19,24 +17,23 @@
   overflow: visible
   position: relative
   transform: translateY(var(--scroll-y))
-  transition: transform 600ms variables.$bezier 0s
+  transition: transform 600ms v.$bezier 0s
 
   .scrolling &
     transition-duration: 0s
 
-  @media only screen and (max-width: variables.$breakpoint-mobile)
+  @media only screen and (max-width: v.$breakpoint-mobile)
     grid-column: 2 / -1
 
-  @media only screen and (max-width: variables.$breakpoint-mobile)
+  @media only screen and (max-width: v.$breakpoint-mobile)
     grid-column: 3 / -1
-
 
 .image, .imageBackground, .imagePreview
   position: absolute
   top: 0
   left: 0
 
-  transition: all 600ms variables.$bezier 0s
+  transition: all 600ms v.$bezier 0s
 
   img
     top: 0
@@ -44,12 +41,12 @@
     width: 100%
     height: 100%
     object-fit: cover
-    transition: all 600ms variables.$bezier 0s
+    transition: all 600ms v.$bezier 0s
     user-select: none
     pointer-events: none
 
 .image
-  border: 1px solid variables.$w0
+  border: 1px solid v.$w0
   z-index: 10
   mix-blend-mode: normal
   cursor: pointer
@@ -63,35 +60,34 @@
       opacity: 0.75
 
     &:hover
-      border-color: variables.$white !important
+      border-color: v.$white !important
 
   &:not(.doPreview) img
     transition-duration: 400ms
 
   &:hover:not(.imageSelected):not(.doPreview) img
-    inset: variables.$unit / 2 !important
-    width: calc(100% - variables.$unit) !important
-    height: calc(100% - variables.$unit) !important
+    inset: v.$unit / 2 !important
+    width: calc(100% - v.$unit) !important
+    height: calc(100% - v.$unit) !important
     transition-duration: 200ms
 
   &:hover:not(.imageSelected).doPreview img
-    inset: variables.$unit / 2 !important
-    width: calc(100% - variables.$unit) !important
-    height: calc(100% - variables.$unit) !important
+    inset: v.$unit / 2 !important
+    width: calc(100% - v.$unit) !important
+    height: calc(100% - v.$unit) !important
     transition-duration: 400ms
 
-
   &.imageSelected
-    border-color: variables.$white !important
-    padding: variables.$unit / 2
+    border-color: v.$white !important
+    padding: v.$unit / 2
 
     img
-      inset: variables.$unit / 2 !important
-      width: calc(100% - variables.$unit) !important
-      height: calc(100% - variables.$unit) !important
+      inset: v.$unit / 2 !important
+      width: calc(100% - v.$unit) !important
+      height: calc(100% - v.$unit) !important
 
   &.hide
-    border-color: variables.$w0 !important
+    border-color: v.$w0 !important
     pointer-events: none
 
     img
@@ -99,73 +95,74 @@
 
   @for $i from 0 through 100
     &:not(.hide)[data-index="#{$i}"]
-      animation: 400ms variables.$bezier 300ms + $i * 100ms 1 normal forwards running imageFrameAppear
+      animation: 400ms v.$bezier 300ms + $i * 100ms 1 normal forwards running imageFrameAppear
 
       img
-        animation: 600ms variables.$bezier 400ms + $i * 100ms 1 normal forwards running imageAppear
+        animation: 600ms v.$bezier 400ms + $i * 100ms 1 normal forwards running imageAppear
 
 .imageBackground
   z-index: 1
   opacity: 0
   mix-blend-mode: color-burn
+  transition: opacity 600ms v.$bezier 0s
 
   img
-    filter: blur(24px)
     transform: translateZ(0)
+    filter: blur(v.$unit * 3)
     z-index: 1
-    opacity: 1
+    opacity: 0
 
-  &.hide img
-    transition-duration: 300ms
+  @for $i from 0 through 100
+    &[data-index="#{$i}"] img
+      animation: 600ms v.$bezier 400ms + $i * 100ms 1 normal forwards running imageBackgroundAppear
+
+  &.hide
+    transition-duration: 600ms
     opacity: 0 !important
+    // animation: 300ms v.$bezier 300ms 1 normal forwards running imageBackgroundHide
 
-
-  @media only screen and (max-width: variables.$breakpoint-mobile)
+  @media only screen and (max-width: v.$breakpoint-mobile)
     display: none
 
 .imagePreview
-  border: 1px solid variables.$w50
+  border: 1px solid v.$w50
   z-index: 1
   filter: blur(36px)
   cursor: pointer
   pointer-events: none
   transition-duration: 600ms
-  background: variables.$w10
+  background: v.$w10
 
   img
     cursor: pointer
     object-fit: contain
-    inset: variables.$unit !important
-    width: calc(100% - variables.$unit * 2) !important
-    height: calc(100% - variables.$unit * 2) !important
+    inset: v.$unit !important
+    width: calc(100% - v.$unit * 2) !important
+    height: calc(100% - v.$unit * 2) !important
 
   &.doPreview
     pointer-events: all
     filter: blur(0)
 
   &.doPreview:not(.selectedPreview):hover
-    background: variables.$w30
-
+    background: v.$w30
 
   &.selectedPreview
-    border-color: variables.$white
-    background: variables.$w0
+    border-color: v.$white
+    background: v.$w0
     cursor: default
     transition-duration: 750ms
-
 
     img
       cursor: default
 
   &.hide
     transition-duration: 400ms
-    border-color: variables.$w0
-    background: variables.$w0
+    border-color: v.$w0
+    background: v.$w0
 
     img
       transform: scale(0)
-
-
 
 .spacer
   grid-column: 1 / span 1
@@ -173,15 +170,14 @@
   opacity: 0
   pointer-events: none
   touch-action: none
-  margin-right: variables.$unit * 1.5
+  margin-right: v.$unit * 1.5
 
-  @media only screen and (max-width: variables.$breakpoint-tablet)
-    margin-right: variables.$unit
-
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    margin-right: v.$unit
 
 .sideController
   grid-column: -2 / -1
-  grid-row: 1  / -1
+  grid-row: 1 / -1
   height: 100%
   max-height: 100%
   justify-self: end
@@ -193,12 +189,12 @@
   pointer-events: none
   width: 100%
 
-  @media only screen and (max-width: variables.$breakpoint-tablet)
+  @media only screen and (max-width: v.$breakpoint-tablet)
     grid-column: 1 / 2
     grid-row: 1 / -1
     justify-self: start
 
-  @media only screen and (max-width: variables.$breakpoint-mobile)
+  @media only screen and (max-width: v.$breakpoint-mobile)
     grid-column: 1 / span 2
     grid-template-columns: auto 1fr
     grid-row: 1 / -1
@@ -212,27 +208,26 @@
     flex-direction: column
     justify-content: space-between
     align-items: flex-end
-    padding: variables.$unit variables.$unit / 2
+    padding: v.$unit v.$unit / 2
     overflow: hidden
 
-    @media only screen and (max-width: variables.$breakpoint-tablet)
+    @media only screen and (max-width: v.$breakpoint-tablet)
       grid-row-end: -3
       align-items: flex-start
 
     .indicatorLine
       height: 1px
       min-height: 1px
-      background: variables.$w50
-      @include variables.lineX(1200ms)
+      background: v.$w50
+      @include v.lineX(1200ms)
       transform-origin: right
-      transition: all 600ms variables.$bezier 0s, width 0ms variables.$bezier 0s
+      transition: all 600ms v.$bezier 0s, width 0ms v.$bezier 0s
 
     &.doPreview .indicatorLine
-      transition: all 600ms variables.$bezier 0s
+      transition: all 600ms v.$bezier 0s
 
     &.hide .indicatorLine
       animation-delay: 0s
-
 
   .controllerButton
     grid-row-end: span 1
@@ -244,31 +239,29 @@
     cursor: pointer
     transform: scale(0)
 
-    animation: 600ms variables.$bezier 1200ms 1 normal forwards running imageAppear
+    animation: 600ms v.$bezier 1200ms 1 normal forwards running imageAppear
 
     &:before
       content: ""
       position: absolute
-      inset: variables.$unit * 0.75
+      inset: v.$unit * 0.75
       border-radius: 50%
-      background: variables.$w10
-      transition: transform 300ms variables.$bezier 0s
+      background: v.$w10
+      transition: transform 300ms v.$bezier 0s
       transform: scale(0)
-
 
     &:hover:before, &.active:before
       transform: scale(1)
 
     &.hide
-      animation: 400ms variables.$bezier 0ms 1 normal forwards running imageHide
-
+      animation: 400ms v.$bezier 0ms 1 normal forwards running imageHide
 
     span
       font-size: 1.25rem
       text-transform: capitalize
       font-style: italic
-      color: variables.$white
-      transition: opacity 300ms variables.$bezier 0s
+      color: v.$white
+      transition: opacity 300ms v.$bezier 0s
       opacity: 0.5
 
     &.active span
@@ -277,60 +270,60 @@
     &.gridButton
       grid-row-start: 1
 
-      @media only screen and (max-width: variables.$breakpoint-tablet)
+      @media only screen and (max-width: v.$breakpoint-tablet)
         grid-row-start: -3
 
-      @media only screen and (max-width: variables.$breakpoint-mobile)
+      @media only screen and (max-width: v.$breakpoint-mobile)
         grid-column: 1 / span 2
 
     &.listButton
       grid-row-start: -2
 
-      @media only screen and (max-width: variables.$breakpoint-mobile)
+      @media only screen and (max-width: v.$breakpoint-mobile)
         grid-column: 1 / span 2
 
   .linesVertical
-    border-left: 1px solid variables.$w50
-    border-right: 1px solid variables.$w50
+    border-left: 1px solid v.$w50
+    border-right: 1px solid v.$w50
     grid-column: 1 / span 1
     grid-row: 1 / -1
-    @include variables.lineY()
+    @include v.lineY()
 
-    @media only screen and (max-width: variables.$breakpoint-mobile)
+    @media only screen and (max-width: v.$breakpoint-mobile)
       grid-row: -3 / -1
       grid-column: 1 / span 2
       border-left: none
 
   .linesTop
-    border-top: 1px solid variables.$w50
-    border-bottom: 1px solid variables.$w50
+    border-top: 1px solid v.$w50
+    border-bottom: 1px solid v.$w50
     grid-column: 1 / span 1
     grid-row: 1 / span 1
-    @include variables.lineX()
+    @include v.lineX()
 
-    @media only screen and (max-width: variables.$breakpoint-tablet)
+    @media only screen and (max-width: v.$breakpoint-tablet)
       grid-row: -3 / -2
       border-bottom: 0
 
-    @media only screen and (max-width: variables.$breakpoint-mobile)
+    @media only screen and (max-width: v.$breakpoint-mobile)
       grid-column: 1 / span 2
 
   .linesBottom
-    border-top: 1px solid variables.$w50
-    border-bottom: 1px solid variables.$w50
+    border-top: 1px solid v.$w50
+    border-bottom: 1px solid v.$w50
     grid-column: 1 / span 1
     grid-row: -2 / span 1
-    @include variables.lineX()
+    @include v.lineX()
 
-    @media only screen and (max-width: variables.$breakpoint-mobile)
+    @media only screen and (max-width: v.$breakpoint-mobile)
       grid-column: 1 / span 2
   //
   //.linesVerticalBottom
-  //  border-right: 1px solid variables.$w50
+  //  border-right: 1px solid v.$w50
   //  grid-column: 1 / -1
   //  grid-row: -3 / -1
   //
-  //  @media only screen and (min-width: variables.$breakpoint-mobile)
+  //  @media only screen and (min-width: v.$breakpoint-mobile)
   //    display: none
 
 .backgroundLines
@@ -340,17 +333,17 @@
   inset: 0
   opacity: 0.2
   height: 100vh
-  top: variables.$unit * -3
+  top: v.$unit * -3
   overflow: visible
   margin-right: -20vw
-  transition: transform 600ms variables.$bezier 0s
+  transition: transform 600ms v.$bezier 0s
 
-  @media screen and (max-width: variables.$breakpoint-tablet)
-    top: variables.$unit * -2
+  @media screen and (max-width: v.$breakpoint-tablet)
+    top: v.$unit * -2
     grid-column-start: 3
 
-  @media screen and (max-width: variables.$breakpoint-mobile)
-    top: variables.$unit * -1
+  @media screen and (max-width: v.$breakpoint-mobile)
+    top: v.$unit * -1
 
   &.hideLine
     transform: scaleY(0)
@@ -372,7 +365,7 @@
     display: flex
     align-items: flex-start
     justify-content: flex-end
-    padding: variables.$unit variables.$unit / 2
+    padding: v.$unit v.$unit / 2
 
     .pageTitle
       transform: rotate(180deg)
@@ -382,27 +375,31 @@
       user-select: none
       pointer-events: none
 
-      @media screen and (max-width: variables.$breakpoint-tablet)
+      @media screen and (max-width: v.$breakpoint-tablet)
         display: none
 
   .countContainer
     grid-column: 1 / span 1
     grid-row: -5 / span 2
-    display: flex
-    padding: variables.$unit variables.$unit / 2
-    flex-direction: column
-    justify-content: space-between
+    display: grid
+    grid-template-columns: 1fr
+    grid-template-rows: 1fr auto auto
+    gap: v.$unit
+    padding: v.$unit v.$unit / 2
     max-width: 100%
-    align-items: flex-end
-
+    justify-items: end
 
     .count, .of, .totalCount
       padding: 0
+      grid-column: 1 / span 1
 
     .count
-      color: variables.$white
+      color: v.$white
       max-width: 100%
-      //max-height: 100%
+      max-height: max-content
+      flex: 1
+      height: unset !important
+      height: 100%
       transform: rotate(180deg)
       writing-mode: vertical-lr
       height: 0.909375rem // 14.55px, height of one text line
@@ -411,17 +408,16 @@
       opacity: 0.5
 
     .totalCount
-      color: variables.$white
-
+      color: v.$white
 
   .logoContainer
     grid-row: 1 / span 1
     grid-column: 1 / span 1
-    @include variables.flex-center
+    @include v.flex-center
 
     img
       transform: scale(1)
-      transition: transform 400ms variables.$bezier 200ms
+      transition: transform 400ms v.$bezier 200ms
 
     &.hide img
       transform: scale(0)
@@ -429,18 +425,18 @@
   .lineLeft, .lineRight, .lineFarRight
     grid-row: 1 / -1
     grid-column: 1 / span 1
-    @include variables.lineY()
+    @include v.lineY()
 
-    @media only screen and (max-width: variables.$breakpoint-mobile)
+    @media only screen and (max-width: v.$breakpoint-mobile)
       grid-row-end: -3
 
   .lineLeft
-    border-left: 1px solid variables.$w50
-    @media only screen and (max-width: variables.$breakpoint-mobile)
+    border-left: 1px solid v.$w50
+    @media only screen and (max-width: v.$breakpoint-mobile)
       grid-row-end: 13
 
   .lineRight, .lineFarRight
-    border-right: 1px solid variables.$w50
+    border-right: 1px solid v.$w50
 
   .lineFarRight
     margin-right: -7px
@@ -448,45 +444,44 @@
   .lineLogoTop, .lineLogoBottom
     grid-row: 1 / span 1
     grid-column: 1 / span 1
-    @include variables.lineX
+    @include v.lineX
     margin-right: -7px
 
   .lineLogoTop
-    border-top: 1px solid variables.$w50
+    border-top: 1px solid v.$w50
 
   .lineLogoBottom
-    border-bottom: 1px solid variables.$w50
+    border-bottom: 1px solid v.$w50
 
   .lineBottom
     grid-row: -3 / span 1
     grid-column: 1 / span 1
-    @include variables.lineX
-    border-top: 1px solid variables.$w50
+    @include v.lineX
+    border-top: 1px solid v.$w50
     margin-right: -7px
 
-    @media only screen and (max-width: variables.$breakpoint-mobile)
+    @media only screen and (max-width: v.$breakpoint-mobile)
       display: none
-
 
 // ANIMATIONS
 
 @keyframes imageBackgroundAppear
   from
     opacity: 0
-    //img
-    //  filter: blur(variables.$unit * 3)
+    filter: blur(v.$unit * 3)
 
   to
-    opacity: 1
-    //img
-    //  filter: blur(variables.$unit * 2)
+    opacity: 0.5
+    filter: blur(v.$unit * 2)
 
 @keyframes imageBackgroundHide
   from
-    opacity: 1
+    opacity: 0.5
+    filter: blur(v.$unit * 2)
 
   to
     opacity: 0
+    filter: blur(v.$unit * 3)
 
 @keyframes imageAppear
   from
@@ -500,9 +495,8 @@
   to
     transform: scale(0)
 
-
 @keyframes imageFrameAppear
-   from
-     border-color: variables.$w0
-   to
-     border-color: variables.$w50
+  from
+    border-color: v.$w0
+  to
+    border-color: v.$w50

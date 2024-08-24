@@ -1,16 +1,21 @@
-"use client"
+"use client";
 
-import styles from './Gallery.module.sass';
-import { breakpoints } from "@/utils/breakpoints";
-import { useEffect, useState } from "react";
-import { combineClasses } from "@/utils/css";
+import styles from "./Gallery.module.sass";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { cn } from "@/utils/css";
 import { FormattedProjectMedia } from "@/api/queries/oneProject";
-import { preloadImage } from "@/utils/images";
 import Image from "next/image";
-const preloadAllImages = async (coverUrls: string[]) => {
-  await Promise.all(coverUrls.map(url => preloadImage(url)))
-  return true
-}
+import {
+  computeBreakpoints,
+  computeMediaStyles,
+  computeStyleConstants,
+  isMediaActive,
+  parseMediaMetadata,
+  preloadAllImages,
+} from "./Gallery.utils";
+import { Breakpoints } from "@/utils/breakpoints";
+import type { GalleryMediaAndMetadata } from "./Gallery.types";
+import { portraitRatios } from "./data";
 
 interface GalleryProps {
   medias: FormattedProjectMedia[];
@@ -22,86 +27,130 @@ interface GalleryProps {
 
 export function Gallery(props: GalleryProps) {
   const [imagesLoaded, setImagesLoaded] = useState(false);
-  const [ isTablet, setIsTablet ] = useState(false)
-  const [ isMobile, setIsMobile ] = useState(false)
-  const [ isVertical, setIsVertical ] = useState(false);
+
+  const [breakpoints, setBreakpoints] = useState<Breakpoints>({
+    isTablet: false,
+    isMobile: false,
+    isVertical: false,
+  });
+
   useEffect(() => {
-    const computeBreakpoint = () => {
-      setIsTablet(breakpoints.isTablet())
-      setIsMobile(breakpoints.isMobile())
-      setIsVertical(breakpoints.isVertical())
-    }
-    window.addEventListener("resize", computeBreakpoint)
-    computeBreakpoint()
+    const updateBreakpoints = () => {
+      setBreakpoints(computeBreakpoints());
+    };
+    window.addEventListener("resize", updateBreakpoints);
+    updateBreakpoints();
 
-    return () => window.removeEventListener("resize", computeBreakpoint)
-  }, [])
+    return () => window.removeEventListener("resize", updateBreakpoints);
+  }, []);
   useEffect(() => {
-    if(!imagesLoaded) {
-      preloadAllImages(props.medias.filter(({ isVideo }) => !isVideo).map(({ url }) => url)).then(() => setImagesLoaded(true))
+    if (!imagesLoaded) {
+      preloadAllImages(
+        props.medias.filter(({ isVideo }) => !isVideo).map(({ url }) => url)
+      ).then(() => setImagesLoaded(true));
     }
-  }, [])
-  // split landscape and portrait medias
+  }, [imagesLoaded, props.medias]);
 
-  const mediaProps = (media: FormattedProjectMedia) => {
-
-    const active = media.id === props.activeMediaId && imagesLoaded && !props.hide;
-    const zIndex = active ? 1 : 2;
-    const aspectRatio = String(media.imgRatio);
-    const isPortrait = 1 > media.imgRatio
-    return {
-      active,
-      zIndex,
-      aspectRatio,
-      isPortrait,
-    }
-  }
-  const spacing = isMobile ? 6 : 12
-  const columnCount = 10
-  const rowCount = isTablet ? 7 : 9;
-  const topPadding = isMobile ? "12px" : isTablet ? "24px" : "36px"
-  const sidePadding = isMobile ? "9px" : isTablet ? "28px" : "44px"
-  const containerWidth = `calc((100vw - (${sidePadding} * 2)) / 12 * ${columnCount})`
-  const containerHeight = `calc((100vh - (${topPadding} * 2)) / 12 * ${rowCount})`
-
-  const frameHeightLandscape = (i: number) => {
-    return `calc(min(calc(${containerWidth} / ${props.medias[0].imgRatio}), ${containerHeight}) ${isVertical ? '-' : '-'} ${i * spacing}px)`
-  }
-  const frameHeightPortrait = (i: number) => {
-    return `calc(min(calc(${containerWidth} / ${props.medias[props.medias.length - 1].imgRatio}), ${containerHeight}) - ${(i - props.nonPortraitMediaCount) * spacing}px)`
-  }
-
-  const frameWidthPortrait = (i: number) => {
-    return `calc(min(calc(${containerHeight} * ${props.medias[props.medias.length - 1].imgRatio}), ${containerWidth}) + ${i * spacing}px)`
-  }
+  const styleConstants = useMemo(
+    () => computeStyleConstants(breakpoints),
+    [breakpoints]
+  );
 
   return (
     <div className={styles.framesContainer} onClick={props.walkGallery}>
-
-      {props.medias.map((media, index) => {
-        const { aspectRatio, zIndex, active, isPortrait } = mediaProps(media);
-        const height = isPortrait ? frameHeightPortrait(index) : frameHeightLandscape(index)
-        console.log(height)
-        // const width = isPortrait ? frameWidthPortrait(props.medias.length - 1 - index) : undefined
-        const animationDelay = props.hide ? 100 * index + "ms" : 300 + index * 200 + "ms";
-        const style = {
-          height,
-          // width,
-          aspectRatio,
-          maxWidth: containerWidth,
-          maxHeight: containerHeight,
-          animationDelay,
-          zIndex,
-        }
-        return (
-          <div key={media.id} style={style} className={combineClasses(styles.frame, isPortrait ? styles.portrait : styles.landscape, [styles.visible, active], [styles.hide, props.hide])}>
-            <GalleryMedia media={media} visible={active} priority={index === 0}/>
-          </div>
-        )
-      })}
+      <GalleryMediaRenderer
+        activeMediaId={props.activeMediaId}
+        hide={props.hide}
+        medias={props.medias}
+        imagesLoaded={imagesLoaded}
+        breakpoints={breakpoints}
+      />
     </div>
-  )
+  );
 }
+
+type GalleryMediaRendererProps = Pick<
+  GalleryProps,
+  "activeMediaId" | "hide" | "medias"
+> & {
+  imagesLoaded: boolean;
+  breakpoints: Breakpoints;
+};
+
+const GalleryMediaRenderer = (props: GalleryMediaRendererProps) => {
+  const constants = useMemo(
+    () => computeStyleConstants(props.breakpoints),
+    [props.breakpoints]
+  );
+
+  const allMedias = useMemo<GalleryMediaAndMetadata[]>(() => {
+    return props.medias.map(parseMediaMetadata);
+  }, [props.medias]);
+
+  const portaitMedias = useMemo<GalleryMediaAndMetadata[]>(() => {
+    return allMedias
+      .filter(({ isPortrait }) => isPortrait)
+      .sort((a, b) => b.media.imgRatio - a.media.imgRatio)
+      .reverse();
+  }, [allMedias]);
+
+  const landscapeMedias = useMemo<GalleryMediaAndMetadata[]>(() => {
+    return allMedias
+      .filter(({ isPortrait }) => !isPortrait)
+      .sort((a, b) => b.media.imgRatio - a.media.imgRatio);
+  }, [allMedias]);
+
+  const renderMedia = useCallback(
+    (priority: boolean) =>
+      // eslint-disable-next-line react/display-name
+      ({ media, ...metadata }: GalleryMediaAndMetadata, index: number) => {
+        const active = isMediaActive(
+          media,
+          props.activeMediaId,
+          props.imagesLoaded,
+          props.hide
+        );
+        const { mediaStyles, className } = computeMediaStyles(
+          constants,
+          metadata,
+          props.breakpoints,
+          index,
+          active,
+          props.hide
+        );
+        return (
+          <div key={media.id} style={mediaStyles} className={className}>
+            <GalleryMedia
+              media={media}
+              visible={active}
+              priority={priority || active}
+            />
+          </div>
+        );
+      },
+    [
+      constants,
+      props.activeMediaId,
+      props.breakpoints,
+      props.hide,
+      props.imagesLoaded,
+    ]
+  );
+
+  const renderMediaList = useCallback(
+    (metadataSubset: GalleryMediaAndMetadata[], priority?: boolean) => {
+      return metadataSubset.map(renderMedia(priority ?? false));
+    },
+    [renderMedia]
+  );
+
+  return (
+    <>
+      {renderMediaList(portaitMedias)}
+      {renderMediaList(landscapeMedias)}
+    </>
+  );
+};
 
 interface GalleryMediaProps {
   priority?: boolean;
@@ -110,16 +159,27 @@ interface GalleryMediaProps {
 }
 
 const GalleryMedia = (props: GalleryMediaProps) => {
-  const klass = combineClasses(styles.galleryMedia, [styles.visible, props.visible])
+  const klass = cn(styles.galleryMedia, [styles.visible, props.visible]);
   if (props.media.isVideo) {
     return (
-      <video autoPlay muted loop className={combineClasses(klass, styles.galleryMediaVideo)}>
-        <source src={props.media.url}/>
+      <video
+        autoPlay
+        muted
+        loop
+        className={cn(klass, styles.galleryMediaVideo)}
+      >
+        <source src={props.media.url} />
       </video>
-    )
+    );
   }
-  console.log('test')
   return (
-    <Image fill src={props.media.url} alt={props.media.displayTitle} priority={props.priority} sizes="(max-width: 600px) 100vw, 80vw" className={klass}/>
-  )
-}
+    <Image
+      fill
+      src={props.media.url}
+      alt={props.media.displayTitle}
+      priority={props.priority}
+      sizes="(max-width: 600px) 100vw, 80vw"
+      className={klass}
+    />
+  );
+};

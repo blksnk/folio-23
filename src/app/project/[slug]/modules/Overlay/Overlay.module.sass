@@ -1,0 +1,103 @@
+.lineTop
+  grid-column: 1 / -1
+  grid-row: 2 / span 1
+  border-top: 1px solid v.$w50
+  @include v.lineX
+
+.lineFarRight
+  border-right: 1px solid v.$w50
+  grid-column: -2 / -1
+  grid-row: 1 / -1
+  @include v.lineY
+
+.lineBottom
+  border-bottom: 1px solid v.$w50
+  border-top: 1px solid v.$w50
+  grid-column: 1 / -1
+  grid-row: -4 / span 1
+  height: v.$unit / 2
+  align-self: end
+  @include v.lineX
+
+  @media only screen and (min-width: v.$breakpoint-tablet)
+    display: none
+
+.lineAcrossLeft
+  grid-column: 1 / span 1
+  grid-row: 7 / span 1
+  @include v.lineX
+  border-bottom: 1px solid v.$w50
+  height: 50%
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    grid-row-start: 6
+    grid-column: 1 / -1
+    border-color: v.$w30
+
+.lineAcrossRight
+  grid-column: -2 / span 1
+  grid-row: 7 / span 1
+  @include v.lineX
+  border-bottom: 1px solid v.$w50
+  height: 50%
+  width: calc(100% - var(--side-banner-width) + 1px)
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    display: none
+
+// overlay lines
+
+.leftContentLeftLine
+  grid-column: 1 / span 2
+  grid-row: 1 / -1
+  border-left: 1px solid v.$w50
+  @include v.lineY
+  width: var(--side-banner-width)
+
+.leftContentRightLine
+  grid-column: 1 / span 2
+  grid-row: 1 / -1
+  border-left: 1px solid v.$w50
+  border-right: 1px solid v.$w50
+  width: v.$unit / 2
+  margin-left: var(--side-banner-width)
+
+  @include v.lineY
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    grid-row-end: 2
+
+.leftVerticalLines
+  grid-column: 1 / span 2
+  width: var(--side-banner-width)
+  grid-row: -4 / -3
+  max-width: 100%
+  overflow: hidden
+  border-bottom: 1px solid v.$w50
+  @include v.lineX
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    display: none
+
+.lineRight
+  grid-column: -2 / -1
+  grid-row: 1 / -1
+  width: var(--side-banner-width)
+  justify-self: end
+  @include v.lineY
+  border-left: 1px solid v.$w50
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    display: none
+
+.lineBottomRight
+  grid-column: -2 / -1
+  grid-row: -2 / -1
+  width: var(--side-banner-width)
+  justify-self: end
+
+  @include v.lineX
+  border-top: 1px solid v.$w50
+
+  @media only screen and (max-width: v.$breakpoint-tablet)
+    display: none

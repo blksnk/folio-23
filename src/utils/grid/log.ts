@@ -1,42 +1,42 @@
-import { GridMatrix, Size } from '@/utils/grid/types';
-import { getMatrixIndexForPosition } from '@/utils/grid/matrix';
+import { GridMatrix, Size } from "@/utils/grid/types";
+import { getMatrixIndexForPosition } from "@/utils/grid/matrix";
 
 const logCell = (cell: GridMatrix[number]): string => {
   switch (cell) {
     case 1:
-      return ' ■ ';
+      return " ■ ";
     case 2:
-      return '[▣]';
+      return "[▣]";
     case 3:
-      return ' · ';
+      return " · ";
     case 4:
-      return ' X ';
+      return " X ";
     default:
-      return '   ';
+      return "   ";
   }
 };
 
 const logLine = ({ width }: Size) => {
   return Array(width + 1)
-    .fill('–––')
-    .join('–––');
+    .fill("–––")
+    .join("–––");
 };
 
 const logHeader = (matrixSize: Size) => {
   return (
-    'y\\x | ' +
+    "y\\x | " +
     Array(matrixSize.width)
-      .fill('')
-      .map((_, i) => (i > 9 ? '' : ' ') + i + ' ')
-      .join(' | ')
+      .fill("")
+      .map((_, i) => (i > 9 ? "" : " ") + i + " ")
+      .join(" | ")
   );
 };
 
 type MatrixRow = GridMatrix;
 
 const logRow = (row: MatrixRow, rowIndex: number) => {
-  const rowStart = ' ' + rowIndex + (rowIndex > 9 ? '' : ' ');
-  return [rowStart, ...row.map((cell) => logCell(cell))].join(' | ');
+  const rowStart = " " + rowIndex + (rowIndex > 9 ? "" : " ");
+  return [rowStart, ...row.map((cell) => logCell(cell))].join(" | ");
 };
 
 export const logMatrix = (matrix: GridMatrix, matrixSize: Size) => {
@@ -49,8 +49,8 @@ export const logMatrix = (matrix: GridMatrix, matrixSize: Size) => {
   }
 
   const fullLog = [logHeader(matrixSize), ...rowStrings].join(
-    '\n' + logLine(matrixSize) + '\n'
+    "\n" + logLine(matrixSize) + "\n"
   );
-  console.log(fullLog);
+  console.info(fullLog);
   return fullLog;
 };
