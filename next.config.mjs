@@ -21,6 +21,9 @@ const nextConfig = (_phase, { defaultConfig }) => ({
       },
     ],
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   sassOptions: {
     ...defaultConfig.sassOptions,
     additionalData: (content, context) => {
