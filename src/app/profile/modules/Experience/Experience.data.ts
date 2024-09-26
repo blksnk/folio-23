@@ -27,9 +27,16 @@ const ironhack: Employer = {
 export const allJobs: Job[] = [
   {
     employer: ublo,
-    title: "Design System Engineer",
+    title: "Lead front-end engineer",
     year: 24,
     current: true,
+    description:
+      "Leading a team of 4 front-end engineers, working with product & design teams to bring the best to our users.",
+  },
+  {
+    employer: ublo,
+    title: "Design System Engineer",
+    year: 24,
     description:
       "In charge of overhauling whole ui stack targeting multiple platforms and devices, creating new and improving existing components.",
   },
