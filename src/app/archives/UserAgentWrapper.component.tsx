@@ -1,5 +1,5 @@
 import { GridLayoutData } from "@/utils/grid/types";
-import { useUserAgent } from "@/utils/userAgent";
+import { userAgent } from "@/utils/userAgent";
 import { Breakpoint } from "@/utils/responsive";
 import { ArchiveRenderer } from "@/app/archives/ArchiveRenderer";
 import {
@@ -15,13 +15,15 @@ interface UserAgentWrapperProps {
   coverUrls: string[];
 }
 
-export default function UserAgentWrappedRenderer(props: UserAgentWrapperProps) {
+export default async function UserAgentWrappedRenderer(
+  props: UserAgentWrapperProps
+) {
   // get device type on server side
   // TODO: find a way to cache images while detecting user agent
-  const userAgent = useUserAgent();
-  const breakpoint: Breakpoint = userAgent.current.isMobile
+  const agent = await userAgent();
+  const breakpoint: Breakpoint = agent.current.isMobile
     ? "mobile"
-    : userAgent.current.isTablet
+    : agent.current.isTablet
     ? "tablet"
     : "default";
   let { gridLayout, coverUrls, colors } = props;

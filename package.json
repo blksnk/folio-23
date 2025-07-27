@@ -13,6 +13,7 @@
   "dependencies": {
     "@ubloimmo/front-util": "^0.0.17",
     "@urql/core": "^3.2.2",
+    "@vercel/functions": "^2.2.5",
     "graphql": "^16.9.0",
     "lodash": "^4.17.21",
     "next": "^15.4.4",
