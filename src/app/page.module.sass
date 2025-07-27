@@ -18,12 +18,12 @@
     animation: 600ms v.$bezier 1600ms normal forwards appearBackground
 
     @media only screen and (max-width: v.$breakpoint-tablet)
-      left: v.$unit * 0.75
-      right: v.$unit * 0.75
+      left: calc(calc(v.$unit * 0.75))
+      right: calc(v.$unit * 0.75)
 
     @media only screen and (max-width: v.$breakpoint-mobile)
-      left: v.$unit * 0.5
-      right: v.$unit * 0.5
+      left: calc(v.$unit * 0.5)
+      right: calc(v.$unit * 0.5)
 
   &.hide:before
     transform-origin: right
@@ -202,18 +202,18 @@
       transform: scaleX(1)
 
       @media only screen and (max-width: v.$breakpoint-tablet)
-        left: v.$unit * 0.75
-        right: v.$unit * 0.75
+        left: calc(v.$unit * 0.75)
+        right: calc(v.$unit * 0.75)
 
       @media only screen and (max-width: v.$breakpoint-mobile)
-        left: v.$unit * 0.375
-        right: v.$unit * 0.375
+        left: calc(v.$unit * 0.375)
+        right: calc(v.$unit * 0.375)
 
     @media only screen and (max-width: v.$breakpoint-tablet)
-      padding: 0 v.$unit * 0.75
+      padding: 0 calc(v.$unit * 0.75)
 
     @media only screen and (max-width: v.$breakpoint-mobile)
-      padding: 0 v.$unit * 0.5
+      padding: 0 calc(v.$unit * 0.5)
 
     &.hide
       transform: translateY(0)
@@ -236,7 +236,7 @@
     grid-template-rows: repeat(12, 1fr)
     grid-template-columns: auto 1fr
     flex: 1
-    grid-column-gap: v.$unit / 2
+    grid-column-gap: calc(v.$unit / 2)
     max-width: 100%
     max-height: 100%
 
@@ -286,7 +286,7 @@
       display: flex
       align-items: flex-start
       justify-content: flex-end
-      padding: v.$unit v.$unit / 2
+      padding: v.$unit calc(v.$unit / 2)
 
       @media only screen and (max-width: v.$breakpoint-mobile)
         grid-row: 2 / span 3
@@ -301,7 +301,7 @@
 
     .indices
       grid-column: 1 / span 1
-      padding-left: v.$unit / 2
+      padding-left: calc(v.$unit / 2)
       padding-right: v.$unit
 
     .titles
@@ -355,7 +355,7 @@
         opacity: 0
 
       .arrowButton
-        padding: v.$unit v.$unit / 2
+        padding: v.$unit calc(v.$unit / 2)
         background: v.$w0
         position: relative
 
@@ -383,7 +383,7 @@
         pointer-events: none
 
         .arrowButton
-          padding: 0 v.$unit / 2
+          padding: 0 calc(v.$unit / 2)
           pointer-events: all
           @include v.flex-center
           align-items: center !important
@@ -474,7 +474,7 @@
 
       .year
         grid-column: 3 / 4
-        padding-right: v.$unit / 2
+        padding-right: calc(v.$unit / 2)
         border-color: transparent
 
         @media only screen and (max-width: v.$breakpoint-desktop-small)
@@ -496,7 +496,7 @@
     grid-column: 1 / 2
     grid-row: 6 / span 1
     align-self: end
-    margin-bottom: v.$unit / 2
+    margin-bottom: calc(v.$unit / 2)
     @include v.lineX
 
     @media only screen and (max-width: v.$breakpoint-mobile)
@@ -523,7 +523,7 @@
 //   filter: blur(24px)
 
 //   &.overBlur
-//     filter: blur(v.$unit * 3)
+//     filter: blur(calc(v.$unit * 3))
 
 // .backgroundImageContainer
 //   transition: all 600ms v.$bezier 0ms
@@ -553,32 +553,32 @@
 //     transition: all 600ms v.$bezier 0ms
 
 //     &.overBlur
-//       filter: brightness(0.8) blur(v.$unit * 3)
+//       filter: brightness(0.8) blur(calc(v.$unit * 3))
 
 // .table
 //   @media only screen and (max-height: v.$breakpoint-height)
 //     gap: 0.5 * v.$unit !important
-//     padding: v.$unit v.$unit * 0.75 !important
+//     padding: v.$unit calc(v.$unit * 0.75) !important
 
 //   @media only screen and (max-width: v.$breakpoint-desktop-small)
-//     padding: v.$unit v.$unit * 0.75 !important
+//     padding: v.$unit calc(v.$unit * 0.75) !important
 
 //     .tableCell
 //       padding: 0 v.$unit
 
 //   @media only screen and (max-width: v.$breakpoint-tablet)
-//     padding: v.$unit v.$unit * 0.5 !important
+//     padding: v.$unit calc(v.$unit * 0.5) !important
 
 //     .tableCell
-//       padding: 0 v.$unit * 0.75
+//       padding: 0 calc(v.$unit * 0.75)
 
 //   @media only screen and (max-width: v.$breakpoint-mobile)
 //     gap: 0.5 * v.$unit !important
 
 //     .tableCell
-//       padding: 0 v.$unit * 0.5
+//       padding: 0 calc(v.$unit * 0.5)
 
-$arrow-width: v.$unit * 4
+$arrow-width: calc(v.$unit * 4)
 
 // ---------------------------------------------------
 // Links new
@@ -648,18 +648,18 @@ $arrow-width: v.$unit * 4
       transform: scaleX(1)
 
       @media only screen and (max-width: v.$breakpoint-tablet)
-        left: v.$unit * 0.75
-        right: v.$unit * 0.75
+        left: calc(v.$unit * 0.75)
+        right: calc(v.$unit * 0.75)
 
       @media only screen and (max-width: v.$breakpoint-mobile)
-        left: v.$unit * 0.375
-        right: v.$unit * 0.375
+        left: calc(v.$unit * 0.375)
+        right: calc(v.$unit * 0.375)
 
     @media only screen and (max-width: v.$breakpoint-tablet)
-      padding: 0 v.$unit * 0.75
+      padding: 0 calc(v.$unit * 0.75)
 
     @media only screen and (max-width: v.$breakpoint-mobile)
-      padding: 0 v.$unit * 0.5
+      padding: 0 calc(v.$unit * 0.5)
 
     &.hide
       transform: translateY(0)
@@ -849,7 +849,7 @@ $arrow-width: v.$unit * 4
 
     @media only screen and (max-width: v.$breakpoint-mobile)
       grid-column-end: span 3
-      padding-right: v.$unit / 4
+      padding-right: calc(v.$unit / 4)
 
 .listNewItemCell
   max-height: max-content
@@ -862,10 +862,10 @@ $arrow-width: v.$unit * 4
     overflow: hidden
 
   @media only screen and (max-width: v.$breakpoint-desktop-small)
-    padding: 0 v.$unit * 0.75
+    padding: 0 calc(v.$unit * 0.75)
 
   @media only screen and (max-width: v.$breakpoint-tablet)
-    padding: 0 v.$unit * 0.5
+    padding: 0 calc(v.$unit * 0.5)
 
 // ---------------------------------------------------
 // Arrow buttons
@@ -876,7 +876,7 @@ $arrow-width: v.$unit * 4
   max-width: $arrow-width
 
   width: 100%
-  padding: v.$unit v.$unit / 2
+  padding: v.$unit calc(v.$unit / 2)
   background: v.$w05
   border: none
   display: inline-flex
@@ -952,7 +952,7 @@ $arrow-width: v.$unit * 4
   display: flex
   align-items: flex-start
   justify-content: flex-end
-  padding: v.$unit v.$unit / 2
+  padding: v.$unit calc(v.$unit / 2)
   width: var(--side-banner-width)
 
   @media only screen and (max-width: v.$breakpoint-mobile)
@@ -1136,7 +1136,7 @@ $arrow-width: v.$unit * 4
 //   grid-column: 1 / 9
 //   grid-row: 6 / span 1
 //   align-self: end
-//   margin-bottom: v.$unit / 2
+//   margin-bottom: calc(v.$unit / 2)
 //   margin-right: $arrow-width
 //   @include v.lineX
 

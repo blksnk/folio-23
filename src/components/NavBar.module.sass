@@ -4,7 +4,7 @@
   top: 0
   left: 0
   width: 100%
-  height: v.$unit * 5
+  height: calc(v.$unit * 5)
   display: flex
   justify-content: space-between
   align-items: center
@@ -16,7 +16,7 @@
     min-width: 10vw
     width: 10vw
     @include v.flex-center
-    height: v.$unit * 5
+    height: calc(v.$unit * 5)
     z-index: 30
 
   .linkContainer
@@ -36,8 +36,8 @@
       position: absolute
       content: ""
       bottom: v.$unit
-      height: v.$unit / 2
-      width: v.$unit / 2
+      height: calc(v.$unit / 2)
+      width: calc(v.$unit / 2)
       border-radius: 50%
       right: 50%
       transform: translate(50%,-50%) scale(0)
@@ -50,7 +50,7 @@
 
     &.linkActive
       border-color: v.$dark-grey
-      border-radius: v.$unit * 2.5
+      border-radius: calc(v.$unit * 2.5)
       transition: border-radius 600ms v.$bezier 0s, border-color 300ms linear 0s
 
       span

@@ -69,16 +69,16 @@
 
     img
       object-fit: contain
-      height: v.$unit * 4
+      height: calc(v.$unit * 4)
       width: unset
       scale: 0.8
       opacity: 0
 
       @media only screen and (max-width: v.$breakpoint-tablet)
-        height: v.$unit * 3
+        height: calc(v.$unit * 3)
 
       @media only screen and (max-width: v.$breakpoint-mobile)
-        height: v.$unit * 2
+        height: calc(v.$unit * 2)
 
     &.hide img
       animation: fade-out 300ms v.$bezier 0s forwards
@@ -94,8 +94,8 @@
     margin-bottom: var(--unit)
 
     @media only screen and (max-width: v.$breakpoint-mobile)
-      margin-bottom: v.$unit / 2
-      padding: 0 v.$unit / 2 !important
+      margin-bottom: calc(v.$unit / 2)
+      padding: 0 calc(v.$unit / 2) !important
 
 @keyframes fade-in
   from

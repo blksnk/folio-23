@@ -66,23 +66,23 @@
     transition-duration: 400ms
 
   &:hover:not(.imageSelected):not(.doPreview) img
-    inset: v.$unit / 2 !important
+    inset: calc(v.$unit / 2) !important
     width: calc(100% - v.$unit) !important
     height: calc(100% - v.$unit) !important
     transition-duration: 200ms
 
   &:hover:not(.imageSelected).doPreview img
-    inset: v.$unit / 2 !important
+    inset: calc(v.$unit / 2) !important
     width: calc(100% - v.$unit) !important
     height: calc(100% - v.$unit) !important
     transition-duration: 400ms
 
   &.imageSelected
     border-color: v.$white !important
-    padding: v.$unit / 2
+    padding: calc(v.$unit / 2)
 
     img
-      inset: v.$unit / 2 !important
+      inset: calc(v.$unit / 2) !important
       width: calc(100% - v.$unit) !important
       height: calc(100% - v.$unit) !important
 
@@ -108,7 +108,7 @@
 
   img
     transform: translateZ(0)
-    filter: blur(v.$unit * 3)
+    filter: blur(calc(calc(v.$unit * 3)))
     z-index: 1
     opacity: 0
 
@@ -137,8 +137,8 @@
     cursor: pointer
     object-fit: contain
     inset: v.$unit !important
-    width: calc(100% - v.$unit * 2) !important
-    height: calc(100% - v.$unit * 2) !important
+    width: calc(100% - calc(v.$unit * 2)) !important
+    height: calc(100% - calc(v.$unit * 2)) !important
 
   &.doPreview
     pointer-events: all
@@ -170,7 +170,7 @@
   opacity: 0
   pointer-events: none
   touch-action: none
-  margin-right: v.$unit * 1.5
+  margin-right: calc(v.$unit * 1.5)
 
   @media only screen and (max-width: v.$breakpoint-tablet)
     margin-right: v.$unit
@@ -208,7 +208,7 @@
     flex-direction: column
     justify-content: space-between
     align-items: flex-end
-    padding: v.$unit v.$unit / 2
+    padding: v.$unit calc(v.$unit / 2)
     overflow: hidden
 
     @media only screen and (max-width: v.$breakpoint-tablet)
@@ -244,7 +244,7 @@
     &:before
       content: ""
       position: absolute
-      inset: v.$unit * 0.75
+      inset: calc(v.$unit * 0.75)
       border-radius: 50%
       background: v.$w10
       transition: transform 300ms v.$bezier 0s
@@ -365,7 +365,7 @@
     display: flex
     align-items: flex-start
     justify-content: flex-end
-    padding: v.$unit v.$unit / 2
+    padding: v.$unit calc(v.$unit / 2)
 
     .pageTitle
       transform: rotate(180deg)
@@ -385,7 +385,7 @@
     grid-template-columns: 1fr
     grid-template-rows: 1fr auto auto
     gap: v.$unit
-    padding: v.$unit v.$unit / 2
+    padding: v.$unit calc(v.$unit / 2)
     max-width: 100%
     justify-items: end
 
@@ -468,20 +468,20 @@
 @keyframes imageBackgroundAppear
   from
     opacity: 0
-    filter: blur(v.$unit * 3)
+    filter: blur(calc(v.$unit * 3))
 
   to
     opacity: 0.5
-    filter: blur(v.$unit * 2)
+    filter: blur(calc(v.$unit * 2))
 
 @keyframes imageBackgroundHide
   from
     opacity: 0.5
-    filter: blur(v.$unit * 2)
+    filter: blur(calc(v.$unit * 2))
 
   to
     opacity: 0
-    filter: blur(v.$unit * 3)
+    filter: blur(calc(v.$unit * 3))
 
 @keyframes imageAppear
   from

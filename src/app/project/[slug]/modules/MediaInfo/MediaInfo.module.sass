@@ -14,14 +14,14 @@
   display: flex
   align-items: flex-end
   justify-content: flex-end
-  padding: v.$unit v.$unit / 2
+  padding: v.$unit calc(v.$unit / 2)
   margin-bottom: calc(100vh / -24)
 
   @media only screen and (max-width: v.$breakpoint-tablet)
     align-items: flex-end
     justify-content: flex-start
     grid-row: 7 / span 4
-    padding-bottom: v.$unit * 1.5
+    padding-bottom: calc(v.$unit * 1.5)
     margin-bottom: 0
 
   & > *
@@ -40,7 +40,7 @@
   display: flex
   align-items: flex-start
   justify-content: flex-end
-  padding: v.$unit v.$unit / 2
+  padding: v.$unit calc(v.$unit / 2)
 
   @media only screen and (max-width: v.$breakpoint-tablet)
     grid-row-start: 2

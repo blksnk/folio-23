@@ -1,5 +1,5 @@
 
-$arrow-width: v.$unit * 4
+$arrow-width: calc(v.$unit * 4)
 
 @mixin backgroundHover
   position: relative
@@ -21,12 +21,12 @@ $arrow-width: v.$unit * 4
     animation: 600ms v.$bezier 1600ms normal forwards appearBackground
 
     @media only screen and (max-width: v.$breakpoint-tablet)
-      left: v.$unit * 0.75
-      right: v.$unit * 0.75
+      left: calc(v.$unit * 0.75)
+      right: calc(v.$unit * 0.75)
 
     @media only screen and (max-width: v.$breakpoint-mobile)
-      left: v.$unit * 0.5
-      right: v.$unit * 0.5
+      left: calc(v.$unit * 0.5)
+      right: calc(v.$unit * 0.5)
 
   &.hide:before
     transform-origin: right
@@ -115,18 +115,18 @@ $arrow-width: v.$unit * 4
       transform: scaleX(1)
 
       @media only screen and (max-width: v.$breakpoint-tablet)
-        left: v.$unit * 0.75
-        right: v.$unit * 0.75
+        left: calc(v.$unit * 0.75)
+        right: calc(v.$unit * 0.75)
 
       @media only screen and (max-width: v.$breakpoint-mobile)
-        left: v.$unit * 0.375
-        right: v.$unit * 0.375
+        left: calc(v.$unit * 0.375)
+        right: calc(v.$unit * 0.375)
 
     @media only screen and (max-width: v.$breakpoint-tablet)
-      padding: 0 v.$unit * 0.75
+      padding: 0 calc(v.$unit * 0.75)
 
     @media only screen and (max-width: v.$breakpoint-mobile)
-      padding: 0 v.$unit * 0.5
+      padding: 0 calc(v.$unit * 0.5)
 
     &.hide
       transform: translateY(0)
