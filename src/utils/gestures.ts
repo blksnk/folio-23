@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 type func = () => void;
 
 export type Vector2 = { x: number; y: number };
@@ -49,7 +47,7 @@ class GestureHandler {
   private touches: Touch[] = [];
   private touchPositions: Vector2[] = [];
   private oldTouches: Touch[] = [];
-  private mousePos: Vector2 = ({ x: 0, y: 0 });
+  private mousePos: Vector2 = { x: 0, y: 0 };
   private pinching = false;
   private touching = false;
   private multitouch = false;
@@ -97,41 +95,40 @@ class GestureHandler {
   }
 
   init() {
-    this.target.addEventListener('mousedown', this._onMouseDown_bound);
-    this.target.addEventListener('mouseup', this._onMouseUp_bound);
-    this.target.addEventListener('mousemove', this._onMouseMove_bound);
+    this.target.addEventListener("mousedown", this._onMouseDown_bound);
+    this.target.addEventListener("mouseup", this._onMouseUp_bound);
+    this.target.addEventListener("mousemove", this._onMouseMove_bound);
 
-    this.target.addEventListener('touchstart', this._onTouchStart_bound, {
+    this.target.addEventListener("touchstart", this._onTouchStart_bound, {
       passive: false,
     });
-    this.target.addEventListener('touchend', this._onTouchEnd_bound, {
+    this.target.addEventListener("touchend", this._onTouchEnd_bound, {
       passive: false,
     });
-    this.target.addEventListener('touchcancel', this._onTouchCancel_bound, {
+    this.target.addEventListener("touchcancel", this._onTouchCancel_bound, {
       passive: false,
     });
-    this.target.addEventListener('touchleave', this._onTouchEnd_bound, {
+    this.target.addEventListener("touchleave", this._onTouchEnd_bound, {
       passive: false,
     });
-    this.target.addEventListener('touchmove', this._onTouchMove_bound, {
+    this.target.addEventListener("touchmove", this._onTouchMove_bound, {
       passive: false,
     });
-    this.target.addEventListener('wheel', this._onWheel_bound, {
+    this.target.addEventListener("wheel", this._onWheel_bound, {
       passive: false,
-    })
+    });
   }
 
   destroy() {
-    this.target.removeEventListener('mousedown', this._onMouseDown_bound);
-    this.target.removeEventListener('mouseup', this._onMouseUp_bound);
-    this.target.removeEventListener('mousemove', this._onMouseMove_bound);
+    this.target.removeEventListener("mousedown", this._onMouseDown_bound);
+    this.target.removeEventListener("mouseup", this._onMouseUp_bound);
+    this.target.removeEventListener("mousemove", this._onMouseMove_bound);
 
-    this.target.removeEventListener('touchstart', this._onTouchStart_bound);
-    this.target.removeEventListener('touchend', this._onTouchEnd_bound);
-    this.target.removeEventListener('touchcancel', this._onTouchCancel_bound);
-    this.target.removeEventListener('touchleave', this._onTouchEnd_bound);
-    this.target.removeEventListener('touchmove', this._onTouchMove_bound);
-
+    this.target.removeEventListener("touchstart", this._onTouchStart_bound);
+    this.target.removeEventListener("touchend", this._onTouchEnd_bound);
+    this.target.removeEventListener("touchcancel", this._onTouchCancel_bound);
+    this.target.removeEventListener("touchleave", this._onTouchEnd_bound);
+    this.target.removeEventListener("touchmove", this._onTouchMove_bound);
   }
 
   private prevent(e: Event) {
@@ -230,7 +227,6 @@ class GestureHandler {
       const E = e as TouchEvent;
       this.oldTouches = [...this.touches];
       this.removeTouches(e);
-      // @ts-ignore
       this.touches = [...E.touches];
       this.touchPositions = this.getTouchPositions(this.touches);
       this.multitouch = this.touches.length > 1;
@@ -283,6 +279,7 @@ class GestureHandler {
     } else if (this.onWheel) this.onWheel(deltaVec);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   detectTrackPad(e: any) {
     if (e.wheelDeltaY) {
       if (e.wheelDeltaY === e.deltaY * -3) {

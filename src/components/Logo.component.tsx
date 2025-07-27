@@ -4,7 +4,7 @@ interface LogoProps {
   outline?: boolean;
 }
 
-export const Logo = ({ outline }: LogoProps): JSX.Element => {
+export const Logo = ({ outline }: LogoProps) => {
   const url = outline ? "/genmetsuLogoOutline.svg" : "/genmetsuLogo.svg";
   const width = outline ? 34 : 32;
   const height = outline ? 38 : 36;

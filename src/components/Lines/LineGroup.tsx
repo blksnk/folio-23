@@ -26,7 +26,7 @@ const computeMargin = (
   return lerp(from, to, factor);
 };
 
-export const LineGroup = (props: LineGroupProps): JSX.Element => {
+export const LineGroup = (props: LineGroupProps) => {
   const groupClass = `${styles.lineGroup} ${styles[props.direction]}`;
   const lines = Array(props.count).fill(null);
   const marginProp =

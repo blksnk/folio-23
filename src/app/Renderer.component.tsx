@@ -21,7 +21,7 @@ const createProjectLink = (slug: string) => "/project/" + slug;
 
 export const Renderer = (props: RendererProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const timeoutId = useRef<number>();
+  const timeoutId = useRef<number | null>(null);
   const doCarousel = useRef(true);
   const { transitionOut, redirectTo } = useTransition();
 
@@ -98,7 +98,7 @@ export const Renderer = (props: RendererProps) => {
   });
 
   useEffect(() => {
-    if (timeoutId.current) {
+    if (typeof timeoutId.current === "number") {
       clearCarouselTimeout();
     }
     if (doCarousel.current) {

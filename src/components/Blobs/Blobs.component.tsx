@@ -97,7 +97,7 @@ const createRandomBlobs = (
 ): Omit<BlobProps, "offset" | "offsetAmount">[] =>
   Array(count)
     .fill({})
-    .map((_, index) =>
+    .map(() =>
       randomBlobProps(
         containerSize,
         maxBlobSize,
@@ -157,7 +157,7 @@ export const Blobs = ({
   fill,
   size,
   mixBlendMode,
-}: BlobsProps): JSX.Element => {
+}: BlobsProps) => {
   const { transitionOut } = useTransition();
   const computeSize = useCallback((): Dimensions => {
     if (typeof size === "number") return { height: size, width: size };
@@ -308,7 +308,7 @@ export const Blobs = ({
   );
 };
 
-const Blob = (props: BlobProps & { transition: boolean }): JSX.Element => {
+const Blob = (props: BlobProps & { transition: boolean }) => {
   const { x, y, offset, offsetAmount, height, width, color, angle, grayscale } =
     props;
   const transform = `translateZ(0) translate(calc(${x}px + ${offset.x} * ${offsetAmount}px), calc(${y}px + ${offset.y} * ${offsetAmount}px)) rotate(${angle}deg)`;
