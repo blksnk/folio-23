@@ -50,11 +50,6 @@ export function Gallery(props: GalleryProps) {
     }
   }, [imagesLoaded, props.medias]);
 
-  const styleConstants = useMemo(
-    () => computeStyleConstants(breakpoints),
-    [breakpoints]
-  );
-
   return (
     <div className={styles.framesContainer} onClick={props.walkGallery}>
       <GalleryMediaRenderer

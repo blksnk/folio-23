@@ -84,7 +84,7 @@ $bezier: cubic-bezier(0.38,0,0.21,0.98)
   font-size: 2.5rem
 
 @mixin text-line-sizing
-  min-height: $unit + ($unit / 4)
+  min-height: calc($unit + ($unit / 4))
   text-align: left
   padding: 0 1.125rem
 
@@ -92,10 +92,10 @@ $bezier: cubic-bezier(0.38,0,0.21,0.98)
     padding: 0 $unit
 
   @media only screen and (max-width: $breakpoint-tablet)
-    padding: 0 $unit * 0.75
+    padding: 0 calc($unit * 0.75)
 
   @media only screen and (max-width: $breakpoint-mobile)
-    padding: 0 $unit * 0.5
+    padding: 0 calc($unit * 0.5)
     min-height: $unit
 
 // Layout
@@ -123,8 +123,8 @@ $bezier: cubic-bezier(0.38,0,0.21,0.98)
 // Fixed Overlay
 @mixin Overlay
   position: fixed
-  top: $unit * 3
-  bottom: $unit * 3
+  top: calc($unit * 3)
+  bottom: calc($unit * 3)
   left: 2.75rem
   right: 2.75rem
   @include Grid(12, 12)
@@ -132,14 +132,14 @@ $bezier: cubic-bezier(0.38,0,0.21,0.98)
   @media screen and (max-width: $breakpoint-tablet)
     top: $unit * 2
     bottom: $unit * 2
-    left: $unit * 2 + $unit / 3
-    right: $unit * 2 + $unit / 3
+    left: calc($unit * 2 + $unit / 3)
+    right: calc($unit * 2 + $unit / 3)
 
   @media screen and (max-width: $breakpoint-mobile)
     top: $unit
     bottom: $unit
-    left: $unit * 0.75
-    right: $unit * 0.75
+    left: calc($unit * 0.75)
+    right: calc($unit * 0.75)
 
 // Lines
 @mixin lineY($delay: 300ms, $hideDelay: 300ms)
