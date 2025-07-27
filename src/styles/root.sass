@@ -29,6 +29,10 @@
     --vertical-padding: 0.75rem
     --cell-height: calc((100vh - var(--unit) * 2) / 12 )
 
+  @media screen and (max-device-width: v.$breakpoint-mobile), screen and (-webkit-min-device-pixel-ratio: 2), screen and (device-width: v.$breakpoint-mobile)
+    &, body
+      -webkit-text-size-adjust: none
+
 *
   margin: 0
   padding: 0
