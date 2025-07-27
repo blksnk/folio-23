@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import sharp from "sharp";
 interface Size {
   width: number;
@@ -7,13 +5,26 @@ interface Size {
 }
 export type FastAverageColorRgb = [number, number, number];
 export type FastAverageColorRgba = [number, number, number, number];
-export type FastAverageColorRgbaWithThreshold = [number, number, number, number, number];
-export type FastAverageColorIgnoredColor = FastAverageColorRgb | FastAverageColorRgba | FastAverageColorRgbaWithThreshold | Array<FastAverageColorRgb | FastAverageColorRgba | FastAverageColorRgbaWithThreshold>;
+export type FastAverageColorRgbaWithThreshold = [
+  number,
+  number,
+  number,
+  number,
+  number
+];
+export type FastAverageColorIgnoredColor =
+  | FastAverageColorRgb
+  | FastAverageColorRgba
+  | FastAverageColorRgbaWithThreshold
+  | Array<
+      | FastAverageColorRgb
+      | FastAverageColorRgba
+      | FastAverageColorRgbaWithThreshold
+    >;
 export interface FastAverageColorOptions {
   defaultColor?: FastAverageColorRgba;
-  ignoredColor?: FastAverageColorIgnoredColor;
-  mode?: 'precision' | 'speed';
-  algorithm?: 'simple' | 'sqrt' | 'dominant';
+  mode?: "precision" | "speed";
+  algorithm?: "simple" | "sqrt" | "dominant";
   step?: number;
   left?: number;
   top?: number;
@@ -24,10 +35,14 @@ export interface FastAverageColorOptions {
 }
 export interface FastAverageColorAlgorithmOptions {
   defaultColor: FastAverageColorRgba;
-  ignoredColor: Array<FastAverageColorRgb | FastAverageColorRgba | FastAverageColorRgbaWithThreshold>;
   step: number;
 }
-export type FastAverageColorResource = HTMLImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | null;
+export type FastAverageColorResource =
+  | HTMLImageElement
+  | HTMLVideoElement
+  | HTMLCanvasElement
+  | ImageBitmap
+  | null;
 export interface FastAverageColorResult {
   rgb: string;
   rgba: string;
@@ -45,21 +60,24 @@ type RGB = RGBA | [number, number, number];
 const MIN_SIZE = 10;
 const MAX_SIZE = 100;
 
-function prepareSizeAndPosition(originalSize: Size, options?: FastAverageColorOptions) {
+function prepareSizeAndPosition(
+  originalSize: Size,
+  options?: FastAverageColorOptions
+) {
   const srcLeft = 0;
-  const srcTop =  0;
+  const srcTop = 0;
   const srcWidth = originalSize.width;
   const srcHeight = originalSize.height;
   let destWidth = srcWidth;
   let destHeight = srcHeight;
-  if (options?.mode === 'precision') {
+  if (options?.mode === "precision") {
     return {
       srcLeft,
       srcTop,
       srcWidth,
       srcHeight,
       destWidth,
-      destHeight
+      destHeight,
     };
   }
   let factor;
@@ -67,14 +85,17 @@ function prepareSizeAndPosition(originalSize: Size, options?: FastAverageColorOp
     factor = srcWidth / srcHeight;
     destWidth = MAX_SIZE;
     destHeight = Math.round(destWidth / factor);
-  }
-  else {
+  } else {
     factor = srcHeight / srcWidth;
     destHeight = MAX_SIZE;
     destWidth = Math.round(destHeight / factor);
   }
-  if (destWidth > srcWidth || destHeight > srcHeight ||
-    destWidth < MIN_SIZE || destHeight < MIN_SIZE) {
+  if (
+    destWidth > srcWidth ||
+    destHeight > srcHeight ||
+    destWidth < MIN_SIZE ||
+    destHeight < MIN_SIZE
+  ) {
     destWidth = srcWidth;
     destHeight = srcHeight;
   }
@@ -84,24 +105,28 @@ function prepareSizeAndPosition(originalSize: Size, options?: FastAverageColorOp
     srcWidth,
     srcHeight,
     destWidth,
-    destHeight
+    destHeight,
   };
 }
 
 function getDefaultColor(options: FastAverageColorOptions): RGBA {
-  return getOption(options, 'defaultColor', [0, 0, 0, 0]) as RGBA;
+  return getOption(options, "defaultColor", [0, 0, 0, 0]) as RGBA;
 }
-function getOption(options: FastAverageColorOptions, name: keyof FastAverageColorOptions, defaultValue: unknown) {
-  return (options[name] === undefined ? defaultValue : options[name]);
+function getOption(
+  options: FastAverageColorOptions,
+  name: keyof FastAverageColorOptions,
+  defaultValue: unknown
+) {
+  return options[name] === undefined ? defaultValue : options[name];
 }
 
 function toHex(num: number) {
   const str = num.toString(16);
-  return str.length === 1 ? '0' + str : str;
+  return str.length === 1 ? "0" + str : str;
 }
 
 function arrayToHex(arr: RGBA | RGB) {
-  return '#' + arr.map(toHex).join('');
+  return "#" + arr.map(toHex).join("");
 }
 
 function isDark(color: RGB) {
@@ -110,31 +135,37 @@ function isDark(color: RGB) {
   return result < 128;
 }
 
-
-function dominantAlgorithm(arr: number[], len: number, options: FastAverageColorAlgorithmOptions) {
-  const colorHash: {[k: string]: number | number[]} = {};
+function dominantAlgorithm(
+  arr: number[],
+  len: number,
+  options: FastAverageColorAlgorithmOptions
+) {
+  const colorHash: { [k: string]: number | number[] } = {};
   const divider = 24;
   const step = options.step;
-  let max = [ 0, 0, 0, 0, 0 ];
+  let max = [0, 0, 0, 0, 0];
   for (let i = 0; i < len; i += step) {
     const red = arr[i];
     const green = arr[i + 1];
     const blue = arr[i + 2];
     const alpha = arr[i + 3];
 
-    const key = Math.round(red / divider) + ',' +
-      Math.round(green / divider) + ',' +
+    const key =
+      Math.round(red / divider) +
+      "," +
+      Math.round(green / divider) +
+      "," +
       Math.round(blue / divider);
     if (colorHash[key]) {
+      const currentHash = colorHash[key] as number[];
       colorHash[key] = [
-        colorHash[key][0] + red * alpha,
-        colorHash[key][1] + green * alpha,
-        colorHash[key][2] + blue * alpha,
-        colorHash[key][3] + alpha,
-        colorHash[key][4] + 1
+        currentHash[0] + red * alpha,
+        currentHash[1] + green * alpha,
+        currentHash[2] + blue * alpha,
+        currentHash[3] + alpha,
+        currentHash[4] + 1,
       ];
-    }
-    else {
+    } else {
       colorHash[key] = [red * alpha, green * alpha, blue * alpha, alpha, 1];
     }
     if (max[4] < colorHash[key][4]) {
@@ -146,15 +177,21 @@ function dominantAlgorithm(arr: number[], len: number, options: FastAverageColor
   const blueTotal = max[2];
   const alphaTotal = max[3];
   const count = max[4];
-  return alphaTotal ? [
-    Math.round(redTotal / alphaTotal),
-    Math.round(greenTotal / alphaTotal),
-    Math.round(blueTotal / alphaTotal),
-    Math.round(alphaTotal / count)
-  ] : options.defaultColor;
+  return alphaTotal
+    ? [
+        Math.round(redTotal / alphaTotal),
+        Math.round(greenTotal / alphaTotal),
+        Math.round(blueTotal / alphaTotal),
+        Math.round(alphaTotal / count),
+      ]
+    : options.defaultColor;
 }
 
-function simpleAlgorithm(arr: number[], len: number, options: FastAverageColorAlgorithmOptions) {
+function simpleAlgorithm(
+  arr: number[],
+  len: number,
+  options: FastAverageColorAlgorithmOptions
+) {
   let redTotal = 0;
   let greenTotal = 0;
   let blueTotal = 0;
@@ -172,21 +209,26 @@ function simpleAlgorithm(arr: number[], len: number, options: FastAverageColorAl
     alphaTotal += alpha;
     count++;
   }
-  return alphaTotal ? [
-    Math.round(redTotal / alphaTotal),
-    Math.round(greenTotal / alphaTotal),
-    Math.round(blueTotal / alphaTotal),
-    Math.round(alphaTotal / count)
-  ] : options.defaultColor;
+  return alphaTotal
+    ? [
+        Math.round(redTotal / alphaTotal),
+        Math.round(greenTotal / alphaTotal),
+        Math.round(blueTotal / alphaTotal),
+        Math.round(alphaTotal / count),
+      ]
+    : options.defaultColor;
 }
 
-function sqrtAlgorithm(arr: number[], len: number, options: FastAverageColorAlgorithmOptions) {
+function sqrtAlgorithm(
+  arr: number[],
+  len: number,
+  options: FastAverageColorAlgorithmOptions
+) {
   let redTotal = 0;
   let greenTotal = 0;
   let blueTotal = 0;
   let alphaTotal = 0;
   let count = 0;
-  const ignoredColor = options.ignoredColor;
   const step = options.step;
   for (let i = 0; i < len; i += step) {
     const red = arr[i];
@@ -199,23 +241,27 @@ function sqrtAlgorithm(arr: number[], len: number, options: FastAverageColorAlgo
     alphaTotal += alpha;
     count++;
   }
-  return alphaTotal ? [
-    Math.round(Math.sqrt(redTotal / alphaTotal)),
-    Math.round(Math.sqrt(greenTotal / alphaTotal)),
-    Math.round(Math.sqrt(blueTotal / alphaTotal)),
-    Math.round(alphaTotal / count)
-  ] : options.defaultColor;
+  return alphaTotal
+    ? [
+        Math.round(Math.sqrt(redTotal / alphaTotal)),
+        Math.round(Math.sqrt(greenTotal / alphaTotal)),
+        Math.round(Math.sqrt(blueTotal / alphaTotal)),
+        Math.round(alphaTotal / count),
+      ]
+    : options.defaultColor;
 }
 
-
-function prepareResult(value: [number, number, number, number], error?: Error): FastAverageColorResult {
+function prepareResult(
+  value: [number, number, number, number],
+  error?: Error
+): FastAverageColorResult {
   const rgb = value.slice(0, 3) as [number, number, number];
-  const rgba = [ value[0], value[1], value[2], value[3] / 255 ];
+  const rgba = [value[0], value[1], value[2], value[3] / 255];
   const isDarkColor = isDark(value);
   return {
     value: [value[0], value[1], value[2], value[3]],
-    rgb: 'rgb(' + rgb.join(',') + ')',
-    rgba: 'rgba(' + rgba.join(',') + ')',
+    rgb: "rgb(" + rgb.join(",") + ")",
+    rgba: "rgba(" + rgba.join(",") + ")",
     hex: arrayToHex(rgb),
     hexa: arrayToHex(value),
     isDark: isDarkColor,
@@ -224,7 +270,10 @@ function prepareResult(value: [number, number, number, number], error?: Error): 
   };
 }
 
-function getColorFromArray4 (arr: number[] | Uint8Array | Uint8ClampedArray, options?: FastAverageColorOptions): FastAverageColorRgba {
+function getColorFromArray4(
+  arr: number[] | Uint8Array | Uint8ClampedArray,
+  options?: FastAverageColorOptions
+): FastAverageColorRgba {
   options = options || {};
   const bytesPerPixel = 4;
   const arrLength = arr.length;
@@ -232,50 +281,58 @@ function getColorFromArray4 (arr: number[] | Uint8Array | Uint8ClampedArray, opt
   if (arrLength < bytesPerPixel) {
     return defaultColor;
   }
-  const len = arrLength - arrLength % bytesPerPixel;
+  const len = arrLength - (arrLength % bytesPerPixel);
   const step = (options.step || 1) * bytesPerPixel;
   let algorithm;
-  switch (options.algorithm || 'sqrt') {
-    case 'simple':
+  switch (options.algorithm || "sqrt") {
+    case "simple":
       algorithm = simpleAlgorithm;
       break;
-    case 'sqrt':
+    case "sqrt":
       algorithm = sqrtAlgorithm;
       break;
-    case 'dominant':
+    case "dominant":
       algorithm = dominantAlgorithm;
       break;
     default:
-      throw new Error("".concat(options.algorithm ?? "", " is unknown algorithm"));
+      throw new Error(
+        "".concat(options.algorithm ?? "", " is unknown algorithm")
+      );
   }
-  // @ts-ignore
   return algorithm(arr as unknown as number[], len, {
     defaultColor: defaultColor,
-    step: step
-  }) as FastAverageColorRgba
+    step: step,
+  }) as FastAverageColorRgba;
 }
 
-
-export async function getAverageColor(resourceUrl: string, options?: FastAverageColorOptions) {
+export async function getAverageColor(
+  resourceUrl: string,
+  options?: FastAverageColorOptions
+) {
   const response = await fetch(resourceUrl);
   const arrayBuffer = await response.arrayBuffer();
-  let input = Buffer.from(arrayBuffer);
+  const input = Buffer.from(arrayBuffer);
 
-  const left = 0
-  const top = 0
+  const left = 0;
+  const top = 0;
   let pipe = await sharp(input);
   const metadata = await pipe.metadata();
   if (metadata.width && metadata.height) {
-    const size = prepareSizeAndPosition({
-      width: metadata.width,
-      height: metadata.height,
-    }, options);
-    pipe = pipe.extract({
-      left,
-      top,
-      width: size.srcWidth,
-      height: size.srcHeight,
-    }).resize(size.destWidth, size.destHeight);
+    const size = prepareSizeAndPosition(
+      {
+        width: metadata.width,
+        height: metadata.height,
+      },
+      options
+    );
+    pipe = pipe
+      .extract({
+        left,
+        top,
+        width: size.srcWidth,
+        height: size.srcHeight,
+      })
+      .resize(size.destWidth, size.destHeight);
   }
   const buffer = await pipe.ensureAlpha().raw().toBuffer();
   const pixelArray = new Uint8Array(buffer.buffer);
@@ -283,13 +340,17 @@ export async function getAverageColor(resourceUrl: string, options?: FastAverage
 }
 
 export const getAverageColors = async (mediaUrls: string[]) => {
-  const colors = await Promise.all(mediaUrls.map((url) => getAverageColor(url, {
-    mode: "speed",
-    algorithm: "sqrt",
-  })));
-  return colors.map(c => ({
+  const colors = await Promise.all(
+    mediaUrls.map((url) =>
+      getAverageColor(url, {
+        mode: "speed",
+        algorithm: "sqrt",
+      })
+    )
+  );
+  return colors.map((c) => ({
     values: c.value,
     hex: c.hex,
-    rgb: c.rgb
+    rgb: c.rgb,
   }));
-}
+};

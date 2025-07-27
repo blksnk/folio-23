@@ -5,15 +5,7 @@ import {
   TextLine,
   type TextLineProps,
 } from "@/components/AnimatedText/TextLine";
-import Link from "next/link";
-import {
-  MouseEventHandler,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-} from "react";
-import fontRepo from "@/app/fonts";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { cn, replaceWithSpacesWhenHidden, type ClassDef } from "@/utils/css";
 import { ProjectListItemData } from "@/api/queries/allProjects";
 import { Arrow, type ArrowProps } from "@/components/Arrow.component";
@@ -21,13 +13,6 @@ import { Arrow, type ArrowProps } from "@/components/Arrow.component";
 export const formatNumber = (n: number): string =>
   n < 10 ? "0" + n : String(n);
 const extractYear = (date: string) => date.split("-")[0];
-
-const profileDescription = `Creative designer with a focus on 3D,
-branding, UI and all things *experimental*.`;
-const profileName = "Jean-Nicolas Veigel";
-const archiveTitle = "Archives repository";
-const archiveDescription = `One-off projects, logos, graphics.
-Exploring random stuff.`;
 
 interface PageLeftProps {
   changeActiveIndex: (n: 1 | -1) => void;
@@ -89,8 +74,15 @@ type ListNewItemProps = Pick<
   project: ListNewProps["projects"][number];
 };
 
-const ListNewItem = (props: ListNewItemProps) => {
-  const isActive = useMemo(() => props.index === props.activeIndex, [props]);
+const ListNewItem = ({
+  redirectOnConfirm,
+  setActiveIndex,
+  index,
+  hide,
+  activeIndex,
+  ...props
+}: ListNewItemProps) => {
+  const isActive = useMemo(() => index === activeIndex, [activeIndex, index]);
   const elementRef = useRef<HTMLLIElement | null>(null);
 
   useEffect(() => {
@@ -104,28 +96,28 @@ const ListNewItem = (props: ListNewItemProps) => {
 
   const handleClick = useCallback(() => {
     if (isActive) {
-      props.redirectOnConfirm();
+      redirectOnConfirm();
     }
-    props.setActiveIndex(props.index);
-  }, [isActive, props.index, props.redirectOnConfirm, props.setActiveIndex]);
+    setActiveIndex(index);
+  }, [isActive, index, redirectOnConfirm, setActiveIndex]);
 
   const klass = cn(
     styles.listNewItem,
-    [styles.hide, props.hide],
+    [styles.hide, hide],
     [styles.active, isActive]
   );
 
   const cellProps = useCallback(
     (children: string, ...classes: ClassDef[]): TextLineProps => ({
       animatedTextProps: {
-        fixedDuration: props.hide ? 300 : 600,
-        delay: props.hide ? 0 : props.index * 300,
+        fixedDuration: hide ? 300 : 600,
+        delay: hide ? 0 : index * 300,
       },
-      active: isActive && !props.hide,
+      active: isActive && !hide,
       className: cn(styles.listNewItemCell, ...classes),
-      children: replaceWithSpacesWhenHidden(children, props.hide),
+      children: replaceWithSpacesWhenHidden(children, hide),
     }),
-    [isActive, props.index, handleClick]
+    [hide, index, isActive]
   );
 
   return (
@@ -133,12 +125,12 @@ const ListNewItem = (props: ListNewItemProps) => {
       className={klass}
       ref={elementRef}
       onClick={handleClick}
-      tabIndex={props.index}
+      tabIndex={index}
       title={props.project.title}
       role="article"
     >
       <div className={cn(styles.listNewItemCellContainer, styles.index)}>
-        <TextLine {...cellProps(formatNumber(props.index + 1))} />
+        <TextLine {...cellProps(formatNumber(index + 1))} />
       </div>
 
       <div className={cn(styles.listNewItemCellContainer, styles.title)}>

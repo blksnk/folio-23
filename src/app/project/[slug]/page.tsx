@@ -11,6 +11,7 @@ import { ProjectRenderer } from "@/app/project/[slug]/ProjectRenderer.component"
 import { getAverageColors } from "@/utils/averageColor";
 import { Description, LogoContainer, Overlay } from "./modules";
 import { ProjectInfo } from "./modules/ProjectInfo";
+import { ProjectLink } from "./modules/ProjectLink/ProjectLink";
 
 const coverSize = 2000;
 
@@ -96,8 +97,6 @@ export default async function ProjectPage({
   const colors = await getAverageColors(mediaUrls);
   const mediasByRatio = sortMediasByRatio(formattedMedias);
 
-  console.log("runs");
-
   const rendererProps = {
     medias: formattedMedias,
     mediasByRatio,
@@ -112,6 +111,7 @@ export default async function ProjectPage({
       <Description description={project.description} />
       <ProjectInfo project={project} />
       <LogoContainer />
+      <ProjectLink link={project.link} />
       <Overlay />
     </main>
   );

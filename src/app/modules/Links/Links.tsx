@@ -4,7 +4,7 @@ import styles from "./Links.module.sass";
 const profileDescription = `Creative designer with a focus on 3D,
 branding, UI and all things *experimental*.`;
 const profileName = "Jean-Nicolas Veigel";
-const archiveTitle = "Archives repository";
+const archiveTitle = "Archives";
 const archiveDescription = `One-off projects, logos, graphics.
 Exploring random stuff.`;
 

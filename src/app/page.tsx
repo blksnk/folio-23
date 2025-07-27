@@ -32,7 +32,7 @@ const sortProjects = (
 };
 
 export default async function Home() {
-  const headersList = headers();
+  const headersList = await headers();
   const city = headersList.get("x-request-city") ?? "";
   const weather = headersList.get("x-request-weather") ?? "";
   const projects = await fetchProjects();

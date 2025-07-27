@@ -31,10 +31,10 @@
   &:before
     position: absolute
     content: ""
-    top: v.$unit * 3
-    bottom: v.$unit * 3
-    left: v.$unit * 1.5
-    right: v.$unit * 1.5
+    top: calc(v.$unit * 3)
+    bottom: calc(v.$unit * 3)
+    left: calc(v.$unit * 1.5)
+    right: calc(v.$unit * 1.5)
     background: v.$w10
     backdrop-filter: blur(4px)
     border-radius: 50%
@@ -82,7 +82,7 @@
       border-radius: 0
 
     .title
-      letter-spacing: v.$unit / 2
+      letter-spacing: calc(v.$unit / 2)
       transition: all 600ms v.$bezier 0ms
 
     .topText, .bottomText
@@ -100,7 +100,7 @@
     .title
       opacity: 0
       filter: blur(v.$unit * 2)
-      letter-spacing: v.$unit * 2 !important
+      letter-spacing: calc(v.$unit * 2) !important
       transition-duration: 600ms
 
     .topText, .bottomText

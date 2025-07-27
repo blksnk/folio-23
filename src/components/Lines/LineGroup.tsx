@@ -12,8 +12,8 @@ interface LineGroupProps {
   direction: "horizontal" | "vertical";
 }
 
-const lerp = (a: number, b: number, alpha: number): number => {
-  return a + alpha * (b - a);
+const lerp = (from: number, to: number, alpha: number): number => {
+  return from + alpha * (to - from);
 };
 
 const computeMargin = (
@@ -23,10 +23,10 @@ const computeMargin = (
   to: number
 ): number => {
   const factor = (index + 1) / count;
-  return lerp(from, to, factor);
+  return lerp(from ?? 4, to ?? 4, factor);
 };
 
-export const LineGroup = (props: LineGroupProps): JSX.Element => {
+export const LineGroup = (props: LineGroupProps) => {
   const groupClass = `${styles.lineGroup} ${styles[props.direction]}`;
   const lines = Array(props.count).fill(null);
   const marginProp =
@@ -48,7 +48,7 @@ export const LineGroup = (props: LineGroupProps): JSX.Element => {
             key={"line" + index}
             style={{ [marginProp]: margin }}
             className={styles.line}
-          ></div>
+          />
         );
       })}
     </div>

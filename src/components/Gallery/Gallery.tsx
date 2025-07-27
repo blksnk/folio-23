@@ -15,7 +15,6 @@ import {
 } from "./Gallery.utils";
 import { Breakpoints } from "@/utils/breakpoints";
 import type { GalleryMediaAndMetadata } from "./Gallery.types";
-import { portraitRatios } from "./data";
 
 interface GalleryProps {
   medias: FormattedProjectMedia[];
@@ -50,11 +49,6 @@ export function Gallery(props: GalleryProps) {
       ).then(() => setImagesLoaded(true));
     }
   }, [imagesLoaded, props.medias]);
-
-  const styleConstants = useMemo(
-    () => computeStyleConstants(breakpoints),
-    [breakpoints]
-  );
 
   return (
     <div className={styles.framesContainer} onClick={props.walkGallery}>

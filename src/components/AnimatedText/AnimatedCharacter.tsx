@@ -120,13 +120,13 @@ export const AnimatedCharacter = ({
     if (!delayElapsed || s === "\n") return;
     const offsetPolarity = targetIndex >= currentIndex ? 1 : -1;
     let count = 1;
-    let diff = Math.abs(targetIndex - currentIndex);
+    const diff = Math.abs(targetIndex - currentIndex);
 
     const intervalDuration = fixedDuration
       ? Math.round(fixedDuration / diff)
       : duration;
     if (targetIndex === currentIndex) return;
-    let intervalId = setInterval(() => {
+    const intervalId = setInterval(() => {
       if (count > diff) {
         clearInterval(intervalId);
       } else {

@@ -17,22 +17,22 @@ export const useKeyboardInput = ({
 }: Listeners = {}) => {
   const onKeyInput = useCallback(
     (e: KeyboardEvent) => {
-      onKey && onKey(e.key.toLowerCase());
+      if (onKey) onKey(e.key.toLowerCase());
       switch (e.code) {
         case "ArrowRight":
         case "ArrowLeft":
         case "ArrowDown":
         case "ArrowUp":
           const dir = e.key.slice(5).toLowerCase() as ArrowDirection;
-          onArrow && onArrow(dir);
+          if (onArrow) onArrow(dir);
           break;
         case "Space":
         case "Enter":
-          onConfirm && onConfirm();
+          if (onConfirm) onConfirm();
           break;
         case "Backspace":
         case "Escape":
-          onBack && onBack();
+          if (onBack) onBack();
       }
     },
     [onArrow, onConfirm, onBack, onKey]

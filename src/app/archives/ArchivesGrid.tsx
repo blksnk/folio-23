@@ -1,12 +1,10 @@
-import {
-  Breakpoint,
-} from "@/utils/responsive";
+import { Breakpoint } from "@/utils/responsive";
 import { GridLayoutData, identifier } from "@/utils/grid/types";
 import { ArchiveListItem } from "@/api/queries/allArchives";
 import styles from "@/app/archives/page.module.sass";
 import {
   ArchiveGridItem,
-  ArchiveGridItemPreview
+  ArchiveGridItemPreview,
 } from "@/app/archives/ArchiveGridItem";
 
 interface ArchivesGridProps {
@@ -19,15 +17,18 @@ interface ArchivesGridProps {
   selectArchive: (i: number) => void;
 }
 
-export const ArchivesGrid = ({ gridLayout, breakpoint, doPreview, selectedId, selectedIndex, selectArchive, hide }: ArchivesGridProps) => {
-  // const style = {
-  //   height: gridLayout.layoutDimensions.height,
-  //   minHeight: gridLayout.layoutDimensions.height,
-  // }
-
+export const ArchivesGrid = ({
+  gridLayout,
+  breakpoint,
+  doPreview,
+  selectedId,
+  selectedIndex,
+  selectArchive,
+  hide,
+}: ArchivesGridProps) => {
   return (
     <div className={styles.archivesGridContainer}>
-    {gridLayout.items.map((item, index) =>
+      {gridLayout.items.map((item, index) => (
         <ArchiveGridItem
           doPreview={doPreview}
           index={index}
@@ -39,21 +40,22 @@ export const ArchivesGrid = ({ gridLayout, breakpoint, doPreview, selectedId, se
           breakpoint={breakpoint}
           hide={hide}
         />
-      )}
+      ))}
 
-  {gridLayout.items.map((item, index) =>
-    <ArchiveGridItemPreview
-      doPreview={doPreview}
-      index={index}
-      item={item}
-      key={item.id}
-      isSelected={selectedId === item.id}
-      selectedIndex={selectedIndex}
-      select={() => selectArchive(index)}
-      breakpoint={breakpoint}
-      hide={hide}
-    />
-  )}
-</div>
-  )
-}
+      {(breakpoint !== "mobile" ? doPreview : true) &&
+        gridLayout.items.map((item, index) => (
+          <ArchiveGridItemPreview
+            doPreview={doPreview}
+            index={index}
+            item={item}
+            key={item.id}
+            isSelected={selectedId === item.id}
+            selectedIndex={selectedIndex}
+            select={() => selectArchive(index)}
+            breakpoint={breakpoint}
+            hide={hide}
+          />
+        ))}
+    </div>
+  );
+};
