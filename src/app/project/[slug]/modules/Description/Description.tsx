@@ -4,6 +4,7 @@ import { AnimatedTextStaggered } from "@/components/AnimatedText/AnimatedText";
 
 interface DescriptionProps {
   description?: string;
+  link?: string;
 }
 
 const textProps = {
@@ -20,6 +21,13 @@ export const Description = (props: DescriptionProps) => {
       <AnimatedTextStaggered {...textProps}>
         {props.description}
       </AnimatedTextStaggered>
+      {props.description && (
+        <a href={props.link} target="_blank" rel="noreferrer">
+          <AnimatedTextStaggered {...textProps}>
+            View project
+          </AnimatedTextStaggered>
+        </a>
+      )}
     </div>
   );
 };

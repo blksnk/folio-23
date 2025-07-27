@@ -19,6 +19,7 @@ export const oneProject = `
       description
       client
       brief
+      link
       backgroundColor {
         hex
         css
@@ -73,6 +74,7 @@ export interface ProjectData extends ProjectListItemData {
   description?: string;
   client: string;
   brief: string;
+  link?: string;
   medias: ProjectMedia[];
   backgroundColor: {
     hex: string;

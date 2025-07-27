@@ -96,8 +96,6 @@ export default async function ProjectPage({
   const colors = await getAverageColors(mediaUrls);
   const mediasByRatio = sortMediasByRatio(formattedMedias);
 
-  console.log("runs");
-
   const rendererProps = {
     medias: formattedMedias,
     mediasByRatio,
@@ -109,7 +107,7 @@ export default async function ProjectPage({
   return (
     <main className={styles.main}>
       <ProjectRenderer {...rendererProps} />
-      <Description description={project.description} />
+      <Description description={project.description} link={project.link} />
       <ProjectInfo project={project} />
       <LogoContainer />
       <Overlay />
