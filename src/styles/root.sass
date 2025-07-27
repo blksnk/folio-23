@@ -13,6 +13,7 @@
   --side-banner-width: calc(var(--unit) * 5.5)
   --side-cell-padding: calc(var(--unit) * 0.5)
 
+  --cell-height: calc((100vh - var(--unit) * 6) / 12)
   --cell-height: calc((100dvh - var(--unit) * 6) / 12)
 
   @media only screen and (max-width: v.$breakpoint-desktop-small)
@@ -21,13 +22,15 @@
 
   @media only screen and (max-width: v.$breakpoint-tablet)
     --side-banner-width: calc(var(--unit) * 4.5)
+    --cell-height: calc((100vh - var(--unit) * 4) / 12 )
     --cell-height: calc((100dvh - var(--unit) * 4) / 12 )
     --vertical-padding: 0.75rem * 2
 
   @media only screen and (max-width: v.$breakpoint-mobile)
     --side-banner-width: calc(var(--unit) * 3)
     --vertical-padding: 0.75rem
-    --cell-height: calc((100svh - var(--unit) * 2) / 12 )
+    --cell-height: calc((100vh - var(--unit) * 2) / 12 )
+    --cell-height: calc((100dvh - var(--unit) * 2) / 12 )
 
   @media screen and (max-device-width: v.$breakpoint-mobile), screen and (-webkit-min-device-pixel-ratio: 2), screen and (device-width: v.$breakpoint-mobile)
     &, body
