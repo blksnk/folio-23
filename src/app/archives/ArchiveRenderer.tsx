@@ -145,7 +145,7 @@ export const ArchiveRenderer = (props: ArchiveRendererProps) => {
         scrollY.current +
         (scrollYTarget.current - scrollY.current) * multiplier;
       const diff = scrollY.current - value;
-      if (Math.abs(diff) > 0.00001) {
+      if (Math.abs(diff) > 0.001) {
         console.debug(value, multiplier);
         scrollY.current = value;
         document.documentElement.style.setProperty("--scroll-y", -value + "px");

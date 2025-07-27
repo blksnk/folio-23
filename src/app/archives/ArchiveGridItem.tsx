@@ -218,7 +218,6 @@ export const ArchiveGridItemPreview = ({
       false,
       breakpoint
     )} - ${cssUnit(isSelected || isMobile ? 0 : 4)})`,
-    // transform: itemPreviewPosition(isMobile ? isSelected ? 0 : 1 : 3, (isDesktop ? 0 : isMobile ? 2 : 1) - ((selectedIndex ?? index) - index) * (isDesktop ? 12 : isMobile ? 7 : 10), isSelected, isMobile, breakpoint)
     transform: `translateX(${previewPosition.x})`,
     top: previewPosition.y,
   };
