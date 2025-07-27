@@ -1,11 +1,9 @@
-import type { OnLoadingComplete } from "next/dist/shared/lib/get-img-props";
 import {
   useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
-  type EventHandler,
   type ReactEventHandler,
 } from "react";
 

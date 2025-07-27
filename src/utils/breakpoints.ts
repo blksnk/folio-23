@@ -3,10 +3,12 @@
 const tablet = 900;
 const mobile = 650;
 
-export default {
+const bp = {
   tablet,
   mobile,
 };
+
+export default bp;
 
 export const isServer = typeof window === "undefined";
 
