@@ -61,7 +61,7 @@ export const ProjectRenderer = (props: ProjectRendererProps) => {
     hide: transitionOut,
     activeIndex,
     overBlur: true,
-    blendMode: "multiply" as "multiply",
+    blendMode: "multiply" as const,
   };
 
   const mediaSelectorProps: MediaSelectorProps = {
