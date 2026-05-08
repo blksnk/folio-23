@@ -15,7 +15,6 @@ export const Branding = () => {
   const blobSize = useCallback(() => {
     if (!elementRef.current) return 400;
     const { width, height } = elementRef.current.getBoundingClientRect();
-    console.log(width, height);
     const padding = 1;
     return {
       width: width - padding,

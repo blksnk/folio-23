@@ -15,7 +15,6 @@ const fetchProjects = async () => {
     { projects: [] },
     { height: 2700 },
   );
-  console.log(res.projects.length);
   return res.projects;
 };
 

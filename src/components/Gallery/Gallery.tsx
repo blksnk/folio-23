@@ -153,7 +153,6 @@ interface GalleryMediaProps {
 }
 
 const GalleryMedia = (props: GalleryMediaProps) => {
-  console.log(props);
   const klass = cn(styles.galleryMedia, [styles.visible, props.visible]);
   if (props.media.isVideo) {
     return (
