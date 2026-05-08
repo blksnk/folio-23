@@ -13,13 +13,14 @@ const fetchProjects = async () => {
   const res = await queryClient<AllProjectsResponse, { projects: never[] }>(
     allProjects,
     { projects: [] },
-    { height: 2700 }
+    { height: 2700 },
   );
+  console.log(res.projects.length);
   return res.projects;
 };
 
 const sortProjects = (
-  projects: ProjectListItemData[]
+  projects: ProjectListItemData[],
 ): ProjectListItemData[] => {
   return projects.sort((a, b) => {
     const dateCompare = a.year
