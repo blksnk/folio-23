@@ -160,6 +160,7 @@ const GalleryMedia = (props: GalleryMediaProps) => {
         autoPlay
         muted
         loop
+        playsInline
         className={cn(klass, styles.galleryMediaVideo)}
       >
         <source src={props.media.url} />
