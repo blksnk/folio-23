@@ -45,7 +45,7 @@ export function Gallery(props: GalleryProps) {
   useEffect(() => {
     if (!imagesLoaded) {
       preloadAllImages(
-        props.medias.filter(({ isVideo }) => !isVideo).map(({ url }) => url)
+        props.medias.filter(({ isVideo }) => !isVideo).map(({ url }) => url),
       ).then(() => setImagesLoaded(true));
     }
   }, [imagesLoaded, props.medias]);
@@ -74,7 +74,7 @@ type GalleryMediaRendererProps = Pick<
 const GalleryMediaRenderer = (props: GalleryMediaRendererProps) => {
   const constants = useMemo(
     () => computeStyleConstants(props.breakpoints),
-    [props.breakpoints]
+    [props.breakpoints],
   );
 
   const allMedias = useMemo<GalleryMediaAndMetadata[]>(() => {
@@ -102,7 +102,7 @@ const GalleryMediaRenderer = (props: GalleryMediaRendererProps) => {
           media,
           props.activeMediaId,
           props.imagesLoaded,
-          props.hide
+          props.hide,
         );
         const { mediaStyles, className } = computeMediaStyles(
           constants,
@@ -110,7 +110,7 @@ const GalleryMediaRenderer = (props: GalleryMediaRendererProps) => {
           props.breakpoints,
           index,
           active,
-          props.hide
+          props.hide,
         );
         return (
           <div key={media.id} style={mediaStyles} className={className}>
@@ -128,14 +128,14 @@ const GalleryMediaRenderer = (props: GalleryMediaRendererProps) => {
       props.breakpoints,
       props.hide,
       props.imagesLoaded,
-    ]
+    ],
   );
 
   const renderMediaList = useCallback(
     (metadataSubset: GalleryMediaAndMetadata[], priority?: boolean) => {
       return metadataSubset.map(renderMedia(priority ?? false));
     },
-    [renderMedia]
+    [renderMedia],
   );
 
   return (

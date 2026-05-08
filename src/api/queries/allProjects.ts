@@ -2,7 +2,7 @@ import { ProjectType } from "@/api/typings/project";
 
 export const allProjects = `
   query AllProjects($height: Int!) {
-    projects {
+    projects(first: 100) {
       id
       title
       client
@@ -23,8 +23,7 @@ export const allProjects = `
       }
     }
   }
-`
-
+`;
 
 export type ProjectListItemData = {
   slug: string;
@@ -42,9 +41,9 @@ export type ProjectListItemData = {
     mimeType: string;
     height: number;
     width: number;
-  }
-}
+  };
+};
 
 export type AllProjectsResponse = {
-  projects: ProjectListItemData[]
-}
+  projects: ProjectListItemData[];
+};

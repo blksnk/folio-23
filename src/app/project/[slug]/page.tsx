@@ -19,13 +19,13 @@ const fetchProjectData = async (slug: string) => {
   const res = await queryClient<ProjectDataResponse, { project: null }>(
     oneProject,
     { project: null },
-    { width: coverSize, slug }
+    { width: coverSize, slug },
   );
   return res.project;
 };
 
 const formatProjectMedias = (
-  medias: ProjectMedia[]
+  medias: ProjectMedia[],
 ): FormattedProjectMedia[] => {
   const formatDisplayTitle = (m: ProjectMedia) =>
     m.title.replaceAll(" ", "_") + "." + m.asset.mimeType.split("/")[1];
@@ -35,14 +35,21 @@ const formatProjectMedias = (
     return title.length > acc ? title.length : acc;
   }, 0);
 
-  const formatVideoUrl = (url: string) => {
-    const parts = url.split("/");
-    return "https://" + parts[2] + "/" + parts[parts.length - 1];
+  const formatVideoUrl = (media: ProjectMedia) => {
+    const parts = media.asset.url.split("/");
+    const assembled = [
+      "https://",
+      parts[2],
+      parts[3],
+      parts[parts.length - 1],
+      media.asset.fileName,
+    ].join("/");
+    return assembled;
   };
 
   const formatSingleMedia = (
     m: ProjectMedia,
-    i: number
+    i: number,
   ): FormattedProjectMedia => {
     const isVideo = m.asset.mimeType.includes("video");
     const asset = m.videoThumbnail ?? m.asset;
@@ -52,11 +59,12 @@ const formatProjectMedias = (
     const displayTitle = title + Array(titleDiff).fill(" ").join("");
     const isPortrait = 1 > imgRatio;
     const closestRatio = getClosestRatio(imgRatio);
+    const url = isVideo ? formatVideoUrl(m) : m.asset.url;
     return {
       displayTitle,
       imgRatio,
       closestRatio,
-      url: isVideo ? formatVideoUrl(m.asset.url) : m.asset.url,
+      url,
       videoThumbnailUrl: m.videoThumbnail?.url,
       id: m.id,
       isVideo,

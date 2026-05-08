@@ -40,7 +40,7 @@ export const useSetMousePos = () => {
     targetPos.current = { x: clientX, y: clientY };
   }, []);
 
-  const onFrame = useCallback<FrameRequestCallback>((time) => {
+  const onFrame = useCallback<FrameRequestCallback>(() => {
     const x = lerp(currentPos.current.x, targetPos.current.x, LERP_COEF);
     const y = lerp(currentPos.current.y, targetPos.current.y, LERP_COEF);
     currentPos.current = { x, y };
