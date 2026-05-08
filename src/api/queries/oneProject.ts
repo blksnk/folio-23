@@ -31,6 +31,7 @@ export const oneProject = `
           asset {
             width
             height
+            fileName
             url(
               transformation: {image: {resize: {fit: scale, width: $width}}, document: {output: {format: webp}}}
             )
@@ -56,6 +57,7 @@ export interface ProjectMedia {
     url: string;
     width: number;
     height: number;
+    fileName: string;
     mimeType: string;
   };
   videoThumbnail: {
